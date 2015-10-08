@@ -374,7 +374,7 @@ public:
 	 * @return reference to this matrix instance.
 	 */
 	Matrix4& scale(T s)noexcept{
-		return this->Scale(s, s, s);
+		return this->scale(s, s, s);
 	}
 	
 	
@@ -569,7 +569,7 @@ template <class T> Matrix4<T>& Matrix4<T>::translate(const Vector2<T>& t)noexcep
 
 
 template <class T> Matrix4<T>& Matrix4<T>::translate(const Vector3<T>& t)noexcept{
-	return this->Translate(t.x, t.y, t.z);
+	return this->translate(t.x, t.y, t.z);
 }
 
 
@@ -581,13 +581,13 @@ template <class T> Matrix4<T>& Matrix4<T>::rotate(const Quaternion<T>& q)noexcep
 
 
 template <class T> Matrix4<T>& Matrix4<T>::rotate(const Vector3<T>& rot)noexcept{
-	return this->Rotate(Quaternion<T>(rot));
+	return this->rotate(Quaternion<T>(rot));
 }
 
 
 
 template <class T> Matrix4<T>& Matrix4<T>::rotate(T rot)noexcept{
-	return this->Rotate(Vector3<T>(0, 0, rot));
+	return this->rotate(Vector3<T>(0, 0, rot));
 }
 
 
