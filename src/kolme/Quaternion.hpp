@@ -11,10 +11,8 @@
 
 #include <utki/debug.hpp>
 
-#include "../config.hpp"
 
-
-namespace morda{
+namespace kolme{
 
 
 
@@ -444,7 +442,7 @@ public:
 
 
 
-namespace morda{
+namespace kolme{
 
 //=================================
 // functions implementation
@@ -489,9 +487,6 @@ static_assert(sizeof(Quatf) == sizeof(float) * 4, "size mismatch");
 
 typedef Quaternion<double> Quatd;
 static_assert(sizeof(Quatd) == sizeof(double) * 4, "size mismatch");
-
-typedef Quaternion<real> Quatr;
-static_assert(sizeof(Quatr) == sizeof(real) * 4, "size mismatch");
 
 
 

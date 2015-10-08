@@ -10,10 +10,8 @@
 #include <utki/debug.hpp>
 #include <utki/math.hpp>
 
-#include "../config.hpp"
 
-
-namespace morda{
+namespace kolme{
 
 
 
@@ -437,7 +435,7 @@ public:
 
 
 
-namespace morda{
+namespace kolme{
 
 //==========================
 // functions implementation
@@ -507,9 +505,6 @@ static_assert(sizeof(Vec4f) == sizeof(float) * 4, "size mismatch");
 
 typedef Vector4<double> Vec4d;
 static_assert(sizeof(Vec4d) == sizeof(double) * 4, "size mismatch");
-
-typedef Vector4<real> Vec4r;
-static_assert(sizeof(Vec4r) == sizeof(real) * 4, "size mismatch");
 
 
 

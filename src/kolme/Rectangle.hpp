@@ -10,7 +10,6 @@
 
 #include "Vector2.hpp"
 
-#include "../config.hpp"
 
 //Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
 #ifdef min
@@ -22,7 +21,7 @@
 
 
 
-namespace morda{
+namespace kolme{
 
 
 
@@ -182,6 +181,5 @@ typedef Rectangle<int> Recti;
 
 typedef Rectangle<unsigned> Rectu;
 
-typedef Rectangle<real> Rectr;
 
 }//~namespace
