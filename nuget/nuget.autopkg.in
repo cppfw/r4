@@ -25,25 +25,25 @@ nuget{
 		include: { "..\src\**\*.hpp" };
 		
 		[x86,release] { 
-			lib: ..\msvs_solution\Release\libkolme.lib;
+//			lib: ..\msvs_solution\Release\libkolme.lib;
 //			symbols: ..\msvs_solution\Release\libkolme.pdb;
 //			bin: ..\msvs_solution\Release\libkolme.dll;
 		}
 
 		[x86,debug] { 
-			lib: ..\msvs_solution\Debug\libkolme.lib;
+//			lib: ..\msvs_solution\Debug\libkolme.lib;
 //			symbols: ..\msvs_solution\Debug\libkolme.pdb;
 //			bin: ..\msvs_solution\Debug\libkolme.dll;
 		}
 
 		[x64,release] { 
-			lib: ..\msvs_solution\x64\Release\libkolme.lib;
+//			lib: ..\msvs_solution\x64\Release\libkolme.lib;
 //			symbols: ..\msvs_solution\x64\Release\libkolme.pdb;
 //			bin: ..\msvs_solution\x64\Release\libkolme.dll;
 		}
 
 		[x64,debug] { 
-			lib: ..\msvs_solution\x64\Debug\libkolme.lib;
+//			lib: ..\msvs_solution\x64\Debug\libkolme.lib;
 //			symbols: ..\msvs_solution\x64\Debug\libkolme.pdb;
 //			bin: ..\msvs_solution\x64\Debug\libkolme.dll;
 		}  
