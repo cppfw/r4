@@ -1,0 +1,51 @@
+nuget{
+	nuspec{
+		id = libkolme;
+		version : $(version).1; //increase this trailing number if this file has changed to generate a new version of the NuGet package
+		title: C++ 3d math library;
+		authors: {Ivan Gagis};
+		owners: {Ivan Gagis};
+		licenseUrl: "https://raw.githubusercontent.com/igagis/kolme/master/LICENSE";
+		projectUrl: "https://github.com/igagis/kolme";
+		iconUrl: "https://github.com/igagis/kolme/blob/master/logo.svg";
+		requireLicenseAcceptance:false;
+		summary: C++ 3d math library;
+
+		description: @"C++ 3d math library";
+		releaseNotes: "Initial release";
+		copyright: Copyright 2015 Ivan Gagis;
+		tags: { native};
+	}
+	dependencies {
+		packages : {
+			libutki/1.0.8.6;
+		};
+	}
+	files {
+		include: { "..\src\**\*.hpp" };
+		
+		[x86,release] { 
+			lib: ..\msvs_solution\Release\libkolme.lib;
+//			symbols: ..\msvs_solution\Release\libkolme.pdb;
+//			bin: ..\msvs_solution\Release\libkolme.dll;
+		}
+
+		[x86,debug] { 
+			lib: ..\msvs_solution\Debug\libkolme.lib;
+//			symbols: ..\msvs_solution\Debug\libkolme.pdb;
+//			bin: ..\msvs_solution\Debug\libkolme.dll;
+		}
+
+		[x64,release] { 
+			lib: ..\msvs_solution\x64\Release\libkolme.lib;
+//			symbols: ..\msvs_solution\x64\Release\libkolme.pdb;
+//			bin: ..\msvs_solution\x64\Release\libkolme.dll;
+		}
+
+		[x64,debug] { 
+			lib: ..\msvs_solution\x64\Debug\libkolme.lib;
+//			symbols: ..\msvs_solution\x64\Debug\libkolme.pdb;
+//			bin: ..\msvs_solution\x64\Debug\libkolme.dll;
+		}  
+	}
+}
