@@ -1,4 +1,4 @@
-class Libutki < Formula
+class Libkolme < Formula
   desc "C++ 3d math library."
   homepage "https://github.com/igagis/kolme"
   url "https://github.com/igagis/kolme/archive/$(version).tar.gz"
