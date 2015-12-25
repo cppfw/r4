@@ -1,0 +1,16 @@
+Pod::Spec.new do |s|
+  s.name         = "libkolme"
+  s.version      = "$(version)"
+  s.summary      = "C++ 3d math library."
+  s.homepage     = "https://github.com/igagis/kolme"
+  s.license      = 'MIT'
+  s.author       = { "Ivan Gagis" => "igagis@gmail.com" }
+  s.platform     = :ios, "7.0"
+  
+  s.source = { :git => "https://github.com/igagis/kolme.git", :tag => s.version }
+
+  s.source_files  = "src/**/*.{hpp,cpp}"
+  s.header_mappings_dir = "src"
+
+  s.dependency 'libutki', '>= 1.0.8'
+end
