@@ -1,3 +1,9 @@
+libkolme (1.0.3) stable; urgency=medium
+
+  * homebrew do not remove tests, as there are no tests
+
+ -- Ivan Gagis <igagis@gmail.com>  Tue, 02 Feb 2016 22:50:33 +0200
+
 libkolme (1.0.2) stable; urgency=medium
 
   * homebrew do not install tests
