@@ -1,3 +1,9 @@
+libkolme (1.0.2) stable; urgency=medium
+
+  * homebrew do not install tests
+
+ -- Ivan Gagis <igagis@gmail.com>  Tue, 02 Feb 2016 22:50:33 +0200
+
 libkolme (1.0.1-1) stable; urgency=medium
 
   * updating for ci
