@@ -63,7 +63,6 @@ public:
      * @param column0 - 0th column of the matrix.
 	 * @param column1 - 1st column of the matrix.
 	 * @param column2 - 2nd column of the matrix.
-	 * @param column3 - 3rd column of the matrix.
      */
 	Matrix3(
 			const Vector4<T>& column0,
