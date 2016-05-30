@@ -124,6 +124,11 @@ public:
 	const T& left()const noexcept{
 		return this->p.x;
 	}
+	
+	//TODO: doxygen
+	Vector2<T> leftTop()const noexcept{
+		return Vector2<T>(this->p.x, this->p.y + this->d.y);
+	}
 
 	//TODO: doxygen
 	T top()const noexcept{
@@ -133,6 +138,11 @@ public:
 	//TODO: doxygen
 	T right()const noexcept{
 		return this->p.x + this->d.x;
+	}
+	
+	//TODO: doxygen
+	Vector2<T> rightBottom()const noexcept{
+		return Vector2<T>(this->p.x + this->d.x, this->p.y);
 	}
 
 	//TODO: doxygen

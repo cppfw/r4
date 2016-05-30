@@ -1,3 +1,9 @@
+libkolme (1.0.5) stable; urgency=medium
+
+  * Rectangle::leftTop() and Rectangle::rightBottom() methods added
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 30 May 2016 16:45:03 +0300
+
 libkolme (1.0.4) stable; urgency=medium
 
   * nuget fix
