@@ -13,12 +13,12 @@ nuget{
 
 		description: @"C++ 3d math library";
 		releaseNotes: "Initial release";
-		copyright: Copyright 2015 Ivan Gagis;
+		copyright: Copyright 2016 Ivan Gagis;
 		tags: { native};
 	}
 	dependencies {
 		packages : {
-			libutki/1.0.8.6;
+			libutki/1.0.22;
 		};
 	}
 	files {
