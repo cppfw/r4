@@ -53,8 +53,7 @@ script:
   fi
 
 before_deploy:
-  - prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` travis_bintray_deb.json.in
-  - prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` travis_bintray_rasp.json.in
+  - prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` travis_bintray_*.json.in
 
 deploy:
 - provider: bintray
@@ -63,6 +62,16 @@ deploy:
     tags: true
     condition: $TRAVIS_OS_NAME = linux && $CC = gcc
   file: travis_bintray_deb.json
+  user: igagis
+  key:
+    secure: "O+G/Mak4SwnlJW0+ty3zA3zTA1Ua2AT2O/zCH7Lfp+OuWeZ8ocbp6MnYHuSL7jpUc8INObrP9B3ZPQxT8bTGmN0BK+DaKnxPwqCU7Z65UtJGBWV2fgw0AYnUSe78pefzO2il0lD9sX1g10riilFApRQ8lHlnMJra/FKgZ6ohsMExHtCnFE9jdrVhEe/tY8Y5m0qySJVbVyVXwReQj441/WCeB2QsyEYu+WSx/dn4DCl2okweVrpkW3+kFn1yXQUjnZuvXkuZWc9qCYg1YIXihjoA4MGC4fVwTma6OkhDqlOCqJBEnMNBMfRI9JHaQQzg/z9jvt/k9DXeMIICbmAFnRauoXN1o7KtTRYUVc+iBP6Fd035FVhC/PBbWS4d5+QL7wvGk6j4InE2ybnG2ePF5NbDDWxDDd7l6nsshN5pWcSEWsdXf2J8X1FeHcSO16X5b+vZHiptpdLJld56ghkIGPfTNOv4wsocU6rH262XzDdUG7D/THRJDQyfCATV2aME82XVntyQlRbp9iTfBgWiccKGDkLNFl8vYhAxH1XbLV6lAOyT0ZVRhxtQroos03G8w04i4akw7ewk3YwlQx+WxmD6wmITSc1lNiFCDzps/kPMf2+02t6/pQl+coSjyWx8wRGq1Z+rrQCYNUCzu7v1N5z29knwY367Wniz9sYZR7c="
+  dry-run: false
+- provider: bintray
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $TRAVIS_OS_NAME = linux && $CC = gcc
+  file: travis_bintray_ubu.json
   user: igagis
   key:
     secure: "O+G/Mak4SwnlJW0+ty3zA3zTA1Ua2AT2O/zCH7Lfp+OuWeZ8ocbp6MnYHuSL7jpUc8INObrP9B3ZPQxT8bTGmN0BK+DaKnxPwqCU7Z65UtJGBWV2fgw0AYnUSe78pefzO2il0lD9sX1g10riilFApRQ8lHlnMJra/FKgZ6ohsMExHtCnFE9jdrVhEe/tY8Y5m0qySJVbVyVXwReQj441/WCeB2QsyEYu+WSx/dn4DCl2okweVrpkW3+kFn1yXQUjnZuvXkuZWc9qCYg1YIXihjoA4MGC4fVwTma6OkhDqlOCqJBEnMNBMfRI9JHaQQzg/z9jvt/k9DXeMIICbmAFnRauoXN1o7KtTRYUVc+iBP6Fd035FVhC/PBbWS4d5+QL7wvGk6j4InE2ybnG2ePF5NbDDWxDDd7l6nsshN5pWcSEWsdXf2J8X1FeHcSO16X5b+vZHiptpdLJld56ghkIGPfTNOv4wsocU6rH262XzDdUG7D/THRJDQyfCATV2aME82XVntyQlRbp9iTfBgWiccKGDkLNFl8vYhAxH1XbLV6lAOyT0ZVRhxtQroos03G8w04i4akw7ewk3YwlQx+WxmD6wmITSc1lNiFCDzps/kPMf2+02t6/pQl+coSjyWx8wRGq1Z+rrQCYNUCzu7v1N5z29knwY367Wniz9sYZR7c="

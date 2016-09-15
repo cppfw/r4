@@ -1,5 +1,5 @@
 Source: libkolme
-Section: misc
+Section: libs
 Priority: extra
 Maintainer: Ivan Gagis <igagis@gmail.com>
 Build-Depends: debhelper (>= 9), prorab,
@@ -9,7 +9,7 @@ Standards-Version: 3.9.2
 
 
 Package: libkolme-dev
-Section: devel
+Section: libdevel
 Architecture: all
 Depends: ${misc:Depends},
 		libutki-dev
@@ -18,7 +18,7 @@ Description: cross-platform C++ 3d math library.
  3d math library.
 
 Package: libkolme-doc
-Section: devel
+Section: doc
 Architecture: all
 Depends: ${misc:Depends}
 Description: documentation for libkolme - cross-platform C++ 3d math library.
