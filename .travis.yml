@@ -84,11 +84,11 @@ before_script:
     fi
 
 script:
-- if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+- if [ "$BUILD_NAME" == "debian" ]; then
     prorab-deb-prepare.sh &&
     dpkg-buildpackage -us -uc;
   fi
-- if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+- if [ "$BUILD_NAME" == "macosx" ]; then
     make &&
     
     xcodebuild -workspace ios/tests.xcworkspace -scheme tests CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO;
@@ -98,7 +98,6 @@ script:
     prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` android/*.pom.in &&
     prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` android/*.aar.in --filename-only;
   fi
-- echo "DONE!!!!"
 
 before_deploy:
   - prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` travis_bintray_*.json.in
