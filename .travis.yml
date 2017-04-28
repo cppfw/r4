@@ -98,6 +98,7 @@ script:
     prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` android/*.pom.in &&
     prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` android/*.aar.in --filename-only;
   fi
+- echo "DONE!!!!"
 
 before_deploy:
   - prorab-apply-version.sh -v `prorab-deb-version.sh debian/changelog` travis_bintray_*.json.in
