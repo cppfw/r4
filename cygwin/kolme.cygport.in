@@ -1,0 +1,28 @@
+NAME="kolme"
+VERSION=$(version)
+RELEASE=1
+
+CATEGORY="Devel"
+SUMMARY="C++ 3d math library"
+DESCRIPTION="C++ 3d math library.
+3d math library."
+
+SRC_URI="https://github.com/igagis/kolme/archive/${VERSION}.tar.gz"
+
+#compile time dependencies
+DEPEND="prorab utki"
+
+REQUIRES="utki"
+
+src_compile() {
+  cd ${B}
+  lndirs
+  cygmake
+}
+
+src_install() {
+  cd ${B}
+  cyginstall -C src PREFIX=/usr
+}
+
+# use the standard src_test
