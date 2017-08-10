@@ -1,7 +1,3 @@
-/**
- * @author Ivan Gagis <igagis@gmail.com>
- */
-
 #pragma once
 
 
@@ -502,10 +498,7 @@ public:
 	};
 };//~class
 
-
-
-}//~namespace
-
+}
 
 
 #include "Vector2.hpp"
@@ -646,4 +639,4 @@ typedef Matrix4<double> Matr4d;
 static_assert(sizeof(Matr4d) == sizeof(double) * 4 * 4, "size mismatch");
 
 
-}//~namespace
+}
