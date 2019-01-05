@@ -1,28 +1,43 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkolme", "libkolme\libkolme.vcxproj", "{90344592-5BE0-43E3-BD74-46E969441F7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
+		v140_Debug|x64 = v140_Debug|x64
+		v140_Debug|x86 = v140_Debug|x86
+		v140_Release|x64 = v140_Release|x64
+		v140_Release|x86 = v140_Release|x86
+		v141_Debug|x64 = v141_Debug|x64
+		v141_Debug|x86 = v141_Debug|x86
+		v141_Release|x64 = v141_Release|x64
+		v141_Release|x86 = v141_Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Debug|x64.ActiveCfg = Debug|x64
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Debug|x64.Build.0 = Debug|x64
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Debug|x86.ActiveCfg = Debug|Win32
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Debug|x86.Build.0 = Debug|Win32
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Release|x64.ActiveCfg = Release|x64
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Release|x64.Build.0 = Release|x64
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Release|x86.ActiveCfg = Release|Win32
-		{90344592-5BE0-43E3-BD74-46E969441F7E}.Release|x86.Build.0 = Release|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Debug|x64.ActiveCfg = v140_Debug|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Debug|x64.Build.0 = v140_Debug|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Debug|x86.ActiveCfg = v140_Debug|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Debug|x86.Build.0 = v140_Debug|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Release|x64.ActiveCfg = v140_Release|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Release|x64.Build.0 = v140_Release|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Release|x86.ActiveCfg = v140_Release|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v140_Release|x86.Build.0 = v140_Release|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Debug|x64.ActiveCfg = v141_Debug|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Debug|x64.Build.0 = v141_Debug|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Debug|x86.ActiveCfg = v141_Debug|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Debug|x86.Build.0 = v141_Debug|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Release|x64.ActiveCfg = v141_Release|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Release|x64.Build.0 = v141_Release|x64
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Release|x86.ActiveCfg = v141_Release|Win32
+		{90344592-5BE0-43E3-BD74-46E969441F7E}.v141_Release|x86.Build.0 = v141_Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2EAEE4FB-9688-41BA-95E5-C0C961C76728}
 	EndGlobalSection
 EndGlobal
