@@ -1,3 +1,11 @@
+configurations {
+        UserPlatformToolset {
+                // Needed because autopackage lacks VS2015+ support
+                key = "PlatformToolset";
+                choices: "v140,v141";
+        };
+}
+
 nuget{
 	nuspec{
 		id = libkolme;
@@ -28,16 +36,36 @@ nuget{
 			"..\src\kolme\**\*.hpp"
 		};
 		
-		[x86,release] {
-		}
+		[x86,v140,release] {
+//                        lib: ..\msvs_solution\v140_Release\libkolme.lib;
+                }
 
-		[x86,debug] {
-		}
+                [x86,v140,debug] {
+//                        lib: ..\msvs_solution\v140_Debug\libkolme.lib;
+                }
 
-		[x64,release] {
-		}
+                [x64,v140,release] {
+//                        lib: ..\msvs_solution\x64\v140_Release\libkolme.lib;
+                }
 
-		[x64,debug] {
-		}  
+                [x64,v140,debug] {
+//                        lib: ..\msvs_solution\x64\v140_Debug\libkolme.lib;
+                }
+
+                [x86,v141,release] {
+//                        lib: ..\msvs_solution\v141_Release\libkolme.lib;
+                }
+
+                [x86,v141,debug] {
+//                        lib: ..\msvs_solution\v141_Debug\libkolme.lib;
+                }
+
+                [x64,v141,release] {
+//                        lib: ..\msvs_solution\x64\v141_Release\libkolme.lib;
+                }
+
+                [x64,v141,debug] {
+//                        lib: ..\msvs_solution\x64\v141_Debug\libkolme.lib;
+                }
 	}
 }
