@@ -1,3 +1,9 @@
+libkolme (1.0.14) unstable; urgency=medium
+
+  * deploy to bionic
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 15 Apr 2019 22:32:07 +0300
+
 libkolme (1.0.13) unstable; urgency=medium
 
   * msys deployment
