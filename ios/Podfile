@@ -1,7 +1,0 @@
-project 'tests.xcodeproj'
-
-source 'https://github.com/igagis/cocoapods-repo.git'
-
-target "tests" do
-	pod 'libutki', '>= 1.0.21'
-end
