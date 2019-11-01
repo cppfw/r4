@@ -1,88 +1,88 @@
-libkolme (1.0.14) unstable; urgency=medium
+libr4 (1.0.14) unstable; urgency=medium
 
   * deploy to bionic
 
  -- Ivan Gagis <igagis@gmail.com>  Mon, 15 Apr 2019 22:32:07 +0300
 
-libkolme (1.0.13) unstable; urgency=medium
+libr4 (1.0.13) unstable; urgency=medium
 
   * msys deployment
 
  -- Ivan Gagis <igagis@gmail.com>  Sat, 05 Jan 2019 16:46:14 +0200
 
-libkolme (1.0.12) unstable; urgency=medium
+libr4 (1.0.12) unstable; urgency=medium
 
   * updating git access token
 
  -- Ivan Gagis <igagis@gmail.com>  Wed, 10 May 2017 13:00:15 +0300
 
-libkolme (1.0.11) unstable; urgency=medium
+libr4 (1.0.11) unstable; urgency=medium
 
   * deploy to cygwin
 
  -- Ivan Gagis <igagis@gmail.com>  Wed, 10 May 2017 11:54:45 +0300
 
-libkolme (1.0.10) unstable; urgency=medium
+libr4 (1.0.10) unstable; urgency=medium
 
   * deploy to android
 
  -- Ivan Gagis <igagis@gmail.com>  Fri, 28 Apr 2017 15:46:29 +0300
 
-libkolme (1.0.9) unstable; urgency=medium
+libr4 (1.0.9) unstable; urgency=medium
 
   * deploy to android
 
  -- Ivan Gagis <igagis@gmail.com>  Fri, 28 Apr 2017 14:28:37 +0300
 
-libkolme (1.0.8) unstable; urgency=medium
+libr4 (1.0.8) unstable; urgency=medium
 
   * deploy to debian, ubuntu, raspberry
 
  -- Ivan Gagis <igagis@gmail.com>  Fri, 16 Sep 2016 00:55:33 +0300
 
-libkolme (1.0.7) unstable; urgency=medium
+libr4 (1.0.7) unstable; urgency=medium
 
   * deploy to rasp
 
  -- Ivan Gagis <igagis@gmail.com>  Fri, 02 Sep 2016 11:35:21 +0300
 
-libkolme (1.0.6) unstable; urgency=medium
+libr4 (1.0.6) unstable; urgency=medium
 
   * bintray version fix
 
  -- Ivan Gagis <igagis@gmail.com>  Wed, 29 Jun 2016 18:08:19 +0300
 
-libkolme (1.0.5) stable; urgency=medium
+libr4 (1.0.5) stable; urgency=medium
 
   * Rectangle::leftTop() and Rectangle::rightBottom() methods added
 
  -- Ivan Gagis <igagis@gmail.com>  Mon, 30 May 2016 16:45:03 +0300
 
-libkolme (1.0.4) stable; urgency=medium
+libr4 (1.0.4) stable; urgency=medium
 
   * nuget fix
 
  -- Ivan Gagis <igagis@gmail.com>  Tue, 16 Feb 2016 17:19:40 +0200
 
-libkolme (1.0.3) stable; urgency=medium
+libr4 (1.0.3) stable; urgency=medium
 
   * homebrew do not remove tests, as there are no tests
 
  -- Ivan Gagis <igagis@gmail.com>  Tue, 02 Feb 2016 22:50:33 +0200
 
-libkolme (1.0.2) stable; urgency=medium
+libr4 (1.0.2) stable; urgency=medium
 
   * homebrew do not install tests
 
  -- Ivan Gagis <igagis@gmail.com>  Tue, 02 Feb 2016 22:50:33 +0200
 
-libkolme (1.0.1-1) stable; urgency=medium
+libr4 (1.0.1-1) stable; urgency=medium
 
   * updating for ci
 
  -- Ivan Gagis <igagis@gmail.com>  Fri, 06 Nov 2015 18:36:33 +0200
 
-libkolme (1.0.0-1) stable; urgency=low
+libr4 (1.0.0-1) stable; urgency=low
 
   * Initial release
 
