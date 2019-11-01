@@ -44,7 +44,7 @@ repositories {
     }
 }
 dependencies {
-    implementation project(path: ':libkolme', configuration: 'default')
+    implementation project(path: ':r4', configuration: 'default')
 }
 
 

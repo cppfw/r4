@@ -17,7 +17,7 @@ else
 	exit 1
 fi
 
-packageName=kolme
+packageName=r4
 
 pkgname="${pkgPrefix}${packageName}"
 pkgver=$(version)

@@ -1,4 +1,4 @@
-NAME="kolme"
+NAME="r4"
 VERSION=$(version)
 RELEASE=1
 
@@ -7,7 +7,7 @@ SUMMARY="C++ 3d math library"
 DESCRIPTION="C++ 3d math library.
 3d math library."
 
-SRC_URI="https://github.com/igagis/kolme/archive/${VERSION}.tar.gz"
+SRC_URI="https://github.com/igagis/r4/archive/${VERSION}.tar.gz"
 
 #compile time dependencies
 DEPEND="prorab utki"

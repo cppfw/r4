@@ -1,4 +1,4 @@
-Source: libkolme
+Source: libr4
 Section: libs
 Priority: extra
 Maintainer: Ivan Gagis <igagis@gmail.com>
@@ -8,7 +8,7 @@ Build-Depends-Indep: doxygen
 Standards-Version: 3.9.2
 
 
-Package: libkolme-dev
+Package: libr4-dev
 Section: libdevel
 Architecture: all
 Depends: ${misc:Depends},
@@ -17,9 +17,9 @@ Suggests: libutki-doc
 Description: cross-platform C++ 3d math library.
  3d math library.
 
-Package: libkolme-doc
+Package: libr4-doc
 Section: doc
 Architecture: all
 Depends: ${misc:Depends}
-Description: documentation for libkolme - cross-platform C++ 3d math library.
- For more details see description to libkolme-dev package.
+Description: documentation for libr4 - cross-platform C++ 3d math library.
+ For more details see description to libr4-dev package.

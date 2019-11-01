@@ -8,64 +8,64 @@ configurations {
 
 nuget{
 	nuspec{
-		id = libkolme;
+		id = r4;
 		version : $(version);
 		title: C++ 3d math library;
 		authors: {Ivan Gagis};
 		owners: {Ivan Gagis};
-		licenseUrl: "https://raw.githubusercontent.com/igagis/kolme/master/LICENSE";
-		projectUrl: "https://github.com/igagis/kolme";
-		iconUrl: "https://github.com/igagis/kolme/blob/master/logo.svg";
+		licenseUrl: "https://raw.githubusercontent.com/igagis/r4/master/LICENSE";
+		projectUrl: "https://github.com/igagis/r4";
+		iconUrl: "https://github.com/igagis/r4/blob/master/logo.svg";
 		requireLicenseAcceptance:false;
 		summary: C++ 3d math library;
 
 		description: @"C++ 3d math library";
 		releaseNotes: "Initial release";
-		copyright: Copyright 2016 Ivan Gagis;
-		tags: { native};
+		copyright: Copyright 2019 Ivan Gagis;
+		tags: { native };
 	}
 	dependencies {
 		packages : {
-			libutki/1.0.22;
+			libutki/1.0.30;
 		};
 	}
 	files {
 		//this is needed to put headers in the base folder
 		nestedInclude: {
-			#destination = ${d_include}kolme;
-			"..\src\kolme\**\*.hpp"
+			#destination = ${d_include}r4;
+			"..\src\r4\**\*.hpp"
 		};
-		
+
 		[x86,v140,release] {
-//                        lib: ..\msvs_solution\v140_Release\libkolme.lib;
+//                        lib: ..\msvs_solution\v140_Release\r4.lib;
                 }
 
                 [x86,v140,debug] {
-//                        lib: ..\msvs_solution\v140_Debug\libkolme.lib;
+//                        lib: ..\msvs_solution\v140_Debug\r4.lib;
                 }
 
                 [x64,v140,release] {
-//                        lib: ..\msvs_solution\x64\v140_Release\libkolme.lib;
+//                        lib: ..\msvs_solution\x64\v140_Release\r4.lib;
                 }
 
                 [x64,v140,debug] {
-//                        lib: ..\msvs_solution\x64\v140_Debug\libkolme.lib;
+//                        lib: ..\msvs_solution\x64\v140_Debug\r4.lib;
                 }
 
                 [x86,v141,release] {
-//                        lib: ..\msvs_solution\v141_Release\libkolme.lib;
+//                        lib: ..\msvs_solution\v141_Release\r4.lib;
                 }
 
                 [x86,v141,debug] {
-//                        lib: ..\msvs_solution\v141_Debug\libkolme.lib;
+//                        lib: ..\msvs_solution\v141_Debug\r4.lib;
                 }
 
                 [x64,v141,release] {
-//                        lib: ..\msvs_solution\x64\v141_Release\libkolme.lib;
+//                        lib: ..\msvs_solution\x64\v141_Release\r4.lib;
                 }
 
                 [x64,v141,debug] {
-//                        lib: ..\msvs_solution\x64\v141_Debug\libkolme.lib;
+//                        lib: ..\msvs_solution\x64\v141_Debug\r4.lib;
                 }
 	}
 }

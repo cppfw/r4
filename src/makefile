@@ -1,6 +1,6 @@
 include prorab.mk
 
-this_name := kolme
+this_name := r4
 
 this_soname := 0
 
