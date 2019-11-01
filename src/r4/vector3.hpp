@@ -457,11 +457,11 @@ template <class T> vector3<T>& vector3<T>::rotate(const quaternion<T>& q)noexcep
 // Convenient typedefs
 //=====================
 
-typedef vector3<float> Vec3f;
-static_assert(sizeof(Vec3f) == sizeof(float) * 3, "size mismatch");
+typedef vector3<float> vec3f;
+static_assert(sizeof(vec3f) == sizeof(float) * 3, "size mismatch");
 
-typedef vector3<double> Vec3d;
-static_assert(sizeof(Vec3d) == sizeof(double) * 3, "size mismatch");
+typedef vector3<double> vec3d;
+static_assert(sizeof(vec3d) == sizeof(double) * 3, "size mismatch");
 
 
 }//~namespace
