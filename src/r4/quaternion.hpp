@@ -8,20 +8,20 @@
 #include <utki/debug.hpp>
 
 
-namespace kolme{
+namespace r4{
 
 
 
 //forward declarations
-template <class T> class Vector3;
-template <class T> class Matrix4;
+template <class T> class vector3;
+template <class T> class matrix4;
 
 
 
 /**
- * @brief Quaternion template class.
+ * @brief quaternion template class.
  */
-template <typename T> class Quaternion{
+template <typename T> class quaternion{
 public:
 	/**
 	 * @brief x component.
@@ -32,7 +32,7 @@ public:
 	 * @brief y component.
 	 */
 	T y;
-	
+
 	/**
 	 * @brief z component.
 	 */
@@ -52,7 +52,7 @@ public:
 	 * @param z - z component.
 	 * @param w - w component.
 	 */
-	Quaternion(T x, T y, T z, T w)noexcept :
+	quaternion(T x, T y, T z, T w)noexcept :
 			x(x),
 			y(y),
 			z(z),
@@ -69,7 +69,7 @@ public:
 	 * rotation in radians.
 	 * @param rot - vector which defines the rotation.
 	 */
-	Quaternion(const Vector3<T>& rot)noexcept;
+	quaternion(const vector3<T>& rot)noexcept;
 
 
 
@@ -78,7 +78,7 @@ public:
 	 * Note, that it does not initialize quaternion components,
 	 * right after creation the components are undefined.
 	 */
-	Quaternion()noexcept{}
+	quaternion()noexcept{}
 
 
 
@@ -87,8 +87,8 @@ public:
 	 * Note, complex conjugate of quaternion (x, y, z, w) is (-x, -y, -z, w).
 	 * @return quaternion instance which is a complex conjugate of this quaternion.
 	 */
-	Quaternion operator!()const noexcept{
-		return Quaternion(-this->x, -this->y, -this->z, this->w);
+	quaternion operator!()const noexcept{
+		return quaternion(-this->x, -this->y, -this->z, this->w);
 	}
 
 
@@ -99,7 +99,7 @@ public:
      * @param q - quaternion to add to this quaternion.
      * @return Reference to this quaternion object.
      */
-	Quaternion& operator+=(const Quaternion& q)noexcept{
+	quaternion& operator+=(const quaternion& q)noexcept{
 		this->x += q.x;
 		this->y += q.y;
 		this->z += q.z;
@@ -115,8 +115,8 @@ public:
      * @param q - quaternion to add.
      * @return A quaternion object representing sum of quaternions.
      */
-	Quaternion operator+(const Quaternion& q)const noexcept{
-		return (Quaternion(*this) += q);
+	quaternion operator+(const quaternion& q)const noexcept{
+		return (quaternion(*this) += q);
 	}
 
 
@@ -131,7 +131,7 @@ public:
 	 * @param s - scalar value to multiply by.
 	 * @return reference to this quaternion instance.
 	 */
-	Quaternion& operator*=(T s)noexcept{
+	quaternion& operator*=(T s)noexcept{
 		this->x *= s;
 		this->y *= s;
 		this->z *= s;
@@ -146,8 +146,8 @@ public:
 	 * @param s - scalar value to multiply by.
 	 * @return resulting quaternion instance.
 	 */
-	Quaternion operator*(T s)const noexcept{
-		return (Quaternion(*this) *= s);
+	quaternion operator*(T s)const noexcept{
+		return (quaternion(*this) *= s);
 	}
 
 
@@ -158,7 +158,7 @@ public:
 	 * @param s - scalar value to divide by.
 	 * @return reference to this quaternion instance.
 	 */
-	Quaternion& operator/=(T s)noexcept{
+	quaternion& operator/=(T s)noexcept{
 		this->x /= s;
 		this->y /= s;
 		this->z /= s;
@@ -173,8 +173,8 @@ public:
 	 * @param s - scalar value to divide by.
 	 * @return resulting quaternion instance.
 	 */
-	Quaternion operator/(T s)const noexcept{
-		return (Quaternion(*this) /= s);
+	quaternion operator/(T s)const noexcept{
+		return (quaternion(*this) /= s);
 	}
 
 
@@ -186,7 +186,7 @@ public:
 	 * x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2
 	 * @return result of the dot product.
 	 */
-	T operator*(const Quaternion& q)const noexcept{
+	T operator*(const quaternion& q)const noexcept{
 		return this->x * q.x + this->y * q.y + this->z * q.z + this->w * q.w;
 	}
 
@@ -200,7 +200,7 @@ public:
 	 * @param q - quaternion to multiply by.
 	 * @return reference to this quaternion instance.
 	 */
-	Quaternion& operator%=(const Quaternion& q)noexcept{
+	quaternion& operator%=(const quaternion& q)noexcept{
 		T a = (this->w + this->x) * (q.w + q.x);
 		T b = (this->z - this->y) * (q.y - q.z);
 		T c = (this->x - this->w) * (q.y + q.z);
@@ -227,8 +227,8 @@ public:
 	 * @return resulting quaternion instance.
 	 */
 	//multiplication of quaternions
-	Quaternion operator%(const Quaternion& q)const noexcept{
-		return (Quaternion(*this) %= q);
+	quaternion operator%(const quaternion& q)const noexcept{
+		return (quaternion(*this) %= q);
 	}
 
 
@@ -239,7 +239,7 @@ public:
 	 * It is a unit quaternion representing no rotation.
 	 * @return reference to this quaternion instance.
 	 */
-	Quaternion& identity()noexcept{
+	quaternion& identity()noexcept{
 		this->x = T(0);
 		this->y = T(0);
 		this->z = T(0);
@@ -254,7 +254,7 @@ public:
 	 * Note, complex conjugate of quaternion (x, y, z, w) is (-x, -y, -z, w).
 	 * @return reference to this quaternion instance.
 	 */
-	Quaternion& conjugate()noexcept{
+	quaternion& conjugate()noexcept{
 		return (*this = this->operator!());
 	}
 
@@ -265,7 +265,7 @@ public:
 	 * Note, negating quaternion means changing the sign of its every component.
 	 * @return reference to this quaternion instance.
 	 */
-	Quaternion& negate()noexcept{
+	quaternion& negate()noexcept{
 		this->x = -this->x;
 		this->y = -this->y;
 		this->z = -this->z;
@@ -301,7 +301,7 @@ public:
 	 * If it is a quaternion of zero magnitude, then the result is undefined.
 	 * @return reference to this quaternion instance.
 	 */
-	Quaternion& normalize()noexcept{
+	quaternion& normalize()noexcept{
 		return (*this) /= magnitude();
 	}
 
@@ -317,7 +317,7 @@ public:
      * @param angle - rotation angle.
      * @return Reference to this quaternion object.
      */
-	Quaternion& initRot(T axisX, T axisY, T axisZ, T angle)noexcept{
+	quaternion& initRot(T axisX, T axisY, T axisZ, T angle)noexcept{
 		T sina2 = std::sin(angle / 2);
 		this->w = std::cos(angle / 2);
 		this->x = axisX * sina2;
@@ -325,9 +325,9 @@ public:
 		this->z = axisZ * sina2;
 		return *this;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * @brief Initialize rotation.
 	 * Initializes this quaternion to a unit quaternion defining a rotation.
@@ -336,10 +336,10 @@ public:
      * @param angle - rotation angle.
      * @return Reference to this quaternion object.
      */
-	Quaternion& initRot(const Vector3<T>& axis, T angle)noexcept;
-	
-	
-	
+	quaternion& initRot(const vector3<T>& axis, T angle)noexcept;
+
+
+
 	/**
 	 * @brief Initialize rotation.
 	 * Initializes this quaternion to a unit quaternion defining a rotation.
@@ -349,7 +349,7 @@ public:
      * @param rot - rotation vector.
      * @return Reference to this quaternion object.
      */
-	Quaternion& initRot(const Vector3<T>& rot)noexcept;
+	quaternion& initRot(const vector3<T>& rot)noexcept;
 
 
 
@@ -359,10 +359,10 @@ public:
 	 * to a rotation matrix.
      * @return Rotation matrix.
      */
-	Matrix4<T> toMatrix4()const noexcept;
+	matrix4<T> tomatrix4()const noexcept;
 
 
-	
+
 	/**
 	 * @brief Spherical linear interpolation.
 	 * Calculates spherical linear interpolation (SLERP) between two quaternions,
@@ -370,18 +370,18 @@ public:
 	 * The result of SLERP is quaternion itself.
 	 * SLERP(q1, q2, t) = q1 * sin((1 - t) * alpha) / sin(alpha) + q2 * sin(t * alpha) / sin(alpha),
 	 * where cos(alpha) = (q1, q2) (dot product of unit quaternions q1 and q2).
-	 * Quaternions q1 and q2 are assumed to be unit quaternions and the resulting quaternion is also a unit quaternion.
+	 * quaternions q1 and q2 are assumed to be unit quaternions and the resulting quaternion is also a unit quaternion.
      * @param quat - quaternion to interpolate to.
      * @param t - interpolation parameter, value from [0 : 1].
      * @return Resulting quaternion of SLERP(this, quat, t).
      */
-	Quaternion slerp(const Quaternion& quat, T t)const noexcept{
+	quaternion slerp(const quaternion& quat, T t)const noexcept{
 		//Since quaternions are normalized the cosine of the angle alpha
 		//between quaternions is equal to their dot product.
 		T cosalpha = (*this) * quat;
 
 		T sign;
-		
+
 		//If the dot product is less than 0, the angle alpha between quaternions
 		//is greater than 90 degrees. Then we negate second quaternion to make alpha
 		//to be less than 90 degrees. It is possible since normalized quaternions
@@ -421,7 +421,7 @@ public:
 		return (*this) * sc1 + quat * (sc2 * sign);
 	}
 
-	friend std::ostream& operator<<(std::ostream& s, const Quaternion<T>& quat){
+	friend std::ostream& operator<<(std::ostream& s, const quaternion<T>& quat){
 		s << "(" << quat.x << ", " << quat.y << ", " << quat.z << ", " << quat.w << ")";
 		return s;
 	}
@@ -433,24 +433,24 @@ public:
 
 
 
-#include "Vector3.hpp"
-#include "Matrix4.hpp"
+#include "vector3.hpp"
+#include "matrix4.hpp"
 
 
 
-namespace kolme{
+namespace r4{
 
 //=================================
 // functions implementation
 //=================================
 
-template <class T> Quaternion<T>::Quaternion(const Vector3<T>& rot)noexcept{
+template <class T> quaternion<T>::quaternion(const vector3<T>& rot)noexcept{
 	this->initRot(rot);
 }
 
 
 
-template <class T> Quaternion<T>& Quaternion<T>::initRot(const Vector3<T>& rot)noexcept{
+template <class T> quaternion<T>& quaternion<T>::initRot(const vector3<T>& rot)noexcept{
 	T mag = rot.magnitude();
 	if(mag != 0){
 		this->initRot(rot.x / mag, rot.y / mag, rot.z / mag, mag);
@@ -462,14 +462,14 @@ template <class T> Quaternion<T>& Quaternion<T>::initRot(const Vector3<T>& rot)n
 
 
 
-template <class T> Quaternion<T>& Quaternion<T>::initRot(const Vector3<T>& axis, T angle)noexcept{
+template <class T> quaternion<T>& quaternion<T>::initRot(const vector3<T>& axis, T angle)noexcept{
 	return this->initRot(axis.x, axis.y, axis.z, angle);
 }
 
 
 
-template <class T> Matrix4<T> Quaternion<T>::toMatrix4()const noexcept{
-	return Matrix4<T>(*this);
+template <class T> matrix4<T> quaternion<T>::tomatrix4()const noexcept{
+	return matrix4<T>(*this);
 }
 
 
@@ -478,11 +478,11 @@ template <class T> Matrix4<T> Quaternion<T>::toMatrix4()const noexcept{
 // Convenient typedefs
 //=====================
 
-typedef Quaternion<float> Quatf;
-static_assert(sizeof(Quatf) == sizeof(float) * 4, "size mismatch");
+typedef quaternion<float> quatf;
+static_assert(sizeof(quatf) == sizeof(float) * 4, "size mismatch");
 
-typedef Quaternion<double> Quatd;
-static_assert(sizeof(Quatd) == sizeof(double) * 4, "size mismatch");
+typedef quaternion<double> quatd;
+static_assert(sizeof(quatd) == sizeof(double) * 4, "size mismatch");
 
 
 

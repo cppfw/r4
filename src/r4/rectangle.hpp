@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-#include "Vector2.hpp"
+#include "vector2.hpp"
 
 
 //Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
@@ -17,61 +17,61 @@
 
 
 
-namespace kolme{
+namespace r4{
 
 
 
 /**
  * @brief 2d axis-aligned rectangle class.
  */
-template <class T> class Rectangle{
+template <class T> class rectangle{
 public:
 	typedef T T_Component;
-	
+
 	//TODO: doxygen
-	Vector2<T> p; //Left-Bottom corner
-	
+	vector2<T> p; //Left-Bottom corner
+
 	//TODO: doxygen
-	Vector2<T> d; //dimensions
-	
+	vector2<T> d; //dimensions
+
 	//TODO: doxygen
-	Rectangle()noexcept{}
-	
+	rectangle()noexcept{}
+
 	//TODO: doxygen
-	Rectangle(T value)noexcept :
+	rectangle(T value)noexcept :
 			p(value),
 			d(value)
 	{}
-	
+
 	//TODO: doxygen
-	Rectangle(T left, T bottom, T width, T height)noexcept :
+	rectangle(T left, T bottom, T width, T height)noexcept :
 			p(left, bottom),
 			d(width, height)
 	{}
 
 	//TODO: doxygen
-	Rectangle(Vector2<T> leftBottom, Vector2<T> dimensions)noexcept :
+	rectangle(vector2<T> leftBottom, vector2<T> dimensions)noexcept :
 			p(leftBottom),
 			d(dimensions)
 	{}
-	
-	template <class TT> explicit Rectangle(const Rectangle<TT>& r) :
+
+	template <class TT> explicit rectangle(const rectangle<TT>& r) :
 			p(r.p),
 			d(r.d)
 	{}
-	
+
 	//TODO: doxygen
-	Vector2<T> center()const noexcept{
+	vector2<T> center()const noexcept{
 		return this->p + this->d / 2;
 	}
 
 	//TODO: doxygen
-	void moveCenterTo(const Vector2<T>& vec)noexcept{
+	void moveCenterTo(const vector2<T>& vec)noexcept{
 		this->p = vec - this->d / 2;
 	}
 
 	//TODO: doxygen
-	bool overlaps(const Vector2<T>& vec)const noexcept{
+	bool overlaps(const vector2<T>& vec)const noexcept{
 		return
 				vec.x < this->right() &&
 				vec.x >= this->left() &&
@@ -79,15 +79,15 @@ public:
 				vec.y < this->top()
 			;
 	}
-	
+
 	//TODO: doxygen
 	//Get intersection of two rectangles
-	Rectangle intersection(const Rectangle& rect)const noexcept{
-		return Rectangle(*this).intersect(rect);
+	rectangle intersection(const rectangle& rect)const noexcept{
+		return rectangle(*this).intersect(rect);
 	}
-	
+
 	//TODO: doxygen
-	Rectangle& intersect(const Rectangle& rect)noexcept{
+	rectangle& intersect(const rectangle& rect)noexcept{
 		for(unsigned i = 0; i != 2; ++i){
 			T end = std::min(this->p[i] + this->d[i], rect.p[i] + rect.d[i]);
 			this->p[i] = std::max(this->p[i], rect.p[i]);
@@ -97,17 +97,17 @@ public:
 				this->d[i] = 0;
 			}
 		}
-		
+
 		return *this;
 	}
-	
+
 	//TODO: doxygen
-	Vector2<T> extent()const noexcept{
+	vector2<T> extent()const noexcept{
 		return this->d / 2;
 	}
 
 	//TODO: doxygen
-	Vector2<T> rightTop()const noexcept{
+	vector2<T> rightTop()const noexcept{
 		return this->p + this->d;
 	}
 
@@ -120,10 +120,10 @@ public:
 	const T& left()const noexcept{
 		return this->p.x;
 	}
-	
+
 	//TODO: doxygen
-	Vector2<T> leftTop()const noexcept{
-		return Vector2<T>(this->p.x, this->p.y + this->d.y);
+	vector2<T> leftTop()const noexcept{
+		return vector2<T>(this->p.x, this->p.y + this->d.y);
 	}
 
 	//TODO: doxygen
@@ -135,10 +135,10 @@ public:
 	T right()const noexcept{
 		return this->p.x + this->d.x;
 	}
-	
+
 	//TODO: doxygen
-	Vector2<T> rightBottom()const noexcept{
-		return Vector2<T>(this->p.x + this->d.x, this->p.y);
+	vector2<T> rightBottom()const noexcept{
+		return vector2<T>(this->p.x + this->d.x, this->p.y);
 	}
 
 	//TODO: doxygen
@@ -150,24 +150,24 @@ public:
 	const T& bottom()const noexcept{
 		return this->p.y;
 	}
-	
+
 	//TODO: doxygen
-	bool operator==(const Rectangle& r)const noexcept{
+	bool operator==(const rectangle& r)const noexcept{
 		return this->p == r.p && this->d == r.d;
 	}
-	
+
 	/**
-	 * @brief Convert to Rectangle2 with different type of component.
-	 * Convert this Rectangle2 to a Rectangle2 whose component type is different from T.
+	 * @brief Convert to rectangle2 with different type of component.
+	 * Convert this rectangle2 to a rectangle2 whose component type is different from T.
 	 * Components are converted using constructor of target type passing the source
 	 * component as argument of the target type constructor.
-     * @return converted Vector2.
+     * @return converted vector2.
      */
-	template <class TS> Rectangle<TS> to()const noexcept{
-		return Rectangle<TS>(*this);
+	template <class TS> rectangle<TS> to()const noexcept{
+		return rectangle<TS>(*this);
 	}
-	
-	friend std::ostream& operator<<(std::ostream& s, const Rectangle<T>& rect){
+
+	friend std::ostream& operator<<(std::ostream& s, const rectangle<T>& rect){
 		s << "[" << rect.p << rect.d << "]";
 		return s;
 	}
@@ -179,13 +179,13 @@ public:
 // Convenient typedefs
 //=====================
 
-typedef Rectangle<float> Rectf;
+typedef rectangle<float> rectf;
 
-typedef Rectangle<double> Rectd;
+typedef rectangle<double> rectd;
 
-typedef Rectangle<int> Recti;
+typedef rectangle<int> recti;
 
-typedef Rectangle<unsigned> Rectu;
+typedef rectangle<unsigned> rectu;
 
 
 }//~namespace
