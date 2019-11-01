@@ -61,9 +61,9 @@ public:
 	 * @param column2 - 2nd column of the matrix.
      */
 	matrix3(
-			const Vector4<T>& column0,
-			const Vector4<T>& column1,
-			const Vector4<T>& column2
+			const vector4<T>& column0,
+			const vector4<T>& column1,
+			const vector4<T>& column2
 		)noexcept :
 			c0(column0),
 			c1(column1),
@@ -129,9 +129,9 @@ public:
 
 	/**
 	 * @brief Get matrix row.
-	 * Constructs a Vector4 holding requested row of the matrix.
+	 * Constructs a vector4 holding requested row of the matrix.
 	 * @param rowNum - row number to get, must be from 0 to 3.
-     * @return Vector4 representing the row of this matrix.
+     * @return vector4 representing the row of this matrix.
      */
 	vector3<T> row(unsigned rowNum)const noexcept{
 		ASSERT(rowNum < 3)

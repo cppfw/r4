@@ -482,7 +482,7 @@
     <ClInclude Include="..\..\src\kolme\Rectangle.hpp" />
     <ClInclude Include="..\..\src\kolme\Vector2.hpp" />
     <ClInclude Include="..\..\src\kolme\Vector3.hpp" />
-    <ClInclude Include="..\..\src\kolme\Vector4.hpp" />
+    <ClInclude Include="..\..\src\kolme\vector4.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

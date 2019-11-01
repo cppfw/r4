@@ -6,7 +6,7 @@
 
 #include <utki/debug.hpp>
 
-#include "Vector4.hpp"
+#include "vector4.hpp"
 
 
 
@@ -31,22 +31,22 @@ public:
 	/**
 	 * @brief 0th column of the matrix.
 	 */
-	Vector4<T> c0;
+	vector4<T> c0;
 
 	/**
 	 * @brief 1st column of the matrix.
 	 */
-	Vector4<T> c1;
+	vector4<T> c1;
 
 	/**
 	 * @brief 2nd column of the matrix.
      */
-	Vector4<T> c2;
+	vector4<T> c2;
 
 	/**
 	 * @brief 3rd column of the matrix.
      */
-	Vector4<T> c3;
+	vector4<T> c3;
 
 
 
@@ -68,10 +68,10 @@ public:
 	 * @param column3 - 3rd column of the matrix.
      */
 	matrix4(
-			const Vector4<T>& column0,
-			const Vector4<T>& column1,
-			const Vector4<T>& column2,
-			const Vector4<T>& column3
+			const vector4<T>& column0,
+			const vector4<T>& column1,
+			const vector4<T>& column2,
+			const vector4<T>& column3
 		)noexcept :
 			c0(column0),
 			c1(column1),
@@ -116,7 +116,7 @@ public:
 	 * @param col - column number, must be from 0 to 3.
 	 * @return reference to the matrix column indicated by the argument.
 	 */
-	Vector4<T>& operator[](unsigned col)noexcept{
+	vector4<T>& operator[](unsigned col)noexcept{
 		ASSERT(col < 4)
 		return (&this->c0)[col];
 	}
@@ -127,7 +127,7 @@ public:
 	 * @param col - column number, must be from 0 to 3.
 	 * @return reference to the matrix column indicated by the argument.
 	 */
-	const Vector4<T>& operator[](unsigned col)const noexcept{
+	const vector4<T>& operator[](unsigned col)const noexcept{
 		ASSERT(col < 4)
 		return (&this->c0)[col];
 	}
@@ -159,19 +159,19 @@ public:
 	 * @param vec - vector to transform.
      * @return Transformed vector.
      */
-	Vector4<T> operator*(const Vector4<T>& vec)const noexcept;
+	vector4<T> operator*(const vector4<T>& vec)const noexcept;
 
 
 
 	/**
 	 * @brief Get matrix row.
-	 * Constructs a Vector4 holding requested row of the matrix.
+	 * Constructs a vector4 holding requested row of the matrix.
 	 * @param rowNum - row number to get, must be from 0 to 3.
-     * @return Vector4 representing the row of this matrix.
+     * @return vector4 representing the row of this matrix.
      */
-	Vector4<T> row(unsigned rowNum)const noexcept{
+	vector4<T> row(unsigned rowNum)const noexcept{
 		ASSERT(rowNum < 4)
-		return Vector4<T>(this->c0[rowNum], this->c1[rowNum], this->c2[rowNum], this->c3[rowNum]);
+		return vector4<T>(this->c0[rowNum], this->c1[rowNum], this->c2[rowNum], this->c3[rowNum]);
 	}
 
 
@@ -184,10 +184,10 @@ public:
      */
 	matrix4 operator*(const matrix4& matr)const noexcept{
 		return matrix4(
-				Vector4<T>(this->row(0) * matr[0], this->row(1) * matr[0], this->row(2) * matr[0], this->row(3) * matr[0]),
-				Vector4<T>(this->row(0) * matr[1], this->row(1) * matr[1], this->row(2) * matr[1], this->row(3) * matr[1]),
-				Vector4<T>(this->row(0) * matr[2], this->row(1) * matr[2], this->row(2) * matr[2], this->row(3) * matr[2]),
-				Vector4<T>(this->row(0) * matr[3], this->row(1) * matr[3], this->row(2) * matr[3], this->row(3) * matr[3])
+				vector4<T>(this->row(0) * matr[0], this->row(1) * matr[0], this->row(2) * matr[0], this->row(3) * matr[0]),
+				vector4<T>(this->row(0) * matr[1], this->row(1) * matr[1], this->row(2) * matr[1], this->row(3) * matr[1]),
+				vector4<T>(this->row(0) * matr[2], this->row(1) * matr[2], this->row(2) * matr[2], this->row(3) * matr[2]),
+				vector4<T>(this->row(0) * matr[3], this->row(1) * matr[3], this->row(2) * matr[3], this->row(3) * matr[3])
 			);
 	}
 
@@ -254,10 +254,10 @@ public:
 	 * @brief Initialize this matrix with identity matrix.
 	 */
 	matrix4& identity()noexcept{
-		this->c0 = Vector4<T>(1, 0, 0, 0);
-		this->c1 = Vector4<T>(0, 1, 0, 0);
-		this->c2 = Vector4<T>(0, 0, 1, 0);
-		this->c3 = Vector4<T>(0, 0, 0, 1);
+		this->c0 = vector4<T>(1, 0, 0, 0);
+		this->c1 = vector4<T>(0, 1, 0, 0);
+		this->c2 = vector4<T>(0, 0, 1, 0);
+		this->c3 = vector4<T>(0, 0, 0, 1);
 		return (*this);
 	}
 
@@ -532,8 +532,8 @@ template <class T> vector3<T> matrix4<T>::operator*(const vector3<T>& vec)const 
 
 
 
-template <class T> Vector4<T> matrix4<T>::operator*(const Vector4<T>& vec)const noexcept{
-	return Vector4<T>(
+template <class T> vector4<T> matrix4<T>::operator*(const vector4<T>& vec)const noexcept{
+	return vector4<T>(
 			this->row(0) * vec,
 			this->row(1) * vec,
 			this->row(2) * vec,
