@@ -1,3 +1,9 @@
+libr4 (1.0.16) unstable; urgency=medium
+
+  * Vector4 renamed to vector4
+
+ -- Ivan Gagis <igagis@gmail.com>  Fri, 01 Nov 2019 22:32:05 +0200
+
 libr4 (1.0.15) unstable; urgency=medium
 
   * first release after renaming to r4
