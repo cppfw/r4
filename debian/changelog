@@ -1,3 +1,9 @@
+libr4 (1.0.18) unstable; urgency=medium
+
+  * debian buster
+
+ -- Ivan Gagis <igagis@gmail.com>  Fri, 29 Nov 2019 14:15:30 +0200
+
 libr4 (1.0.17) unstable; urgency=medium
 
   * typedefs naming corrected
