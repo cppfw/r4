@@ -264,7 +264,7 @@ public:
      * @param vec - vector to multiply by.
      * @return Vector resulting from component-wise multiplication.
      */
-	vector2 comp_mul(const vector2& vec)const noexcept{
+	vector2 comp_multiplied(const vector2& vec)const noexcept{
 		return vector2(
 				this->x * vec.x,
 				this->y * vec.y
@@ -278,7 +278,7 @@ public:
      * @param vec - vector to multiply by.
      * @return reference to this vector2 instance.
      */
-	vector2& comp_mul_assign(const vector2& vec)noexcept{
+	vector2& comp_multiply(const vector2& vec)noexcept{
 		this->x *= vec.x;
 		this->y *= vec.y;
 		return *this;
@@ -292,7 +292,7 @@ public:
      * @param v - vector to divide by.
      * @return Vector resulting from component-wise division.
      */
-	vector2 comp_div(const vector2& v)const noexcept{
+	vector2 comp_divided(const vector2& v)const noexcept{
 		return vector2(
 				this->x / v.x,
 				this->y / v.y
@@ -306,7 +306,7 @@ public:
      * @param v - vector to divide by.
      * @return reference to this vector2 instance.
      */
-	vector2& comp_div_assign(const vector2& v)noexcept{
+	vector2& comp_divide(const vector2& v)noexcept{
 		this->x /= v.x;
 		this->y /= v.y;
 		return *this;
@@ -353,7 +353,7 @@ public:
      * @return Reference to this vector object.
      */
 	vector2& negate()noexcept{
-		//NOTE: this should be faster than (*this) = -(*this);
+		// NOTE: this should be faster than (*this) = -(*this);
 		this->x = -this->x;
 		this->y = -this->y;
 		return (*this);

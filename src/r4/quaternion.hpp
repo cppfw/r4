@@ -265,7 +265,7 @@ public:
      * @param angle - rotation angle.
      * @return Reference to this quaternion object.
      */
-	quaternion& set_rotation(T axisX, T axisY, T axisZ, T angle)noexcept{
+	quaternion& rotation(T axisX, T axisY, T axisZ, T angle)noexcept{
 		T sina2 = std::sin(angle / 2);
 		this->w = std::cos(angle / 2);
 		this->x = axisX * sina2;
@@ -282,7 +282,7 @@ public:
      * @param angle - rotation angle.
      * @return Reference to this quaternion object.
      */
-	quaternion& set_rotation(const vector3<T>& axis, T angle)noexcept;
+	quaternion& rotation(const vector3<T>& axis, T angle)noexcept;
 
 	/**
 	 * @brief Initialize rotation.
@@ -293,7 +293,7 @@ public:
      * @param rot - rotation vector.
      * @return Reference to this quaternion object.
      */
-	quaternion& set_rotation(const vector3<T>& rot)noexcept;
+	quaternion& rotation(const vector3<T>& rot)noexcept;
 
 	/**
 	 * @brief Convert this quaternion to 4x4 matrix.
@@ -375,21 +375,21 @@ public:
 namespace r4{
 
 template <class T> quaternion<T>::quaternion(const vector3<T>& rot)noexcept{
-	this->set_rotation(rot);
+	this->rotation(rot);
 }
 
-template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector3<T>& rot)noexcept{
+template <class T> quaternion<T>& quaternion<T>::rotation(const vector3<T>& rot)noexcept{
 	T mag = rot.norm();
 	if(mag != 0){
-		this->set_rotation(rot.x / mag, rot.y / mag, rot.z / mag, mag);
+		this->rotation(rot.x / mag, rot.y / mag, rot.z / mag, mag);
 	}else{
 		this->identity();
 	}
 	return *this;
 }
 
-template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector3<T>& axis, T angle)noexcept{
-	return this->set_rotation(axis.x, axis.y, axis.z, angle);
+template <class T> quaternion<T>& quaternion<T>::rotation(const vector3<T>& axis, T angle)noexcept{
+	return this->rotation(axis.x, axis.y, axis.z, angle);
 }
 
 template <class T> matrix4<T> quaternion<T>::to_matrix4()const noexcept{
