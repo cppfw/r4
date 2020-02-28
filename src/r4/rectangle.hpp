@@ -6,8 +6,7 @@
 
 #include "vector2.hpp"
 
-
-//Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
+// Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
 #ifdef min
 #	undef min
 #endif
@@ -15,11 +14,7 @@
 #	undef max
 #endif
 
-
-
 namespace r4{
-
-
 
 /**
  * @brief 2d axis-aligned rectangle class.
@@ -66,7 +61,7 @@ public:
 	}
 
 	//TODO: doxygen
-	void moveCenterTo(const vector2<T>& vec)noexcept{
+	void move_center_to(const vector2<T>& vec)noexcept{
 		this->p = vec - this->d / 2;
 	}
 
@@ -81,7 +76,7 @@ public:
 	}
 
 	//TODO: doxygen
-	//Get intersection of two rectangles
+	// get intersection of two rectangles
 	rectangle intersection(const rectangle& rect)const noexcept{
 		return rectangle(*this).intersect(rect);
 	}
@@ -107,7 +102,7 @@ public:
 	}
 
 	//TODO: doxygen
-	vector2<T> rightTop()const noexcept{
+	vector2<T> right_top()const noexcept{
 		return this->p + this->d;
 	}
 
@@ -122,7 +117,7 @@ public:
 	}
 
 	//TODO: doxygen
-	vector2<T> leftTop()const noexcept{
+	vector2<T> left_top()const noexcept{
 		return vector2<T>(this->p.x, this->p.y + this->d.y);
 	}
 
@@ -137,7 +132,7 @@ public:
 	}
 
 	//TODO: doxygen
-	vector2<T> rightBottom()const noexcept{
+	vector2<T> right_bottom()const noexcept{
 		return vector2<T>(this->p.x + this->d.x, this->p.y);
 	}
 
@@ -173,12 +168,6 @@ public:
 	}
 };
 
-
-
-//=====================
-// Convenient typedefs
-//=====================
-
 typedef rectangle<float> rectf;
 
 typedef rectangle<double> rectd;
@@ -187,5 +176,4 @@ typedef rectangle<int> recti;
 
 typedef rectangle<unsigned> rectu;
 
-
-}//~namespace
+}
