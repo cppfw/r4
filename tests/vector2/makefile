@@ -6,7 +6,7 @@ this_out_dir := build
 
 this_srcs := main.cpp
 
-this_cxxflags += 
+this_cxxflags += -std=c++14
 
 this_ldlibs += -lstdc++
 
