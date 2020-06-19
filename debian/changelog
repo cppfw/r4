@@ -1,3 +1,9 @@
+libr4 (1.0.20) unstable; urgency=medium
+
+  * use android native bundle plugin
+
+ -- Ivan Gagis <igagis@gmail.com>  Fri, 19 Jun 2020 16:23:56 +0300
+
 libr4 (1.0.19) unstable; urgency=medium
 
   * naming convention changed
