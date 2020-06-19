@@ -10,26 +10,24 @@ cmake_minimum_required(VERSION 3.4.1)
 # and CMake builds them for you. When you build your app, Gradle
 # automatically packages shared libraries with your APK.
 
-set(name kolme)
+set(name r4)
 
 file(GLOB_RECURSE srcs "../../src/*.cpp")
 
-link_directories( build/ndkLibs/${ANDROID_ABI}/ )
+include (${ANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK})
 
-#add_library( # Specifies the name of the library.
-#             ${name}
+#add_library(
+#        # Specifies the name of the library.
+#        ${name}
 #
-#             # Sets the library as a shared library.
-#             STATIC
+#        # Sets the library as a shared library.
+#        STATIC
 #
-#             # Provides a relative path to your source file(s).
-#             ${srcs} )
-#
-#
-#
-#include_directories( build/ndkLibs/include/ )
-#
+#        # Provides a relative path to your source file(s).
+#        ${srcs}
+#    )
+
 #target_link_libraries(
 #        ${name}
-#        android log
+#        android log ${ANDROID_GRADLE_NATIVE_MODULES}
 #    )
