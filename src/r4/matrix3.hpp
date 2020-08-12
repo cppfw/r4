@@ -253,11 +253,11 @@ public:
 	 */
 	matrix3& rotate(T rot)noexcept;
 
-	friend std::ostream& operator<<(std::ostream& s, const matrix4<T>& mat){
+	friend std::ostream& operator<<(std::ostream& s, const matrix3<T>& mat){
 		s << "\n";
-		s << "\t/" << mat[0][0] << " " << mat[1][0] << " " << mat[2][0] << " " << "\\" << std::endl;
-		s << "\t|" << mat[0][1] << " " << mat[1][1] << " " << mat[2][1] << " " << "|" << std::endl;
-		s << "\t\\" << mat[0][2] << " " << mat[1][2] << " " << mat[2][2] << " " << "/";
+		s << "\t/" << mat[0][0] << " " << mat[1][0] << " " << mat[2][0] << "\\" << std::endl;
+		s << "\t|" << mat[0][1] << " " << mat[1][1] << " " << mat[2][1] << "|" << std::endl;
+		s << "\t\\" << mat[0][2] << " " << mat[1][2] << " " << mat[2][2] << "/";
 		return s;
 	};
 };
