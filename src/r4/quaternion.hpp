@@ -381,7 +381,7 @@ template <class T> quaternion<T>::quaternion(const vector3<T>& rot)noexcept{
 template <class T> quaternion<T>& quaternion<T>::rotation(const vector3<T>& rot)noexcept{
 	T mag = rot.norm();
 	if(mag != 0){
-		this->rotation(rot.x / mag, rot.y / mag, rot.z / mag, mag);
+		this->rotation(rot.x() / mag, rot.y() / mag, rot.z() / mag, mag);
 	}else{
 		this->identity();
 	}

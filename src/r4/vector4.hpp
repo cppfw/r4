@@ -25,9 +25,23 @@ public:
 	}
 
 	/**
+	 * @brief First vector component.
+	 */
+	const T& x()const noexcept{
+		return this->operator[](0);
+	}
+
+	/**
 	 * @brief Second vector component.
 	 */
 	T& y()noexcept{
+		return this->operator[](1);
+	}
+
+	/**
+	 * @brief Second vector component.
+	 */
+	const T& y()const noexcept{
 		return this->operator[](1);
 	}
 
@@ -39,9 +53,23 @@ public:
 	}
 
 	/**
+	 * @brief Third vector component.
+     */
+	const T& z()const noexcept{
+		return this->operator[](2);
+	}
+
+	/**
 	 * @brief Fourth vector component.
      */
 	T& w()noexcept{
+		return this->operator[](3);
+	}
+
+	/**
+	 * @brief Fourth vector component.
+     */
+	const T& w()const noexcept{
 		return this->operator[](3);
 	}
 
@@ -290,10 +318,10 @@ public:
      * @return Dot product of this vector and given vector.
      */
 	T operator*(const vector4& vec)const noexcept{
-		return this->x * vec.x
-				+ this->y * vec.y
-				+ this->z * vec.z
-				+ this->w * vec.w;
+		return this->x() * vec.x()
+				+ this->y() * vec.y()
+				+ this->z() * vec.z()
+				+ this->w() * vec.w();
 	}
 
 	/**
@@ -382,7 +410,7 @@ template <class T> vector4<T>::vector4(const vector2<T>& vec, T z, T w)noexcept 
 {}
 
 template <class T> vector4<T>::vector4(const vector3<T>& vec, T w)noexcept :
-		vector4(vec.x, vec.y, vec.z, w)
+		vector4(vec.x(), vec.y(), vec.z(), w)
 {}
 
 template <class T> vector4<T>& vector4<T>::operator=(const vector3<T>& vec)noexcept{

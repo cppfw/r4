@@ -65,7 +65,7 @@ public:
 	 * @brief Default constructor.
 	 * Default constructor does not initialize vector components to any values.
 	 */
-	vector3() = default;
+	constexpr vector3() = default;
 
 	/**
 	 * @brief Constructor.
@@ -74,8 +74,18 @@ public:
 	 * @param y - value for second vector component.
 	 * @param z - value for third vector component.
 	 */
-	vector3(T x, T y, T z)noexcept :
+	constexpr vector3(T x, T y, T z)noexcept :
 			std::array<T, 3>{{x, y, z}}
+	{}
+
+	/**
+	 * @brief Constructor.
+	 * Initialize X and Y vector components to given values, the Z component is set to 0.
+	 * @param x - value for first vector component.
+	 * @param y - value for second vector component.
+	 */
+	constexpr vector3(T x, T y)noexcept :
+			vector3(x, y, 0)
 	{}
 
 	/**
@@ -83,7 +93,7 @@ public:
 	 * Initializes all vector components to a given value.
 	 * @param num - value to initialize all vector components with.
 	 */
-	vector3(T num)noexcept :
+	constexpr vector3(T num)noexcept :
 			vector3{num, num, num}
 	{}
 
@@ -133,10 +143,10 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector3& operator=(T num)noexcept{
-		this->x = num;
-		this->y = num;
-		this->z = num;
-		return (*this);
+		this->x() = num;
+		this->y() = num;
+		this->z() = num;
+		return *this;
 	}
 
 	/**
@@ -145,10 +155,10 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector3& set(T val)noexcept{
-		this->x = val;
-		this->y = val;
-		this->z = val;
-		return (*this);
+		this->x() = val;
+		this->y() = val;
+		this->z() = val;
+		return *this;
 	}
 
 	/**
@@ -167,10 +177,10 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector3& operator+=(const vector3& vec)noexcept{
-		this->x += vec.x;
-		this->y += vec.y;
-		this->z += vec.z;
-		return (*this);
+		this->x() += vec.x();
+		this->y() += vec.y();
+		this->z() += vec.z();
+		return *this;
 	}
 
 	/**
@@ -190,9 +200,9 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector3& operator-=(const vector3& vec)noexcept{
-		this->x -= vec.x;
-		this->y -= vec.y;
-		this->z -= vec.z;
+		this->x() -= vec.x();
+		this->y() -= vec.y();
+		this->z() -= vec.z();
 		return *this;
 	}
 
@@ -221,10 +231,10 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector3& operator*=(T num)noexcept{
-		this->x *= num;
-		this->y *= num;
-		this->z *= num;
-		return (*this);
+		this->x() *= num;
+		this->y() *= num;
+		this->z() *= num;
+		return *this;
 	}
 
 	/**
@@ -255,10 +265,10 @@ public:
 	 */
 	vector3& operator/=(T num)noexcept{
 		ASSERT(num != 0)
-		this->x /= num;
-		this->y /= num;
-		this->z /= num;
-		return (*this);
+		this->x() /= num;
+		this->y() /= num;
+		this->z() /= num;
+		return *this;
 	}
 
 	/**
@@ -291,11 +301,25 @@ public:
 	 * @return Vector resulting from component-wise multiplication.
 	 */
 	vector3 comp_mul(const vector3& vec)const noexcept{
-		return vector3(
-				this->x * vec.x,
-				this->y * vec.y,
-				this->z * vec.z
-			);
+		return vector3{
+				this->x() * vec.x(),
+				this->y() * vec.y(),
+				this->z() * vec.z()
+			};
+	}
+
+	/**
+	 * @brief Component-wise multiplication.
+	 * Performs component-wise multiplication of this vector by given vector.
+	 * The result of such operation is also a vector and is stored in this vector.
+	 * @param vec - vector to multiply by.
+	 * @return reference to this vector.
+	 */
+	vector3& comp_multiply(const vector3& vec)noexcept{
+		this->x() *= vec.x();
+		this->y() *= vec.y();
+		this->z() *= vec.z();
+		return *this;
 	}
 
 	/**
@@ -304,11 +328,11 @@ public:
 	 * @return Vector resulting from the cross product.
 	 */
 	vector3 operator%(const vector3& vec)const noexcept{
-		return vector3(
-				this->y * vec.z - this->z * vec.y,
-				this->z * vec.x - this->x * vec.z,
-				this->x * vec.y - this->y * vec.x
-			);
+		return vector3{
+				this->y() * vec.z() - this->z() * vec.y(),
+				this->z() * vec.x() - this->x() * vec.z(),
+				this->x() * vec.y() - this->y() * vec.x()
+			};
 	}
 
 	/**
@@ -317,7 +341,7 @@ public:
 	 * @return false otherwise.
 	 */
 	bool is_zero()const noexcept{
-		return (this->x == 0 && this->y == 0 && this->z == 0);
+		return this->x() == 0 && this->y() == 0 && this->z() == 0;
 	}
 
 	/**
@@ -326,10 +350,10 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector3& negate()noexcept{
-		this->x = -this->x;
-		this->y = -this->y;
-		this->z = -this->z;
-		return (*this);
+		this->x() = -this->x();
+		this->y() = -this->y();
+		this->z() = -this->z();
+		return *this;
 	}
 
 	/**
@@ -337,7 +361,7 @@ public:
 	 * @return Power 2 of this vector norm.
 	 */
 	T norm_pow2()const noexcept{
-		return utki::pow2(this->x) + utki::pow2(this->y) + utki::pow2(this->z);
+		return utki::pow2(this->x()) + utki::pow2(this->y()) + utki::pow2(this->z());
 	}
 
 	/**
@@ -357,9 +381,9 @@ public:
 	vector3& normalize()noexcept{
 		T mag = this->norm();
 		if(mag == 0){
-			this->x = 1;
-			this->y = 0;
-			this->z = 0;
+			this->x() = 1;
+			this->y() = 0;
+			this->z() = 0;
 			return *this;
 		}
 
@@ -374,7 +398,7 @@ public:
 	vector3& project(const vector3& vec)noexcept{
 		ASSERT(this->norm_pow2() != 0)
 		(*this) = vec * (vec * (*this)) / vec.norm_pow2();
-		return (*this);
+		return *this;
 	}
 
 	/**
@@ -409,16 +433,16 @@ template <class T> vector3<T>::vector3(const vector4<T>& vec)noexcept :
 {}
 
 template <class T> vector3<T>& vector3<T>::operator=(const vector2<T>& vec)noexcept{
-	this->x = vec.x;
-	this->y = vec.y;
-	this->z = 0;
-	return (*this);
+	this->x() = vec.x();
+	this->y() = vec.y();
+	this->z() = 0;
+	return *this;
 }
 
 template <class T> vector3<T>& vector3<T>::operator+=(const vector2<T>& vec)noexcept{
-	this->x += vec.x;
-	this->y += vec.y;
-	return (*this);
+	this->x() += vec.x();
+	this->y() += vec.y();
+	return *this;
 }
 
 template <class T> vector3<T>& vector3<T>::rotate(const quaternion<T>& q)noexcept{
