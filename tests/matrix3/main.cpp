@@ -9,7 +9,7 @@ int main(int argc, char** argv){
     // test operator<<
     {
         r4::matrix3<int> m;
-		m.identity();
+		m.set_identity();
 
 		std::stringstream ss;
 
@@ -125,6 +125,28 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(r[2] == 2 * 8 + 3 * 9 + 4 * 10, "r[2] = " << r[2])
     }
 
+    // test transpose()
+    {
+        r4::matrix3<int> m{
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 9 }
+        };
+
+        m.transpose();
+
+        std::stringstream ss;
+
+        ss << m;
+
+        auto cmp = "\n\t/1 4 7\\"
+                   "\n\t|2 5 8|"
+                  "\n\t\\3 6 9/";
+        auto str = ss.str();
+
+        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+    }
+
     // test operator*(matrix3)
     {
         r4::matrix3<int> m1{
@@ -154,23 +176,86 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(r[2][2] == 7 * 4 + 8 * 7 + 9 * 10, "r[2][2] = " << r[2][2])
     }
 
-    // test transpose
+    // test operator*=(matrix3)
+    {
+        r4::matrix3<int> m1{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+
+        r4::matrix3<int> m2{
+                { 2, 3, 4 },
+                { 5, 6, 7 },
+                { 8, 9, 10 }
+            };
+        
+        auto r = m1 * m2;
+
+        m1 *= m2;
+
+        ASSERT_INFO_ALWAYS(m1 == r, "m1 = " << m1 << " r = " << r)
+    }
+
+    // test right_multiply(matrix3)
+    {
+        r4::matrix3<int> m1{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+
+        r4::matrix3<int> m2{
+                { 2, 3, 4 },
+                { 5, 6, 7 },
+                { 8, 9, 10 }
+            };
+        
+        auto r = m1 * m2;
+
+        m1.right_multiply(m2);
+
+        ASSERT_INFO_ALWAYS(m1 == r, "m1 = " << m1 << " r = " << r)
+    }
+
+    // test left_multiply(matrix3)
+    {
+        r4::matrix3<int> m1{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+
+        r4::matrix3<int> m2{
+                { 2, 3, 4 },
+                { 5, 6, 7 },
+                { 8, 9, 10 }
+            };
+        
+        auto r = m1 * m2;
+
+        m2.left_multiply(m1);
+
+        ASSERT_INFO_ALWAYS(m2 == r, "m2 = " << m2 << " r = " << r)
+    }
+
+    // test scale(x, y)
     {
         r4::matrix3<int> m{
-            { 1, 2, 3 },
-            { 4, 5, 6 },
-            { 7, 8, 9 }
-        };
-
-        m.transpose();
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+        
+        m.scale(2, 3);
 
         std::stringstream ss;
 
         ss << m;
 
-        auto cmp = "\n\t/1 4 7\\"
-                   "\n\t|2 5 8|"
-                  "\n\t\\3 6 9/";
+        auto cmp = "\n\t/2 6 3\\"
+                   "\n\t|8 15 6|"
+                  "\n\t\\14 24 9/";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)

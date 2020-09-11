@@ -110,20 +110,6 @@ public:
 	}
 
 	/**
-	 * @brief Multiply by matrix from the right.
-	 * Calculate result of this matrix M multiplied by another matrix K from the right (M * K).
-	 * @param matr - matrix to multiply by (matrix K).
-     * @return New matrix as a result of matrices product.
-     */
-	matrix3 operator*(const matrix3& matr)const noexcept{
-		return matrix3(
-				vector3<T>(this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2)),
-				vector3<T>(this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2)),
-				vector3<T>(this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2))
-			);
-	}
-
-	/**
 	 * @brief Transpose matrix.
 	 */
 	matrix3& transpose()noexcept{
@@ -131,6 +117,20 @@ public:
 		std::swap(this->operator[](2)[0], this->operator[](0)[2]);
 		std::swap(this->operator[](2)[1], this->operator[](1)[2]);
 		return *this;
+	}
+
+	/**
+	 * @brief Multiply by matrix from the right.
+	 * Calculate result of this matrix M multiplied by another matrix K from the right (M * K).
+	 * @param matr - matrix to multiply by (matrix K).
+     * @return New matrix as a result of matrices product.
+     */
+	matrix3 operator*(const matrix3& matr)const noexcept{
+		return matrix3{
+				vector3<T>{this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2)},
+				vector3<T>{this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2)},
+				vector3<T>{this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2)}
+			};
 	}
 
 	/**
@@ -149,7 +149,7 @@ public:
 	 * @param matr - matrix to multiply by.
 	 * @return reference to this matrix object.
 	 */
-	matrix3& right_mul(const matrix3& matr)noexcept{
+	matrix3& right_multiply(const matrix3& matr)noexcept{
 		return this->operator*=(matr);
 	}
 
@@ -159,17 +159,17 @@ public:
 	 * @param matr - matrix to multiply by.
 	 * @return reference to this matrix object.
 	 */
-	matrix3& left_mul(const matrix3& matr)noexcept{
+	matrix3& left_multiply(const matrix3& matr)noexcept{
 		return this->operator=(matr.operator*(*this));
 	}
 
 	/**
 	 * @brief Initialize this matrix with identity matrix.
 	 */
-	matrix3& identity()noexcept{
-		this->row(0) = vector3<T>(1, 0, 0);
-		this->row(1) = vector3<T>(0, 1, 0);
-		this->row(2) = vector3<T>(0, 0, 1);
+	matrix3& set_identity()noexcept{
+		this->row(0) = {1, 0, 0};
+		this->row(1) = {0, 1, 0};
+		this->row(2) = {0, 0, 1};
 		return (*this);
 	}
 
@@ -181,13 +181,17 @@ public:
 	 * @return reference to this matrix instance.
 	 */
 	matrix3& scale(T x, T y)noexcept{
-		//update 0th column
-		this->c0 *= x;
+		// update 0th column
+		this->operator[](0)[0] *= x;
+		this->operator[](1)[0] *= x;
+		this->operator[](2)[0] *= x;
 
-		//update 1st column
-		this->c1 *= y;
+		// update 1st column
+		this->operator[](0)[1] *= y;
+		this->operator[](1)[1] *= y;
+		this->operator[](2)[1] *= y;
 
-		//NOTE: 2nd column remains unchanged
+		// NOTE: 2nd column remains unchanged
 		return (*this);
 	}
 
