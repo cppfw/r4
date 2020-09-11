@@ -103,14 +103,14 @@ public:
 	 * @param vec - 2d vector to use for initialization of first two vector components.
 	 * @param z - value to use for initialization of 3rd vector component.
 	 */
-	vector3(const vector2<T>& vec, T z = 0)noexcept;
+	constexpr vector3(const vector2<T>& vec, T z = 0)noexcept;
 
 	/**
 	 * @brief Constructor.
 	 * Initializes components to a given values.
 	 * @param vec - 4d vector to use for initialization, the w-value of the vector is ignored.
 	 */
-	vector3(const vector4<T>& vec)noexcept;
+	constexpr vector3(const vector4<T>& vec)noexcept;
 
 	/**
 	 * @brief Convert to vector3 with different type of component.
@@ -424,11 +424,11 @@ public:
 
 namespace r4{
 
-template <class T> vector3<T>::vector3(const vector2<T>& vec, T z)noexcept :
+template <class T> constexpr vector3<T>::vector3(const vector2<T>& vec, T z)noexcept :
 		std::array<T, 3>{{vec[0], vec[1], z}}
 {}
 
-template <class T> vector3<T>::vector3(const vector4<T>& vec)noexcept :
+template <class T> constexpr vector3<T>::vector3(const vector4<T>& vec)noexcept :
 		std::array<T, 3>{{vec[0], vec[1], vec[2]}}
 {}
 

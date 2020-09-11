@@ -75,7 +75,7 @@ public:
 	 * from x and y of given 3 dimensional vector.
 	 * @param vec - 3 dimensional vector to copy x and y from.
 	 */
-	vector2(const vector3<T>& vec)noexcept;
+	constexpr vector2(const vector3<T>& vec)noexcept;
 
 	/**
 	 * @brief Convert to vector2 with different type of component.
@@ -454,7 +454,7 @@ public:
 
 namespace r4{
 
-template <class T> vector2<T>::vector2(const vector3<T>& vec)noexcept :
+template <class T> constexpr vector2<T>::vector2(const vector3<T>& vec)noexcept :
 		vector2{vec[0], vec[1]}
 {}
 

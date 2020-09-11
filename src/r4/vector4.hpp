@@ -77,7 +77,7 @@ public:
 	 * @brief Default constructor.
 	 * Default constructor does not initialize vector components to any values.
 	 */
-	vector4() = default;
+	constexpr vector4() = default;
 
 	/**
 	 * @brief Constructor.
@@ -87,7 +87,7 @@ public:
      * @param z - value for third vector component.
      * @param w - value for fourth vector component.
      */
-	vector4(T x, T y, T z, T w)noexcept :
+	constexpr vector4(T x, T y, T z, T w)noexcept :
 			base_type{{x, y, z, w}}
 	{}
 
@@ -96,9 +96,9 @@ public:
 	 * Initializes all vector components to a given value.
      * @param num - value to initialize all vector components with.
      */
-	vector4(T num)noexcept{
-		this->operator=(num);
-	}
+	constexpr vector4(T num)noexcept :
+			vector4(num, num, num, num)
+	{}
 
 	/**
 	 * @brief Constructor.
@@ -106,7 +106,7 @@ public:
      * @param num - value to use for initialization of first three vector components.
      * @param w - value to use for initialization of fourth vector component.
      */
-	vector4(T num, T w)noexcept :
+	constexpr vector4(T num, T w)noexcept :
 			vector4(num, num, num, w)
 	{}
 
@@ -117,7 +117,7 @@ public:
 	 * @param z - value to use for initialization of 3rd vector component.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	vector4(const vector2<T>& vec, T z = 0, T w = 1)noexcept;
+	constexpr vector4(const vector2<T>& vec, T z = 0, T w = 1)noexcept;
 
 	/**
 	 * @brief Constructor.
@@ -125,12 +125,23 @@ public:
 	 * @param vec - 23 vector to use for initialization of first three vector components.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	vector4(const vector3<T>& vec, T w = 1)noexcept;
+	constexpr vector4(const vector3<T>& vec, T w = 1)noexcept;
 
-	// TODO: doxygen
-	template <class TT> explicit vector4(const vector4<TT>& v) :
-			vector4{T(v.x), T(v.y), T(v.z), T(v.w)}
-	{}
+	/**
+	 * @brief Convert to vector4 with different type of component.
+	 * Convert this vector4 to a vector4 whose component type is different from T.
+	 * Components are converted using constructor of target type passing the source
+	 * component as argument of the target type constructor.
+	 * @return converted vector4.
+	 */
+	template <typename TT> vector4<TT> to()noexcept{
+		return vector4<TT>{
+				TT(this->x()),
+				TT(this->y()),
+				TT(this->z()),
+				TT(this->w())
+			};
+	}
 
 	/**
 	 * @brief Assign from 3d vector.
@@ -393,7 +404,7 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const vector4<T>& vec){
-		s << "(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")";
+		s << "(" << vec.x() << ", " << vec.y() << ", " << vec.z() << ", " << vec.w() << ")";
 		return s;
 	}
 };
@@ -405,11 +416,11 @@ public:
 
 namespace r4{
 
-template <class T> vector4<T>::vector4(const vector2<T>& vec, T z, T w)noexcept :
+template <class T> constexpr vector4<T>::vector4(const vector2<T>& vec, T z, T w)noexcept :
 		vector4(vec.x, vec.y, z, w)
 {}
 
-template <class T> vector4<T>::vector4(const vector3<T>& vec, T w)noexcept :
+template <class T> constexpr vector4<T>::vector4(const vector3<T>& vec, T w)noexcept :
 		vector4(vec.x(), vec.y(), vec.z(), w)
 {}
 
