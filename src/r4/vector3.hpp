@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <array>
 
 #include <utki/debug.hpp>
 #include <utki/math.hpp>
@@ -8,35 +9,56 @@
 namespace r4{
 
 template <class T> class vector2;
+template <class T> class vector4;
 template <class T> class matrix4;
 template <class T> class quaternion;
 
 /**
  * @brief Three-dimensional vector.
  */
-template <class T> class vector3{
+template <typename T> class vector3 : public std::array<T, 3>{
+	typedef std::array<T, 3> base_type;
 public:
 	/**
 	 * @brief First vector component.
 	 */
-	T x;
+	T& x()noexcept{
+		return this->operator[](0);
+	}
+
+	/**
+	 * @brief First vector component.
+	 */
+	const T& x()const noexcept{
+		return this->operator[](0);
+	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	T y;
+	T& y(){
+		return this->operator[](1);
+	}
+
+	/**
+	 * @brief Second vector component.
+	 */
+	const T& y()const noexcept{
+		return this->operator[](1);
+	}
 
 	/**
 	 * @brief Third vector component.
      */
-	T z;
+	T& z(){
+		return this->operator[](2);
+	}
 
 	/**
-	 * @brief Get number of vector components.
-     * @return Number of vector components.
+	 * @brief Third vector component.
      */
-	size_t size()const{
-		return 3;
+	const T& z()const noexcept{
+		return this->operator[](2);
 	}
 
 	/**
@@ -53,9 +75,7 @@ public:
      * @param z - value for third vector component.
      */
 	vector3(T x, T y, T z)noexcept :
-			x(x),
-			y(y),
-			z(z)
+			std::array<T, 3>{{x, y, z}}
 	{}
 
 	/**
@@ -64,9 +84,7 @@ public:
      * @param num - value to initialize all vector components with.
      */
 	vector3(T num)noexcept :
-			x(num),
-			y(num),
-			z(num)
+			vector3{num, num, num}
 	{}
 
 	/**
@@ -77,38 +95,20 @@ public:
 	 */
 	vector3(const vector2<T>& vec, T z = 0)noexcept;
 
+	/**
+	 * @brief Constructor.
+	 * Initializes components to a given values.
+	 * @param vec - 4d vector to use for initialization, the w-value of the vector is ignored.
+	 */
+	vector3(const vector4<T>& vec)noexcept;
+
 	// TODO: doxygen
-	template <class TT> explicit vector3(const vector3<TT>& v) :
-			x(v.x),
-			y(v.y),
-			z(v.z)
-	{}
-
-	/**
-	 * @brief Access vector component.
-     * @param i - component index to access, must be from 0 to 2.
-     * @return Reference to the requested vector component.
-     */
-	T& operator[](unsigned i)noexcept{
-		ASSERT(i < 3)
-		ASSERT( &((&this->x)[0]) == &this->x)
-		ASSERT( &((&this->x)[1]) == &this->y)
-		ASSERT( &((&this->x)[2]) == &this->z)
-		return (&this->x)[i];
-	}
-
-	/**
-	 * @brief Access vector component.
-	 * Constant version of operator[].
-     * @param i - component index to access, must be from 0 to 2.
-     * @return constant reference to the requested vector component.
-     */
-	const T& operator[](unsigned i)const noexcept{
-		ASSERT(i < 3)
-		ASSERT( &((&this->x)[0]) == &this->x)
-		ASSERT( &((&this->x)[1]) == &this->y)
-		ASSERT( &((&this->x)[2]) == &this->z)
-		return (&this->x)[i];
+	template <typename TT> vector3<TT> to()noexcept{
+		return vector3<TT>{
+				TT(this->x()),
+				TT(this->y()),
+				TT(this->z())
+			};
 	}
 
 	/**
@@ -272,11 +272,12 @@ public:
      * @return Dot product of this vector and given vector.
      */
 	T operator*(const vector3& vec)const noexcept{
-		return this->x * vec.x
-				+ this->y * vec.y
-				+ this->z * vec.z;
+		return this->x() * vec.x()
+				+ this->y() * vec.y()
+				+ this->z() * vec.z();
 	}
 
+	// TODO: rename to comp_mul
 	/**
 	 * @brief Component-wise multiplication.
 	 * Performs component-wise multiplication of two vectors.
@@ -291,6 +292,8 @@ public:
 				this->z * vec.z
 			);
 	}
+
+	// TODO: add cross() method
 
 	/**
 	 * @brief Cross product.
@@ -380,7 +383,7 @@ public:
 	vector3<T>& rotate(const quaternion<T>& q)noexcept;
 
 	friend std::ostream& operator<<(std::ostream& s, const vector3<T>& vec){
-		s << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
+		s << "(" << vec.x() << ", " << vec.y() << ", " << vec.z() << ")";
 		return s;
 	}
 };
@@ -388,15 +391,18 @@ public:
 }
 
 #include "vector2.hpp"
+#include "vector4.hpp"
 #include "quaternion.hpp"
 #include "matrix4.hpp"
 
 namespace r4{
 
 template <class T> vector3<T>::vector3(const vector2<T>& vec, T z)noexcept :
-		x(vec.x),
-		y(vec.y),
-		z(z)
+		std::array<T, 3>{{vec[0], vec[1], z}}
+{}
+
+template <class T> vector3<T>::vector3(const vector4<T>& vec)noexcept :
+		std::array<T, 3>{{vec[0], vec[1], vec[2]}}
 {}
 
 template <class T> vector3<T>& vector3<T>::operator=(const vector2<T>& vec)noexcept{

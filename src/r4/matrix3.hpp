@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <array>
 
 #include <utki/debug.hpp>
 
@@ -9,32 +10,16 @@
 
 namespace r4{
 
-template <class T> class vector2;
-template <class T> class vector3;
+template <typename T> class vector2;
+template <typename T> class vector3;
 
 /**
  * @brief 4x4 matrix template class.
- * Note, that this matrix class stores elements in memory column by column.
- * This is the same way as OpenGL matrices are stored in memory.
- * This means easy use of this class with OpenGL.
+ * Note, that this matrix class stores elements in row-major order.
  */
-template <typename T> class matrix3{
+template <typename T> class matrix3 : public std::array<vector3<T>, 3>{
+	typedef std::array<vector3<T>, 3> base_type;
 public:
-	/**
-	 * @brief 0th column of the matrix.
-	 */
-	vector3<T> c0;
-
-	/**
-	 * @brief 1st column of the matrix.
-	 */
-	vector3<T> c1;
-
-	/**
-	 * @brief 2nd column of the matrix.
-     */
-	vector3<T> c2;
-
 	/**
 	 * @brief Default constructor.
 	 * NOTE: it does not initialize the matrix with any values.
@@ -44,50 +29,32 @@ public:
 
 	/**
 	 * @brief Construct initialized matrix.
-	 * Creates a matrix and initializes its columns by the given values.
-     * @param column0 - 0th column of the matrix.
-	 * @param column1 - 1st column of the matrix.
-	 * @param column2 - 2nd column of the matrix.
+	 * Creates a matrix and initializes its rows with the given values.
+     * @param row0 - 0th row of the matrix.
+	 * @param row1 - 1st row of the matrix.
+	 * @param row2 - 2nd row of the matrix.
      */
 	matrix3(
-			const vector4<T>& column0,
-			const vector4<T>& column1,
-			const vector4<T>& column2
+			const vector3<T>& row0,
+			const vector3<T>& row1,
+			const vector3<T>& row2
 		)noexcept :
-			c0(column0),
-			c1(column1),
-			c2(column2)
-	{}
-
-	template <class TT> matrix3(const matrix3<TT>& m) :
-			c0(m.c0),
-			c1(m.c1),
-			c2(m.c2)
+			std::array<vector3<T>, 3>{{row0, row1, row2}}
 	{}
 
 	matrix3(const matrix3&) = default;
 	matrix3& operator=(const matrix3&) = default;
 
 	/**
-	 * @brief returns reference to specified column.
-	 * Returns reference to the matrix column indicated by the argument.
-	 * @param col - column number, must be from 0 to 2.
-	 * @return reference to the matrix column indicated by the argument.
+	 * @brief Convert to different element type.
+	 * @return matrix3 with converted element type.
 	 */
-	vector3<T>& operator[](unsigned col)noexcept{
-		ASSERT(col < 3)
-		return (&this->c0)[col];
-	}
-
-	/**
-	 * @brief returns reference to specified column.
-	 * Constant variant of operator[].
-	 * @param col - column number, must be from 0 to 2.
-	 * @return reference to the matrix column indicated by the argument.
-	 */
-	const vector3<T>& operator[](unsigned col)const noexcept{
-		ASSERT(col < 3)
-		return (&this->c0)[col];
+	template <typename TT> matrix3<TT> to()noexcept{
+		return matrix3<TT>{
+				this->row(0).template to<TT>(),
+				this->row(1).template to<TT>(),
+				this->row(2).template to<TT>()
+			};
 	}
 
 	/**
@@ -111,12 +78,23 @@ public:
 	/**
 	 * @brief Get matrix row.
 	 * Constructs a vector4 holding requested row of the matrix.
-	 * @param rowNum - row number to get, must be from 0 to 3.
-     * @return vector4 representing the row of this matrix.
+	 * @param row_index - row number to get, must be from 0 to 3.
+     * @return reference to vector3 representing the row of this matrix.
      */
-	vector3<T> row(unsigned rowNum)const noexcept{
-		ASSERT(rowNum < 3)
-		return vector3<T>(this->c0[rowNum], this->c1[rowNum], this->c2[rowNum]);
+	vector3<T>& row(unsigned row_index)noexcept{
+		ASSERT(row_index < 3)
+		return this->operator[](row_index);
+	}
+
+	/**
+	 * @brief Get constant matrix row.
+	 * Constructs a vector4 holding requested row of the matrix.
+	 * @param row_index - row number to get, must be from 0 to 3.
+     * @return constant reference to vector3 representing the row of this matrix.
+     */
+	const vector3<T>& row(unsigned row_index)const noexcept{
+		ASSERT(row_index < 3)
+		return this->operator[](row_index);
 	}
 
 	/**
@@ -178,9 +156,9 @@ public:
 	 * @brief Initialize this matrix with identity matrix.
 	 */
 	matrix3& identity()noexcept{
-		this->c0 = vector3<T>(1, 0, 0);
-		this->c1 = vector3<T>(0, 1, 0);
-		this->c2 = vector3<T>(0, 0, 1);
+		this->row(0) = vector3<T>(1, 0, 0);
+		this->row(1) = vector3<T>(0, 1, 0);
+		this->row(2) = vector3<T>(0, 0, 1);
 		return (*this);
 	}
 
@@ -255,9 +233,9 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& s, const matrix3<T>& mat){
 		s << "\n";
-		s << "\t/" << mat[0][0] << " " << mat[1][0] << " " << mat[2][0] << "\\" << std::endl;
-		s << "\t|" << mat[0][1] << " " << mat[1][1] << " " << mat[2][1] << "|" << std::endl;
-		s << "\t\\" << mat[0][2] << " " << mat[1][2] << " " << mat[2][2] << "/";
+		s << "\t/" << mat[0][0] << " " << mat[0][1] << " " << mat[0][2] << "\\" << std::endl;
+		s << "\t|" << mat[1][0] << " " << mat[1][1] << " " << mat[1][2] << "|" << std::endl;
+		s << "\t\\" << mat[2][0] << " " << mat[2][1] << " " << mat[2][2] << "/";
 		return s;
 	};
 };
@@ -270,6 +248,7 @@ public:
 namespace r4{
 
 template <class T> vector2<T> matrix3<T>::operator*(const vector2<T>& vec)const noexcept{
+	// TRACE_ALWAYS(<< "this->row(1) = " << this->row(1) << " vec = " << vec << std::endl)
 	return vector2<T>(
 			this->row(0) * vec,
 			this->row(1) * vec

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <array>
 
 #include <utki/debug.hpp>
 #include <utki/math.hpp>
@@ -13,41 +14,42 @@ template <class T> class vector3;
 /**
  * @brief Four-dimensional vector.
  */
-template <class T> class vector4{
+template <class T> class vector4 : public std::array<T, 4>{
+	typedef std::array<T, 4> base_type;
 public:
 	/**
 	 * @brief First vector component.
 	 */
-	T x;
+	T& x()noexcept{
+		return this->operator[](0);
+	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	T y;
+	T& y()noexcept{
+		return this->operator[](1);
+	}
 
 	/**
 	 * @brief Third vector component.
      */
-	T z;
+	T& z()noexcept{
+		return this->operator[](2);
+	}
 
 	/**
 	 * @brief Fourth vector component.
      */
-	T w;
-
-	/**
-	 * @brief Get number of vector components.
-     * @return Number of vector components.
-     */
-	constexpr size_t size()const noexcept{
-		return 4;
+	T& w()noexcept{
+		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Default constructor.
 	 * Default constructor does not initialize vector components to any values.
 	 */
-	vector4()noexcept{}
+	vector4() = default;
 
 	/**
 	 * @brief Constructor.
@@ -58,10 +60,7 @@ public:
      * @param w - value for fourth vector component.
      */
 	vector4(T x, T y, T z, T w)noexcept :
-			x(x),
-			y(y),
-			z(z),
-			w(w)
+			base_type{{x, y, z, w}}
 	{}
 
 	/**
@@ -80,10 +79,7 @@ public:
      * @param w - value to use for initialization of fourth vector component.
      */
 	vector4(T num, T w)noexcept :
-			x(num),
-			y(num),
-			z(num),
-			w(w)
+			vector4(num, num, num, w)
 	{}
 
 	/**
@@ -105,40 +101,8 @@ public:
 
 	// TODO: doxygen
 	template <class TT> explicit vector4(const vector4<TT>& v) :
-			x(v.x),
-			y(v.y),
-			z(v.z),
-			w(v.w)
+			vector4{T(v.x), T(v.y), T(v.z), T(v.w)}
 	{}
-
-	/**
-	 * @brief Access vector component.
-     * @param i - component index to access, must be from 0 to 3.
-     * @return Reference to the requested vector component.
-     */
-	T& operator[](unsigned i)noexcept{
-		ASSERT(i < 4)
-		ASSERT( &((&this->x)[0]) == &this->x)
-		ASSERT( &((&this->x)[1]) == &this->y)
-		ASSERT( &((&this->x)[2]) == &this->z)
-		ASSERT( &((&this->x)[3]) == &this->w)
-		return (&this->x)[i];
-	}
-
-	/**
-	 * @brief Access vector component.
-	 * Constant version of operator[].
-     * @param i - component index to access, must be from 0 to 3.
-     * @return constant reference to the requested vector component.
-     */
-	const T& operator[](unsigned i)const noexcept{
-		ASSERT(i < 4)
-		ASSERT( &((&this->x)[0]) == &this->x)
-		ASSERT( &((&this->x)[1]) == &this->y)
-		ASSERT( &((&this->x)[2]) == &this->z)
-		ASSERT( &((&this->x)[3]) == &this->w)
-		return (&this->x)[i];
-	}
 
 	/**
 	 * @brief Assign from 3d vector.
@@ -414,17 +378,11 @@ public:
 namespace r4{
 
 template <class T> vector4<T>::vector4(const vector2<T>& vec, T z, T w)noexcept :
-		x(vec.x),
-		y(vec.y),
-		z(z),
-		w(w)
+		vector4(vec.x, vec.y, z, w)
 {}
 
 template <class T> vector4<T>::vector4(const vector3<T>& vec, T w)noexcept :
-		x(vec.x),
-		y(vec.y),
-		z(vec.z),
-		w(w)
+		vector4(vec.x, vec.y, vec.z, w)
 {}
 
 template <class T> vector4<T>& vector4<T>::operator=(const vector3<T>& vec)noexcept{
