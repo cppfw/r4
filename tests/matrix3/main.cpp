@@ -72,6 +72,26 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
     }
 
+    // test element type conversion
+    {
+        r4::matrix3<float> mf{
+            { 1.1f, 2.2f, 3.3f },
+            { 4.4f, 5.5f, 6.6f },
+            { 7.7f, 8.8f, 9.9f }
+        };
+
+        auto mi = mf.to<int>();
+
+        std::stringstream ss;
+
+        ss << mi;
+
+        auto cmp = "\n\t/1 2 3\\\n\t|4 5 6|\n\t\\7 8 9/";
+        auto str = ss.str();
+
+        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+    }
+
     // test operator*(vector2)
     {
         r4::vector2<int> v(2, 3);
@@ -88,21 +108,69 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(r[1] == 28, "r[1] = " << r[1])
     }
 
-    // test type conversion constructor
+    // test operator*(vector3)
     {
-        r4::matrix3<float> mf{
-            { 1.1f, 2.2f, 3.3f },
-            { 4.4f, 5.5f, 6.6f },
-            { 7.7f, 8.8f, 9.9f }
+        r4::vector3<int> v(2, 3, 4);
+
+        r4::matrix3<int> m{
+                { 2, 3, 4 },
+                { 5, 6, 7 },
+                { 8, 9, 10 }
+            };
+        
+        auto r = m * v;
+
+        ASSERT_INFO_ALWAYS(r[0] == 2 * 2 + 3 * 3 + 4 * 4, "r[0] = " << r[0])
+        ASSERT_INFO_ALWAYS(r[1] == 2 * 5 + 3 * 6 + 4 * 7, "r[1] = " << r[1])
+        ASSERT_INFO_ALWAYS(r[2] == 2 * 8 + 3 * 9 + 4 * 10, "r[2] = " << r[2])
+    }
+
+    // test operator*(matrix3)
+    {
+        r4::matrix3<int> m1{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+
+        r4::matrix3<int> m2{
+                { 2, 3, 4 },
+                { 5, 6, 7 },
+                { 8, 9, 10 }
+            };
+
+        auto r = m1 * m2;
+
+        ASSERT_INFO_ALWAYS(r[0][0] == 1 * 2 + 2 * 5 + 3 * 8, "r[0][0] = " << r[0][0])
+        ASSERT_INFO_ALWAYS(r[1][0] == 4 * 2 + 5 * 5 + 6 * 8, "r[1][0] = " << r[1][0])
+        ASSERT_INFO_ALWAYS(r[2][0] == 7 * 2 + 8 * 5 + 9 * 8, "r[2][0] = " << r[2][0])
+
+        ASSERT_INFO_ALWAYS(r[0][1] == 1 * 3 + 2 * 6 + 3 * 9, "r[0][1] = " << r[0][1])
+        ASSERT_INFO_ALWAYS(r[1][1] == 4 * 3 + 5 * 6 + 6 * 9, "r[1][1] = " << r[1][1])
+        ASSERT_INFO_ALWAYS(r[2][1] == 7 * 3 + 8 * 6 + 9 * 9, "r[2][1] = " << r[2][1])
+
+        ASSERT_INFO_ALWAYS(r[0][2] == 1 * 4 + 2 * 7 + 3 * 10, "r[0][2] = " << r[0][2])
+        ASSERT_INFO_ALWAYS(r[1][2] == 4 * 4 + 5 * 7 + 6 * 10, "r[1][2] = " << r[1][2])
+        ASSERT_INFO_ALWAYS(r[2][2] == 7 * 4 + 8 * 7 + 9 * 10, "r[2][2] = " << r[2][2])
+    }
+
+    // test transpose
+    {
+        r4::matrix3<int> m{
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 9 }
         };
 
-        auto mi = mf.to<int>();
+        m.transpose();
 
         std::stringstream ss;
 
-        ss << mi;
+        ss << m;
 
-        auto cmp = "\n\t/1 2 3\\\n\t|4 5 6|\n\t\\7 8 9/";
+        auto cmp = "\n\t/1 4 7\\"
+                   "\n\t|2 5 8|"
+                  "\n\t\\3 6 9/";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)

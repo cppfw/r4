@@ -77,24 +77,36 @@ public:
 
 	/**
 	 * @brief Get matrix row.
-	 * Constructs a vector4 holding requested row of the matrix.
-	 * @param row_index - row number to get, must be from 0 to 3.
+	 * @param index - row index to get, must be from 0 to 2.
      * @return reference to vector3 representing the row of this matrix.
      */
-	vector3<T>& row(unsigned row_index)noexcept{
-		ASSERT(row_index < 3)
-		return this->operator[](row_index);
+	vector3<T>& row(unsigned index)noexcept{
+		ASSERT(index < 3)
+		return this->operator[](index);
 	}
 
 	/**
 	 * @brief Get constant matrix row.
-	 * Constructs a vector4 holding requested row of the matrix.
-	 * @param row_index - row number to get, must be from 0 to 3.
+	 * @param index - row index to get, must be from 0 to 2.
      * @return constant reference to vector3 representing the row of this matrix.
      */
-	const vector3<T>& row(unsigned row_index)const noexcept{
-		ASSERT(row_index < 3)
-		return this->operator[](row_index);
+	const vector3<T>& row(unsigned index)const noexcept{
+		ASSERT(index < 3)
+		return this->operator[](index);
+	}
+
+	/**
+	 * @brief Get matrix column.
+	 * Constructs and returns a vector3 representing the requested matrix column.
+	 * @param index - column index to get, must be from 0 to 2;
+	 * @return vector3 representing the requested matrix column.
+	 */
+	vector3<T> col(unsigned index)const noexcept{
+		return vector3<T>{
+				this->row(0)[index],
+				this->row(1)[index],
+				this->row(2)[index]
+			};
 	}
 
 	/**
@@ -105,9 +117,9 @@ public:
      */
 	matrix3 operator*(const matrix3& matr)const noexcept{
 		return matrix3(
-				vector3<T>(this->row(0) * matr[0], this->row(1) * matr[0], this->row(2) * matr[0]),
-				vector3<T>(this->row(0) * matr[1], this->row(1) * matr[1], this->row(2) * matr[1]),
-				vector3<T>(this->row(0) * matr[2], this->row(1) * matr[2], this->row(2) * matr[2])
+				vector3<T>(this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2)),
+				vector3<T>(this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2)),
+				vector3<T>(this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2))
 			);
 	}
 
@@ -115,11 +127,10 @@ public:
 	 * @brief Transpose matrix.
 	 */
 	matrix3& transpose()noexcept{
-		std::swap(this->c0[1], this->c1[0]);
-		std::swap(this->c0[2], this->c2[0]);
-
-		std::swap(this->c1[2], this->c2[1]);
-		return (*this);
+		std::swap(this->operator[](1)[0], this->operator[](0)[1]);
+		std::swap(this->operator[](2)[0], this->operator[](0)[2]);
+		std::swap(this->operator[](2)[1], this->operator[](1)[2]);
+		return *this;
 	}
 
 	/**
