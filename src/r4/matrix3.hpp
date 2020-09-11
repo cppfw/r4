@@ -346,7 +346,7 @@ template <class T> matrix3<T>& matrix3<T>::scale(const vector2<T>& s)noexcept{
 }
 
 template <class T> matrix3<T>& matrix3<T>::translate(const vector2<T>& t)noexcept{
-	return this->translate(t.x, t.y);
+	return this->translate(t.x(), t.y());
 }
 
 typedef matrix3<float> mat3f;
