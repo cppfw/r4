@@ -181,6 +181,11 @@ public:
 	 * @return reference to this matrix instance.
 	 */
 	matrix3& scale(T x, T y)noexcept{
+		// multiply this matrix from the right by the scale matrix:
+		//               / x 0 0 \
+		// this = this * | 0 y 0 |
+		//               \ 0 0 1 /
+
 		// update 0th column
 		this->operator[](0)[0] *= x;
 		this->operator[](1)[0] *= x;
