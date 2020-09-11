@@ -113,9 +113,9 @@ public:
 	 * @brief Transpose matrix.
 	 */
 	matrix3& transpose()noexcept{
-		std::swap(this->operator[](1)[0], this->operator[](0)[1]);
-		std::swap(this->operator[](2)[0], this->operator[](0)[2]);
-		std::swap(this->operator[](2)[1], this->operator[](1)[2]);
+		std::swap(this->row(1)[0], this->row(0)[1]);
+		std::swap(this->row(2)[0], this->row(0)[2]);
+		std::swap(this->row(2)[1], this->row(1)[2]);
 		return *this;
 	}
 
@@ -170,7 +170,7 @@ public:
 		this->row(0) = {1, 0, 0};
 		this->row(1) = {0, 1, 0};
 		this->row(2) = {0, 0, 1};
-		return (*this);
+		return *this;
 	}
 
 	/**
@@ -187,17 +187,41 @@ public:
 		//               \ 0 0 1 /
 
 		// update 0th column
-		this->operator[](0)[0] *= x;
-		this->operator[](1)[0] *= x;
-		this->operator[](2)[0] *= x;
+		this->row(0)[0] *= x;
+		this->row(1)[0] *= x;
+		this->row(2)[0] *= x;
 
 		// update 1st column
-		this->operator[](0)[1] *= y;
-		this->operator[](1)[1] *= y;
-		this->operator[](2)[1] *= y;
+		this->row(0)[1] *= y;
+		this->row(1)[1] *= y;
+		this->row(2)[1] *= y;
 
 		// NOTE: 2nd column remains unchanged
-		return (*this);
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply current matrix by scale matrix.
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
+	 * @param x - scaling factor in x direction.
+	 * @param y - scaling factor in y direction.
+	 * @param z - scaling factor in z direction.
+	 * @return reference to this matrix instance.
+	 */
+	matrix3& scale(T x, T y, T z)noexcept{
+		// multiply this matrix from the right by the scale matrix:
+		//               / x 0 0 \
+		// this = this * | 0 y 0 |
+		//               \ 0 0 z /
+
+		this->scale(x, y);
+
+		// update 2nd column
+		this->row(0)[2] *= z;
+		this->row(1)[2] *= z;
+		this->row(2)[2] *= z;
+
+		return *this;
 	}
 
 	/**
@@ -226,12 +250,18 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	matrix3& translate(T x, T y)noexcept{
-		//NOTE: 0th and 1st columns remain unchanged
+		// multiply this matrix from the right by the translation matrix:
+		//               / 1 0 x \
+		// this = this * | 0 1 y |
+		//               \ 0 0 1 /
 
-		//calculate 2nd column
-		this->c2 = this->c0 * x + this->c1 * y + this->c2;
+		// NOTE: 0th and 1st columns remain unchanged
 
-		return (*this);
+		// calculate 2nd column
+		this->row(0)[2] += this->row(0).x() * x + this->row(0).y() * y;
+		this->row(1)[2] += this->row(1).x() * x + this->row(1).y() * y;
+
+		return *this;
 	}
 
 	/**
@@ -245,11 +275,39 @@ public:
 	/**
 	 * @brief Multiply this matrix by rotation matrix.
 	 * Multiplies this matrix M by rotation matrix R from the right (M = M * R).
-	 * Positive direction of rotation is counter-clockwise.
-	 * @param rot - the angle of rotation in radians.
+	 * Positive direction of rotation is counter-clockwise, i.e. from X-axis to Y-axis.
+	 * @param a - the angle of rotation in radians.
 	 * @return reference to this matrix object.
 	 */
-	matrix3& rotate(T rot)noexcept;
+	matrix3& rotate(T a)noexcept{
+		// multiply this matrix from the right by the rotation matrix:
+		//               / cos(a) -sin(a) 0 \
+		// this = this * | sin(a)  cos(a) 0 |
+		//               \      0       0 1 /
+
+		using std::cos;
+		using std::sin;
+		T sina = sin(a);
+		T cosa = cos(a);
+
+		T m00 = this->row(0)[0] * cosa + this->row(0)[1] * sina;
+		T m10 = this->row(1)[0] * cosa + this->row(1)[1] * sina;
+		T m20 = this->row(2)[0] * cosa + this->row(2)[1] * sina;
+		sina = -sina;
+		T m01 = this->row(0)[0] * sina + this->row(0)[1] * cosa;
+		T m11 = this->row(1)[0] * sina + this->row(1)[1] * cosa;
+		T m21 = this->row(2)[0] * sina + this->row(2)[1] * cosa;
+
+		this->row(0)[0] = m00;
+		this->row(1)[0] = m10;
+		this->row(2)[0] = m20;
+
+		this->row(0)[1] = m01;
+		this->row(1)[1] = m11;
+		this->row(2)[1] = m21;
+
+		return *this;
+	}
 
 	friend std::ostream& operator<<(std::ostream& s, const matrix3<T>& mat){
 		s << "\n";

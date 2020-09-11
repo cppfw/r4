@@ -1,4 +1,5 @@
 #include <utki/debug.hpp>
+#include <utki/math.hpp>
 
 #include "../../src/r4/matrix3.hpp"
 
@@ -239,6 +240,28 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(m2 == r, "m2 = " << m2 << " r = " << r)
     }
 
+    // test scale(x, y, z)
+    {
+        r4::matrix3<int> m{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+        
+        m.scale(2, 3, 4);
+
+        std::stringstream ss;
+
+        ss << m;
+
+        auto cmp = "\n\t/2 6 12\\"
+                   "\n\t|8 15 24|"
+                  "\n\t\\14 24 36/";
+        auto str = ss.str();
+
+        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+    }
+
     // test scale(x, y)
     {
         r4::matrix3<int> m{
@@ -259,6 +282,99 @@ int main(int argc, char** argv){
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+    }
+
+    // test scale(s)
+    {
+        r4::matrix3<int> m{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+        
+        m.scale(2);
+
+        std::stringstream ss;
+
+        ss << m;
+
+        auto cmp = "\n\t/2 4 6\\"
+                   "\n\t|8 10 12|"
+                  "\n\t\\14 16 18/";
+        auto str = ss.str();
+
+        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+    }
+
+    // test translate(x, y)
+    {
+        r4::matrix3<int> m{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+        
+        m.translate(2, 3);
+
+        std::stringstream ss;
+
+        ss << m;
+
+        auto cmp = "\n\t/1 2 11\\"
+                   "\n\t|4 5 29|"
+                  "\n\t\\7 8 9/";
+        auto str = ss.str();
+
+        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+    }
+
+    // test translate(vector2)
+    {
+        r4::matrix3<int> m{
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+        
+        m.translate(r4::vector2<int>{2, 3});
+
+        std::stringstream ss;
+
+        ss << m;
+
+        auto cmp = "\n\t/1 2 11\\"
+                   "\n\t|4 5 29|"
+                  "\n\t\\7 8 9/";
+        auto str = ss.str();
+
+        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+    }
+
+    // test rotate(a)
+    {
+        r4::matrix3<float> m{
+                { 10, 20, 30 },
+                { 40, 50, 60 },
+                { 70, 80, 90 }
+            };
+        
+        float a = utki::pi<float>() / 6;
+
+        decltype(m) res{m};
+        res.rotate(a);
+
+        using std::sin;
+        using std::cos;
+
+        r4::matrix3<float> rot{
+            {cos(a), -sin(a), 0},
+            {sin(a), cos(a), 0},
+            {0, 0, 1}
+        };
+
+        auto cmp = m * rot;
+
+        ASSERT_INFO_ALWAYS(res.to<int>() == cmp.to<int>(), "res = " << res << " cmp = " << cmp)
     }
 
     return 0;
