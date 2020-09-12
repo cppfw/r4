@@ -25,7 +25,7 @@ public:
 	 * NOTE: it does not initialize the matrix with any values.
 	 * Matrix elements are undefined after the matrix is created with this constructor.
 	 */
-	matrix3()noexcept{}
+	constexpr matrix3()noexcept{}
 
 	/**
 	 * @brief Construct initialized matrix.
@@ -34,7 +34,7 @@ public:
 	 * @param row1 - 1st row of the matrix.
 	 * @param row2 - 2nd row of the matrix.
      */
-	matrix3(
+	constexpr matrix3(
 			const vector3<T>& row0,
 			const vector3<T>& row1,
 			const vector3<T>& row2
@@ -42,7 +42,7 @@ public:
 			std::array<vector3<T>, 3>{{row0, row1, row2}}
 	{}
 
-	matrix3(const matrix3&) = default;
+	constexpr matrix3(const matrix3&) = default;
 	matrix3& operator=(const matrix3&) = default;
 
 	/**

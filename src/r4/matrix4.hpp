@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <array>
 
 #include <utki/debug.hpp>
 
@@ -15,57 +16,38 @@ template <class T> class quaternion;
 
 /**
  * @brief 4x4 matrix template class.
- * Note, that this matrix class stores elements in memory column by column.
- * This is the same way as OpenGL matrices are stored in memory.
- * This means easy use of this class with OpenGL.
+ * Elements are stored in memory in row-major order.
  */
-template <typename T> class matrix4{
+template <typename T> class matrix4 : public std::array<r4::vector4<T>, 4>{
+	typedef std::array<r4::vector4<T>, 4> base_type;
 public:
-	/**
-	 * @brief 0th column of the matrix.
-	 */
-	vector4<T> c0;
-
-	/**
-	 * @brief 1st column of the matrix.
-	 */
-	vector4<T> c1;
-
-	/**
-	 * @brief 2nd column of the matrix.
-     */
-	vector4<T> c2;
-
-	/**
-	 * @brief 3rd column of the matrix.
-     */
-	vector4<T> c3;
-
 	/**
 	 * @brief Default constructor.
 	 * NOTE: it does not initialize the matrix with any values.
 	 * Matrix elements are undefined after the matrix is created with this constructor.
 	 */
-	matrix4()noexcept{}
+	constexpr matrix4() = default;
 
 	/**
 	 * @brief Construct initialized matrix.
 	 * Creates a matrix and initializes its columns by the given values.
-     * @param column0 - 0th column of the matrix.
-	 * @param column1 - 1st column of the matrix.
-	 * @param column2 - 2nd column of the matrix.
-	 * @param column3 - 3rd column of the matrix.
+     * @param row0 - 0th row of the matrix.
+	 * @param row1 - 1st row of the matrix.
+	 * @param row2 - 2nd row of the matrix.
+	 * @param row3 - 3rd row of the matrix.
      */
-	matrix4(
-			const vector4<T>& column0,
-			const vector4<T>& column1,
-			const vector4<T>& column2,
-			const vector4<T>& column3
+	constexpr matrix4(
+			const vector4<T>& row0,
+			const vector4<T>& row1,
+			const vector4<T>& row2,
+			const vector4<T>& row3
 		)noexcept :
-			c0(column0),
-			c1(column1),
-			c2(column2),
-			c3(column3)
+			base_type{
+					row0,
+					row1,
+					row2,
+					row3
+				}
 	{}
 
 	/**
@@ -73,44 +55,22 @@ public:
 	 * Constructs matrix and initializes it to a rotation matrix from given unit quaternion.
      * @param quat - unit quaternion defining the rotation.
      */
-	matrix4(const quaternion<T>& quat)noexcept;
+	constexpr matrix4(const quaternion<T>& quat)noexcept;
 
-	template <class TT> matrix4(const matrix4<TT>& m) :
-			c0(m.c0),
-			c1(m.c1),
-			c2(m.c2),
-			c3(m.c3)
-	{}
-
-	matrix4(const matrix4&) = default;
+	constexpr matrix4(const matrix4&) = default;
 	matrix4& operator=(const matrix4&) = default;
 
-	/**
-	 * @brief returns reference to specified column.
-	 * Returns reference to the matrix column indicated by the argument.
-	 * @code
-	 * matrix4 m;
-	 * m[0][0] = 1;//assign 1 to element at row 0 column 0
-	 * m[3][2] = 3;//assign 3 to element at row 2 column 3
-	 * float elem = m[4][3];//assign value at row 3 column 4 of the matrix to variable 'elem'
-	 * @endcode
-	 * @param col - column number, must be from 0 to 3.
-	 * @return reference to the matrix column indicated by the argument.
+		/**
+	 * @brief Convert to different element type.
+	 * @return matrix4 with converted element type.
 	 */
-	vector4<T>& operator[](unsigned col)noexcept{
-		ASSERT(col < 4)
-		return (&this->c0)[col];
-	}
-
-	/**
-	 * @brief returns reference to specified column.
-	 * Constant variant of operator[].
-	 * @param col - column number, must be from 0 to 3.
-	 * @return reference to the matrix column indicated by the argument.
-	 */
-	const vector4<T>& operator[](unsigned col)const noexcept{
-		ASSERT(col < 4)
-		return (&this->c0)[col];
+	template <typename TT> matrix4<TT> to()noexcept{
+		return matrix4<TT>{
+				this->row(0).template to<TT>(),
+				this->row(1).template to<TT>(),
+				this->row(2).template to<TT>(),
+				this->row(3).template to<TT>()
+			};
 	}
 
 	/**
@@ -142,13 +102,37 @@ public:
 
 	/**
 	 * @brief Get matrix row.
-	 * Constructs a vector4 holding requested row of the matrix.
 	 * @param rowNum - row number to get, must be from 0 to 3.
-     * @return vector4 representing the row of this matrix.
+     * @return reference to vector4 representing the row of this matrix.
      */
-	vector4<T> row(unsigned rowNum)const noexcept{
+	vector4<T>& row(unsigned rowNum)noexcept{
 		ASSERT(rowNum < 4)
-		return vector4<T>(this->c0[rowNum], this->c1[rowNum], this->c2[rowNum], this->c3[rowNum]);
+		return this->operator[](rowNum);
+	}
+
+	/**
+	 * @brief Get matrix row.
+	 * @param rowNum - row number to get, must be from 0 to 3.
+     * @return reference to vector4 representing the row of this matrix.
+     */
+	const vector4<T>& row(unsigned rowNum)const noexcept{
+		ASSERT(rowNum < 4)
+		return this->operator[](rowNum);
+	}
+
+	/**
+	 * @brief Get matrix column.
+	 * Constructs and returns a vector4 representing the requested matrix column.
+	 * @param index - column index to get, must be from 0 to 3;
+	 * @return vector4 representing the requested matrix column.
+	 */
+	vector4<T> col(unsigned index)const noexcept{
+		return vector4<T>{
+				this->row(0)[index],
+				this->row(1)[index],
+				this->row(2)[index],
+				this->row(3)[index]
+			};
 	}
 
 	/**
@@ -159,10 +143,10 @@ public:
      */
 	matrix4 operator*(const matrix4& matr)const noexcept{
 		return matrix4(
-				vector4<T>(this->row(0) * matr[0], this->row(1) * matr[0], this->row(2) * matr[0], this->row(3) * matr[0]),
-				vector4<T>(this->row(0) * matr[1], this->row(1) * matr[1], this->row(2) * matr[1], this->row(3) * matr[1]),
-				vector4<T>(this->row(0) * matr[2], this->row(1) * matr[2], this->row(2) * matr[2], this->row(3) * matr[2]),
-				vector4<T>(this->row(0) * matr[3], this->row(1) * matr[3], this->row(2) * matr[3], this->row(3) * matr[3])
+				vector4<T>(this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2), this->row(0) * matr.col(3)),
+				vector4<T>(this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2), this->row(1) * matr.col(3)),
+				vector4<T>(this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2), this->row(2) * matr.col(3)),
+				vector4<T>(this->row(3) * matr.col(0), this->row(3) * matr.col(1), this->row(3) * matr.col(2), this->row(3) * matr.col(3))
 			);
 	}
 
@@ -170,15 +154,15 @@ public:
 	 * @brief Transpose matrix.
 	 */
 	matrix4& transpose()noexcept{
-		std::swap(this->c0[1], this->c1[0]);
-		std::swap(this->c0[2], this->c2[0]);
-		std::swap(this->c0[3], this->c3[0]);
+		std::swap(this->row(1)[0], this->row(0)[1]);
+		std::swap(this->row(2)[0], this->row(0)[2]);
+		std::swap(this->row(3)[0], this->row(0)[3]);
 
-		std::swap(this->c1[2], this->c2[1]);
-		std::swap(this->c1[3], this->c3[1]);
+		std::swap(this->row(2)[1], this->row(1)[2]);
+		std::swap(this->row(3)[1], this->row(1)[3]);
 
-		std::swap(this->c2[3], this->c3[2]);
-		return (*this);
+		std::swap(this->row(3)[2], this->row(2)[3]);
+		return *this;
 	}
 
 	/**
@@ -188,6 +172,19 @@ public:
      */
 	matrix4& operator*=(const matrix4& matr)noexcept{
 		return this->operator=(this->operator*(matr));
+	}
+
+	/**
+	 * @brief Multiply matrix by scalar.
+	 * @param n - scalar to multiply the matrix by.
+	 * @return reference to this matrix4.
+	 */
+	matrix4& operator*=(T n){
+		this->row(0) *= n;
+		this->row(1) *= n;
+		this->row(2) *= n;
+		this->row(3) *= n;
+		return *this;
 	}
 
 	/**
@@ -214,12 +211,57 @@ public:
 	/**
 	 * @brief Initialize this matrix with identity matrix.
 	 */
-	matrix4& identity()noexcept{
-		this->c0 = vector4<T>(1, 0, 0, 0);
-		this->c1 = vector4<T>(0, 1, 0, 0);
-		this->c2 = vector4<T>(0, 0, 1, 0);
-		this->c3 = vector4<T>(0, 0, 0, 1);
-		return (*this);
+	matrix4& set_identity()noexcept{
+		this->row(0) = vector4<T>(1, 0, 0, 0);
+		this->row(1) = vector4<T>(0, 1, 0, 0);
+		this->row(2) = vector4<T>(0, 0, 1, 0);
+		this->row(3) = vector4<T>(0, 0, 0, 1);
+		return *this;
+	}
+
+	/**
+	 * @brief Set current matrix to frustum matrix.
+	 * Parameters are identical to glFrustum() function from OpenGL.
+	 * @param left - left vertical clipping plane.
+	 * @param right - right vertical clipping plane.
+	 * @param bottom - bottom horizontal clipping plane.
+	 * @param top - top horizontal clipping plane.
+	 * @param nearVal - distance to near depth clipping plane. Must be positive.
+	 * @param farVal - distance to the far clipping plane. Must be positive.
+	 * @return reference to this matrix instance.
+	 */
+	matrix4& set_frustum(T left, T right, T bottom, T top, T nearVal, T farVal)noexcept{
+		T w = right - left;
+		ASSERT(w != 0)
+
+		T h = top - bottom;
+		ASSERT(h != 0)
+
+		T d = farVal - nearVal;
+		ASSERT(d != 0)
+
+		matrix4& f = *this;
+		f[0][0] = 2 * nearVal / w;
+		f[0][1] = 0;
+		f[0][2] = (right + left) / w;
+		f[0][3] = 0;
+
+		f[1][0] = 0;
+		f[1][1] = 2 * nearVal / h;
+		f[1][2] = (top + bottom) / h;
+		f[1][3] = 0;
+
+		f[2][0] = 0;
+		f[2][1] = 0;
+		f[2][2] = -(farVal + nearVal) / d;
+		f[2][3] = -2 * farVal * nearVal / d;
+
+		f[3][0] = 0;
+		f[3][1] = 0;
+		f[3][2] = -1;
+		f[3][3] = 0;
+
+		return *this;
 	}
 
 	/**
@@ -235,35 +277,9 @@ public:
 	 * @return reference to this matrix instance.
 	 */
 	matrix4& frustum(T left, T right, T bottom, T top, T nearVal, T farVal)noexcept{
-		T w = right - left;
-		ASSERT(w != 0)
-
-		T h = top - bottom;
-		ASSERT(h != 0)
-
-		T d = farVal - nearVal;
-		ASSERT(d != 0)
-
 		matrix4 f;
-		f[0][0] = 2 * nearVal / w;
-		f[1][0] = 0;
-		f[2][0] = (right + left) / w;
-		f[3][0] = 0;
 
-		f[0][1] = 0;
-		f[1][1] = 2 * nearVal / h;
-		f[2][1] = (top + bottom) / h;
-		f[3][1] = 0;
-
-		f[0][2] = 0;
-		f[1][2] = 0;
-		f[2][2] = -(farVal + nearVal) / d;
-		f[3][2] = -2 * farVal * nearVal / d;
-
-		f[0][3] = 0;
-		f[1][3] = 0;
-		f[2][3] = -1;
-		f[3][3] = 0;
+		f.set_frustum(left, right, bottom, top, nearVal, farVal);
 
 		return this->right_mul(f);
 	}
@@ -286,13 +302,19 @@ public:
 	 */
 	matrix4& scale(T x, T y)noexcept{
 		// update 0th column
-		this->c0 *= x;
+		this->row(0)[0] *= x;
+		this->row(1)[0] *= x;
+		this->row(2)[0] *= x;
+		this->row(3)[0] *= x;
 
 		// update 1st column
-		this->c1 *= y;
+		this->row(0)[1] *= y;
+		this->row(1)[1] *= y;
+		this->row(2)[1] *= y;
+		this->row(3)[1] *= y;
 
 		// NOTE: 2nd and 3rd columns remain unchanged
-		return (*this);
+		return *this;
 	}
 
 	/**
@@ -308,10 +330,13 @@ public:
 		this->scale(x, y);
 
 		// update 2nd column
-		this->c2 *= z;
+		this->row(0)[2] *= z;
+		this->row(1)[2] *= z;
+		this->row(2)[2] *= z;
+		this->row(3)[2] *= z;
 
 		// NOTE: 3rd column remains unchanged
-		return (*this);
+		return *this;
 	}
 
 	/**
@@ -353,9 +378,12 @@ public:
 		// NOTE: 0th, 1st and 2nd columns remain unchanged
 
 		// calculate 3rd column
-		this->c3 = this->c0 * x + this->c1 * y + this->c3;
+		this->row(0)[3] += this->row(0)[0] * x + this->row(0)[1] * y;
+		this->row(1)[3] += this->row(1)[0] * x + this->row(1)[1] * y;
+		this->row(2)[3] += this->row(2)[0] * x + this->row(2)[1] * y;
+		this->row(3)[3] += this->row(3)[0] * x + this->row(3)[1] * y;
 
-		return (*this);
+		return *this;
 	}
 
 	/**
@@ -370,9 +398,12 @@ public:
 		// NOTE: 0th, 1st and 2nd columns remain unchanged
 		this->translate(x, y);
 
-		this->c3 += this->c2 * z;
+		this->row(0)[3] += this->row(0)[2] * z;
+		this->row(1)[3] += this->row(1)[2] * z;
+		this->row(2)[3] += this->row(2)[2] * z;
+		this->row(3)[3] += this->row(3)[2] * z;
 
-		return (*this);
+		return *this;
 	}
 
 	/**
@@ -415,7 +446,7 @@ public:
 	 * @brief Multiply this matrix by rotation matrix.
 	 * Multiplies this matrix M by rotation matrix R from the right (M = M * R).
 	 * Rotation is done around (0, 0, 1) axis by given number of radians.
-	 * Positive direction of rotation is determined by a right-hand rule.
+	 * Positive direction of rotation is determined by a right-hand rule, i.e. from X-axis to Y-axis.
 	 * @param rot - the angle of rotation in radians.
 	 * @return reference to this matrix object.
 	 */
@@ -423,10 +454,10 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& s, const matrix4<T>& mat){
 		s << "\n";
-		s << "\t/" << mat[0][0] << " " << mat[1][0] << " " << mat[2][0] << " " << mat[3][0] << "\\" << std::endl;
-		s << "\t|" << mat[0][1] << " " << mat[1][1] << " " << mat[2][1] << " " << mat[3][1] << "|" << std::endl;
-		s << "\t|" << mat[0][2] << " " << mat[1][2] << " " << mat[2][2] << " " << mat[3][2] << "|" << std::endl;
-		s << "\t\\" << mat[0][3] << " " << mat[1][3] << " " << mat[2][3] << " " << mat[3][3] << "/";
+		s << "\t/" << mat[0][0] << " " << mat[0][1] << " " << mat[0][2] << " " << mat[0][3] << "\\" << std::endl;
+		s << "\t|" << mat[1][0] << " " << mat[1][1] << " " << mat[1][2] << " " << mat[1][3] << "|" << std::endl;
+		s << "\t|" << mat[2][0] << " " << mat[2][1] << " " << mat[2][2] << " " << mat[2][3] << "|" << std::endl;
+		s << "\t\\" << mat[3][0] << " " << mat[3][1] << " " << mat[3][2] << " " << mat[3][3] << "/";
 		return s;
 	};
 };
@@ -464,19 +495,19 @@ template <class T> vector4<T> matrix4<T>::operator*(const vector4<T>& vec)const 
 }
 
 template <class T> matrix4<T>& matrix4<T>::scale(const vector3<T>& s)noexcept{
-	return this->Scale(s.x, s.y, s.z);
+	return this->scale(s.x(), s.y(), s.z());
 }
 
 template <class T> matrix4<T>& matrix4<T>::scale(const vector2<T>& s)noexcept{
-	return this->scale(s.x, s.y);
+	return this->scale(s.x(), s.y());
 }
 
 template <class T> matrix4<T>& matrix4<T>::translate(const vector2<T>& t)noexcept{
-	return this->translate(t.x, t.y);
+	return this->translate(t.x(), t.y());
 }
 
 template <class T> matrix4<T>& matrix4<T>::translate(const vector3<T>& t)noexcept{
-	return this->translate(t.x, t.y, t.z);
+	return this->translate(t.x(), t.y(), t.z());
 }
 
 template <class T> matrix4<T>& matrix4<T>::rotate(const quaternion<T>& q)noexcept{
@@ -491,7 +522,7 @@ template <class T> matrix4<T>& matrix4<T>::rotate(T rot)noexcept{
 	return this->rotate(vector3<T>(0, 0, rot));
 }
 
-template <class T> matrix4<T>::matrix4(const quaternion<T>& quat)noexcept{
+template <class T> constexpr matrix4<T>::matrix4(const quaternion<T>& quat)noexcept{
 	this->set(quat);
 }
 
@@ -503,28 +534,28 @@ template <class T> matrix4<T>& matrix4<T>::set(const quaternion<T>& quat)noexcep
 	//     \  0               0               0               1   /
 
 	// First column
-	this->c0[0] = T(1) - T(2) * (utki::pow2(quat.y()) + utki::pow2(quat.z()));
-	this->c0[1] = T(2) * (quat.x() * quat.y() + quat.z() * quat.w());
-	this->c0[2] = T(2) * (quat.x() * quat.z() - quat.y() * quat.w());
-	this->c0[3] = T(0);
+	this->row(0)[0] = T(1) - T(2) * (utki::pow2(quat.y()) + utki::pow2(quat.z()));
+	this->row(1)[0] = T(2) * (quat.x() * quat.y() + quat.z() * quat.w());
+	this->row(2)[0] = T(2) * (quat.x() * quat.z() - quat.y() * quat.w());
+	this->row(3)[0] = T(0);
 
 	// Second column
-	this->c1[0] = T(2) * (quat.x() * quat.y() - quat.z() * quat.w());
-	this->c1[1] = T(1) - T(2) * (utki::pow2(quat.x()) + utki::pow2(quat.z()));
-	this->c1[2] = T(2) * (quat.z() * quat.y() + quat.x() * quat.w());
-	this->c1[3] = T(0);
+	this->row(0)[1] = T(2) * (quat.x() * quat.y() - quat.z() * quat.w());
+	this->row(1)[1] = T(1) - T(2) * (utki::pow2(quat.x()) + utki::pow2(quat.z()));
+	this->row(2)[1] = T(2) * (quat.z() * quat.y() + quat.x() * quat.w());
+	this->row(3)[1] = T(0);
 
 	// Third column
-	this->c2[0] = T(2) * (quat.x() * quat.z() + quat.y() * quat.w());
-	this->c2[1] = T(2) * (quat.y() * quat.z() - quat.x() * quat.w());
-	this->c2[2] = T(1) - T(2) * (utki::pow2(quat.x()) + utki::pow2(quat.y()));
-	this->c2[3] = T(0);
+	this->row(0)[2] = T(2) * (quat.x() * quat.z() + quat.y() * quat.w());
+	this->row(1)[2] = T(2) * (quat.y() * quat.z() - quat.x() * quat.w());
+	this->row(2)[2] = T(1) - T(2) * (utki::pow2(quat.x()) + utki::pow2(quat.y()));
+	this->row(3)[2] = T(0);
 
 	// Fourth column
-	this->c3[0] = T(0);
-	this->c3[1] = T(0);
-	this->c3[2] = T(0);
-	this->c3[3] = T(1);
+	this->row(0)[3] = T(0);
+	this->row(1)[3] = T(0);
+	this->row(2)[3] = T(0);
+	this->row(3)[3] = T(1);
 
 	return *this;
 }
