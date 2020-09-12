@@ -103,12 +103,28 @@ public:
 	constexpr quaternion() = default;
 
 	/**
+	 * @brief Convert to quaternion with different type of component.
+	 * Convert this quaternion to a quaternion whose component type is different from T.
+	 * Components are converted using constructor of target type passing the source
+	 * component as argument of the target type constructor.
+	 * @return converted quaternion.
+	 */
+	template <typename TT> quaternion<TT> to()noexcept{
+		return quaternion<TT>{
+				TT(this->x()),
+				TT(this->y()),
+				TT(this->z()),
+				TT(this->w())
+			};
+	}
+
+	/**
 	 * @brief Complex conjugate of this quaternion.
 	 * Note, complex conjugate of quaternion (x, y, z, w) is (-x, -y, -z, w).
 	 * @return quaternion instance which is a complex conjugate of this quaternion.
 	 */
 	quaternion operator!()const noexcept{
-		return quaternion(-this->x, -this->y, -this->z, this->w);
+		return quaternion(-this->x(), -this->y(), -this->z(), this->w());
 	}
 
 	/**
@@ -118,11 +134,11 @@ public:
      * @return Reference to this quaternion object.
      */
 	quaternion& operator+=(const quaternion& q)noexcept{
-		this->x += q.x;
-		this->y += q.y;
-		this->z += q.z;
-		this->w += q.w;
-		return (*this);
+		this->x() += q.x();
+		this->y() += q.y();
+		this->z() += q.z();
+		this->w() += q.w();
+		return *this;
 	}
 
 	/**
@@ -142,11 +158,11 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& operator*=(T s)noexcept{
-		this->x *= s;
-		this->y *= s;
-		this->z *= s;
-		this->w *= s;
-		return (*this);
+		this->x() *= s;
+		this->y() *= s;
+		this->z() *= s;
+		this->w() *= s;
+		return *this;
 	}
 
 	/**
@@ -159,17 +175,27 @@ public:
 	}
 
 	/**
+	 * @brief Multiply scalar by quaternion.
+	 * @param num - scalar to multiply.
+	 * @param quat - quaternion to multiply by.
+	 * @return quaternion resulting from multiplication of given scalar by given quaternion.
+	 */
+	friend quaternion operator*(T num, const quaternion& quat)noexcept{
+		return quat * num;
+	}
+
+	/**
 	 * @brief Divide by scalar and assign.
 	 * Divide this quaternion by scalar and assigns the result to this quaternion instance.
 	 * @param s - scalar value to divide by.
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& operator/=(T s)noexcept{
-		this->x /= s;
-		this->y /= s;
-		this->z /= s;
-		this->w /= s;
-		return (*this);
+		this->x() /= s;
+		this->y() /= s;
+		this->z() /= s;
+		this->w() /= s;
+		return *this;
 	}
 
 	/**
@@ -189,7 +215,10 @@ public:
 	 * @return result of the dot product.
 	 */
 	T operator*(const quaternion& q)const noexcept{
-		return this->x * q.x + this->y * q.y + this->z * q.z + this->w * q.w;
+		return this->x() * q.x()
+				+ this->y() * q.y()
+				+ this->z() * q.z()
+				+ this->w() * q.w();
 	}
 
 	/**
@@ -201,20 +230,20 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& operator%=(const quaternion& q)noexcept{
-		T a = (this->w + this->x) * (q.w + q.x);
-		T b = (this->z - this->y) * (q.y - q.z);
-		T c = (this->x - this->w) * (q.y + q.z);
-		T d = (this->y + this->z) * (q.x - q.w);
-		T e = (this->x + this->z) * (q.x + q.y);
-		T f = (this->x - this->z) * (q.x - q.y);
-		T g = (this->w + this->y) * (q.w - q.z);
-		T h = (this->w - this->y) * (q.w + q.z);
+		T a = (this->w() + this->x()) * (q.w() + q.x());
+		T b = (this->z() - this->y()) * (q.y() - q.z());
+		T c = (this->x() - this->w()) * (q.y() + q.z());
+		T d = (this->y() + this->z()) * (q.x() - q.w());
+		T e = (this->x() + this->z()) * (q.x() + q.y());
+		T f = (this->x() - this->z()) * (q.x() - q.y());
+		T g = (this->w() + this->y()) * (q.w() - q.z());
+		T h = (this->w() - this->y()) * (q.w() + q.z());
 
-		this->x = a - (e + f + g + h) * 0.5f;
-		this->y = -c + (e - f + g - h) * 0.5f;
-		this->z = -d + (e - f - g + h) * 0.5f;
-		this->w = b + (-e - f + g + h) * 0.5f;
-		return (*this);
+		this->x() = a - (e + f + g + h) / T(2);
+		this->y() = -c + (e - f + g - h) / T(2);
+		this->z() = -d + (e - f - g + h) / T(2);
+		this->w() = b + (-e - f + g + h) / T(2);
+		return *this;
 	}
 
 	/**
@@ -257,10 +286,10 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& negate()noexcept{
-		this->x = -this->x;
-		this->y = -this->y;
-		this->z = -this->z;
-		this->w = -this->w;
+		this->x() = -this->x();
+		this->y() = -this->y();
+		this->z() = -this->z();
+		this->w() = -this->w();
 		return *this;
 	}
 
@@ -430,7 +459,7 @@ template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector3<T>& 
 }
 
 template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector3<T>& axis, T angle)noexcept{
-	return this->set_rotation(axis.x, axis.y, axis.z, angle);
+	return this->set_rotation(axis.x(), axis.y(), axis.z(), angle);
 }
 
 template <class T> matrix4<T> quaternion<T>::to_matrix4()const noexcept{
