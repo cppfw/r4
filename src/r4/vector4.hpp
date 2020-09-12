@@ -169,11 +169,8 @@ public:
      * @return Reference to this vector object.
      */
 	vector4& operator=(T num)noexcept{
-		this->x = num;
-		this->y = num;
-		this->z = num;
-		this->w = num;
-		return (*this);
+		this->set(num);
+		return *this;
 	}
 
 	/**
@@ -182,11 +179,11 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector4& set(T val)noexcept{
-		this->x = val;
-		this->y = val;
-		this->z = val;
-		this->w = val;
-		return (*this);
+		this->x() = val;
+		this->y() = val;
+		this->z() = val;
+		this->w() = val;
+		return *this;
 	}
 
 	/**
@@ -214,10 +211,10 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector4& operator+=(const vector4& vec)noexcept{
-		this->x += vec.x;
-		this->y += vec.y;
-		this->z += vec.z;
-		this->w += vec.w;
+		this->x() += vec.x();
+		this->y() += vec.y();
+		this->z() += vec.z();
+		this->w() += vec.w();
 		return *this;
 	}
 
@@ -238,10 +235,10 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector4& operator-=(const vector4& vec)noexcept{
-		this->x -= vec.x;
-		this->y -= vec.y;
-		this->z -= vec.z;
-		this->w -= vec.w;
+		this->x() -= vec.x();
+		this->y() -= vec.y();
+		this->z() -= vec.z();
+		this->w() -= vec.w();
 		return *this;
 	}
 
@@ -270,11 +267,11 @@ public:
      * @return Reference to this vector object.
      */
 	vector4& operator*=(T num)noexcept{
-		this->x *= num;
-		this->y *= num;
-		this->z *= num;
-		this->w *= num;
-		return (*this);
+		this->x() *= num;
+		this->y() *= num;
+		this->z() *= num;
+		this->w() *= num;
+		return *this;
 	}
 
 	/**
@@ -305,11 +302,11 @@ public:
 	 */
 	vector4& operator/=(T num)noexcept{
 		ASSERT_INFO(num != 0, "vector4::operator/=(): division by 0")
-		this->x /= num;
-		this->y /= num;
-		this->z /= num;
-		this->w /= num;
-		return (*this);
+		this->x() /= num;
+		this->y() /= num;
+		this->z() /= num;
+		this->w() /= num;
+		return *this;
 	}
 
 	/**
@@ -345,10 +342,10 @@ public:
      */
 	vector4 operator%(const vector4& vec)const noexcept{
 		return vector4(
-				this->y * vec.z - this->z * vec.y,
-				this->z * vec.x - this->x * vec.z,
-				this->x * vec.y - this->y * vec.x,
-				this->w * vec.w
+				this->y() * vec.z() - this->z() * vec.y(),
+				this->z() * vec.x() - this->x() * vec.z(),
+				this->x() * vec.y() - this->y() * vec.x(),
+				this->w() * vec.w()
 			);
 	}
 
@@ -358,11 +355,11 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector4& negate()noexcept{
-		this->x = -this->x;
-		this->y = -this->y;
-		this->z = -this->z;
-		this->w = -this->w;
-		return (*this);
+		this->x() = -this->x();
+		this->y() = -this->y();
+		this->z() = -this->z();
+		this->w() = -this->w();
+		return *this;
 	}
 
 	/**
@@ -370,10 +367,10 @@ public:
 	 * @return Power 2 of this vector norm.
 	 */
 	T norm_pow2()const noexcept{
-		return utki::pow2(this->x)
-				+ utki::pow2(this->y)
-				+ utki::pow2(this->z)
-				+ utki::pow2(this->w);
+		return utki::pow2(this->x())
+				+ utki::pow2(this->y())
+				+ utki::pow2(this->z())
+				+ utki::pow2(this->w());
 	}
 
 	/**
@@ -393,10 +390,10 @@ public:
 	vector4& normalize()noexcept{
 		T mag = this->norm();
 		if(mag == 0){
-			this->x = 1;
-			this->y = 0;
-			this->z = 0;
-			this->w = 0;
+			this->x() = 1;
+			this->y() = 0;
+			this->z() = 0;
+			this->w() = 0;
 			return *this;
 		}
 
@@ -417,7 +414,7 @@ public:
 namespace r4{
 
 template <class T> constexpr vector4<T>::vector4(const vector2<T>& vec, T z, T w)noexcept :
-		vector4(vec.x, vec.y, z, w)
+		vector4(vec.x(), vec.y(), z, w)
 {}
 
 template <class T> constexpr vector4<T>::vector4(const vector3<T>& vec, T w)noexcept :
@@ -425,31 +422,31 @@ template <class T> constexpr vector4<T>::vector4(const vector3<T>& vec, T w)noex
 {}
 
 template <class T> vector4<T>& vector4<T>::operator=(const vector3<T>& vec)noexcept{
-	this->x = vec.x;
-	this->y = vec.y;
-	this->z = vec.z;
-	this->w = 1;
+	this->x() = vec.x();
+	this->y() = vec.y();
+	this->z() = vec.z();
+	this->w() = 1;
 	return *this;
 }
 
 template <class T> vector4<T>& vector4<T>::operator=(const vector2<T>& vec)noexcept{
-	this->x = vec.x;
-	this->y = vec.y;
-	this->z = 0;
-	this->w = 1;
+	this->x() = vec.x();
+	this->y() = vec.y();
+	this->z() = 0;
+	this->w() = 1;
 	return *this;
 }
 
 template <class T> vector4<T>& vector4<T>::operator+=(const vector2<T>& vec)noexcept{
-	this->x += vec.x;
-	this->y += vec.y;
+	this->x() += vec.x();
+	this->y() += vec.y();
 	return *this;
 }
 
 template <class T> vector4<T>& vector4<T>::operator+=(const vector3<T>& vec)noexcept{
-	this->x += vec.x;
-	this->y += vec.y;
-	this->z += vec.z;
+	this->x() += vec.x();
+	this->y() += vec.y();
+	this->z() += vec.z();
 	return *this;
 }
 

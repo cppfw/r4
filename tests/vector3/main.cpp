@@ -59,6 +59,7 @@ int main(int argc, char** argv){
 
         ASSERT_INFO_ALWAYS(vi[0] == 1, "vi[0] = " << vi[0])
         ASSERT_INFO_ALWAYS(vi[1] == 2, "vi[1] = " << vi[1])
+		ASSERT_INFO_ALWAYS(vi[2] == 3, "vi[2] = " << vi[2])
     }
 
 	// test operator=(vector2)
