@@ -503,21 +503,21 @@ template <class T> matrix4<T>& matrix4<T>::set(const quaternion<T>& quat)noexcep
 	//     \  0               0               0               1   /
 
 	// First column
-	this->c0[0] = T(1) - T(2) * (utki::pow2(quat.y) + utki::pow2(quat.z));
-	this->c0[1] = T(2) * (quat.x * quat.y + quat.z * quat.w);
-	this->c0[2] = T(2) * (quat.x * quat.z - quat.y * quat.w);
+	this->c0[0] = T(1) - T(2) * (utki::pow2(quat.y()) + utki::pow2(quat.z()));
+	this->c0[1] = T(2) * (quat.x() * quat.y() + quat.z() * quat.w());
+	this->c0[2] = T(2) * (quat.x() * quat.z() - quat.y() * quat.w());
 	this->c0[3] = T(0);
 
 	// Second column
-	this->c1[0] = T(2) * (quat.x * quat.y - quat.z * quat.w);
-	this->c1[1] = T(1) - T(2) * (utki::pow2(quat.x) + utki::pow2(quat.z));
-	this->c1[2] = T(2) * (quat.z * quat.y + quat.x * quat.w);
+	this->c1[0] = T(2) * (quat.x() * quat.y() - quat.z() * quat.w());
+	this->c1[1] = T(1) - T(2) * (utki::pow2(quat.x()) + utki::pow2(quat.z()));
+	this->c1[2] = T(2) * (quat.z() * quat.y() + quat.x() * quat.w());
 	this->c1[3] = T(0);
 
 	// Third column
-	this->c2[0] = T(2) * (quat.x * quat.z + quat.y * quat.w);
-	this->c2[1] = T(2) * (quat.y * quat.z - quat.x * quat.w);
-	this->c2[2] = T(1) - T(2) * (utki::pow2(quat.x) + utki::pow2(quat.y));
+	this->c2[0] = T(2) * (quat.x() * quat.z() + quat.y() * quat.w());
+	this->c2[1] = T(2) * (quat.y() * quat.z() - quat.x() * quat.w());
+	this->c2[2] = T(1) - T(2) * (utki::pow2(quat.x()) + utki::pow2(quat.y()));
 	this->c2[3] = T(0);
 
 	// Fourth column
