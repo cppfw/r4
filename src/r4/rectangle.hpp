@@ -21,71 +21,101 @@ namespace r4{
  */
 template <class T> class rectangle{
 public:
-	typedef T T_Component;
+	/**
+	 * @brief Rectangle origin point.
+	 * The rectangle origin point coincides with one of the rectangle's corner points.
+	 */
+	vector2<T> p;
 
-	//TODO: doxygen
-	vector2<T> p; //Left-Bottom corner
+	/**
+	 * @brief Dimensions of the rectangle.
+	 */
+	vector2<T> d;
 
-	//TODO: doxygen
-	vector2<T> d; //dimensions
+	/**
+	 * @brief constructor.
+	 * Default constructor. It does not initialize the rectangle.
+	 */
+	constexpr rectangle() = default;
 
-	//TODO: doxygen
-	rectangle()noexcept{}
-
-	//TODO: doxygen
-	rectangle(T value)noexcept :
-			p(value),
-			d(value)
-	{}
-
-	//TODO: doxygen
-	rectangle(T left, T bottom, T width, T height)noexcept :
-			p(left, bottom),
+	/**
+	 * @brief constructor.
+	 * Initializes the rectangle to given position and dimensions.
+	 * @param x - X coordinate of the rectangle's origin point.
+	 * @param y - Y coordinate of the rectangle's origin point.
+	 * @param width - width of the rectangle.
+	 * @param height - height of the rectangle.
+	 */
+	constexpr rectangle(T x, T y, T width, T height)noexcept :
+			p(x, y),
 			d(width, height)
 	{}
 
-	//TODO: doxygen
-	rectangle(vector2<T> leftBottom, vector2<T> dimensions)noexcept :
-			p(leftBottom),
-			d(dimensions)
+	/**
+	 * @brief constructor.
+	 * Initializes the rectangle to given position and dimensions.
+	 * @param pos - the rectangle's origin point.
+	 * @param dims - the rectangle's dimensions.
+	 */
+	constexpr rectangle(const vector2<T>& pos, const vector2<T>& dims)noexcept :
+			p(pos),
+			d(dims)
 	{}
 
-	template <class TT> explicit rectangle(const rectangle<TT>& r) :
-			p(r.p),
-			d(r.d)
-	{}
+	/**
+	 * @brief Test rectangles for equality.
+	 * @param r - rectangle to test this rectangle with.
+	 * @return true if two rectangles are equal, i.e. their origin points and dimensions are equal.
+	 * @return false otherwise.
+	 */
+	bool operator==(const rectangle& r)const noexcept{
+		return this->p == r.p && this->d == r.d;
+	}
 
-	//TODO: doxygen
+	/**
+	 * @brief Get center point of the rectangle.
+	 * @return vector2 representing the center point of the rectangle.
+	 */
 	vector2<T> center()const noexcept{
 		return this->p + this->d / 2;
 	}
 
-	//TODO: doxygen
-	void move_center_to(const vector2<T>& vec)noexcept{
-		this->p = vec - this->d / 2;
+	/**
+	 * @brief Move rectangle.
+	 * Move the rectangle so that its center point coincides with the given point.
+	 * @param new_center - new center point of the rectangle.
+	 */
+	void move_center_to(const vector2<T>& new_center)noexcept{
+		this->p = new_center - this->d / 2;
 	}
 
-	//TODO: doxygen
-	bool overlaps(const vector2<T>& vec)const noexcept{
+	/**
+	 * @brief Test if the rectangle overlaps given point.
+	 * @param point - point to test for overlapping.
+	 * @return true if the rectangle overlaps the given point.
+	 * @return false otherwise.
+	 */
+	bool overlaps(const vector2<T>& point)const noexcept{
 		return
-				vec.x < this->right() &&
-				vec.x >= this->left() &&
-				vec.y >= this->bottom() &&
-				vec.y < this->top()
+				point.x() >= this->p.x() &&
+				point.y() >= this->p.y() &&
+				point.x() < this->pdx() &&
+				point.y() < this->pdy()
 			;
 	}
 
-	//TODO: doxygen
-	// get intersection of two rectangles
-	rectangle intersection(const rectangle& rect)const noexcept{
-		return rectangle(*this).intersect(rect);
-	}
-
-	//TODO: doxygen
+	/**
+	 * @brief Intersect this rectangle with given rectangle.
+	 * The intersection result is stored in this rectangle.
+	 * @param rect - rectangle to intersect this rectnagle with.
+	 * @return referenct to this rectangle.
+	 */
 	rectangle& intersect(const rectangle& rect)noexcept{
+		using std::min;
+		using std::max;
 		for(unsigned i = 0; i != 2; ++i){
-			T end = std::min(this->p[i] + this->d[i], rect.p[i] + rect.d[i]);
-			this->p[i] = std::max(this->p[i], rect.p[i]);
+			T end = min(this->p[i] + this->d[i], rect.p[i] + rect.d[i]);
+			this->p[i] = max(this->p[i], rect.p[i]);
 			if(end > this->p[i]){
 				this->d[i] = end - this->p[i];
 			}else{
@@ -96,59 +126,53 @@ public:
 		return *this;
 	}
 
-	//TODO: doxygen
-	vector2<T> extent()const noexcept{
-		return this->d / 2;
+	/**
+	 * @brief Get intersection of two rectangles.
+	 * @param rect - the other rectangle to get intersection with.
+	 * @return rectangle representing the intersection of this rectangle anf the given one.
+	 */
+	rectangle intersection(const rectangle& rect)const noexcept{
+		return rectangle(*this).intersect(rect);
 	}
 
-	//TODO: doxygen
-	vector2<T> right_top()const noexcept{
+	/**
+	 * @brief Get point of the rectangle with maxium X and Y coordinates.
+	 * @return point of the rectangle with maximal X anf Y coordinates.
+	 */
+	vector2<T> pdx_pdy()const noexcept{
 		return this->p + this->d;
 	}
 
-	//TODO: doxygen
-	T& left()noexcept{
-		return this->p.x;
+	/**
+	 * @brief Get point of the rectangle with minimal X and maximal Y coordinates.
+	 * @return point of the rectangle with minimal X and maximal Y coordinates.
+	 */
+	vector2<T> x_pdy()const noexcept{
+		return vector2<T>(this->p.x(), this->pdy());
 	}
 
-	//TODO: doxygen
-	const T& left()const noexcept{
-		return this->p.x;
+	/**
+	 * @brief Get maximal Y coordinate.
+	 * @return maximal Y coordinate of the rectangle's point.
+	 */
+	T pdy()const noexcept{
+		return this->p.y() + this->d.y();
 	}
 
-	//TODO: doxygen
-	vector2<T> left_top()const noexcept{
-		return vector2<T>(this->p.x, this->p.y + this->d.y);
+	/**
+	 * @brief Get maximal X coordinate.
+	 * @return maximal X coordinate of the rectangle's point.
+	 */
+	T pdx()const noexcept{
+		return this->p.x() + this->d.x();
 	}
 
-	//TODO: doxygen
-	T top()const noexcept{
-		return this->p.y + this->d.y;
-	}
-
-	//TODO: doxygen
-	T right()const noexcept{
-		return this->p.x + this->d.x;
-	}
-
-	//TODO: doxygen
-	vector2<T> right_bottom()const noexcept{
-		return vector2<T>(this->p.x + this->d.x, this->p.y);
-	}
-
-	//TODO: doxygen
-	T& bottom()noexcept{
-		return this->p.y;
-	}
-
-	//TODO: doxygen
-	const T& bottom()const noexcept{
-		return this->p.y;
-	}
-
-	//TODO: doxygen
-	bool operator==(const rectangle& r)const noexcept{
-		return this->p == r.p && this->d == r.d;
+	/**
+	 * @brief Get point of the rectangle with maximal X and minimal Y coordinates.
+	 * @return point of the rectangle with maximal X and minimal Y coordinates.
+	 */
+	vector2<T> pdx_y()const noexcept{
+		return vector2<T>(this->pdx(), this->p.y());
 	}
 
 	/**
@@ -159,7 +183,10 @@ public:
      * @return converted vector2.
      */
 	template <class TS> rectangle<TS> to()const noexcept{
-		return rectangle<TS>(*this);
+		return rectangle<TS>{
+				this->p.template to<TS>(),
+				this->d.template to<TS>()
+			};
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const rectangle<T>& rect){
