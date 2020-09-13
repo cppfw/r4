@@ -56,7 +56,7 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(!r.overlaps(p[1]))
 		ASSERT_ALWAYS(!r.overlaps(p[2]))
 		ASSERT_ALWAYS(!r.overlaps(p[3]))
-		ASSERT_ALWAYS(r.overlaps(p[4]))
+		ASSERT_INFO_ALWAYS(r.overlaps(p[4]), "r = " << r << " p = " << p[4])
 		ASSERT_ALWAYS(!r.overlaps(p[5]))
 		ASSERT_ALWAYS(!r.overlaps(p[6]))
 		ASSERT_ALWAYS(!r.overlaps(p[7]))
