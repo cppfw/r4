@@ -47,9 +47,9 @@ int main(int argc, char** argv){
 		r4::rectangle<int> r{ {3, 4}, {6, 8} };
 
 		std::array<r4::vector2<int>, 9> p = {{
-			{1, 2}, {5, 3}, {10 ,3},
-			{2, 5}, {5, 7}, {11, 7},
-			{-1, 13}, {7, 14}, {13, 17}
+			r4::vector2<int>{1, 2}, r4::vector2<int>{5, 3}, r4::vector2<int>{10 ,3},
+			r4::vector2<int>{2, 5}, r4::vector2<int>{5, 7}, r4::vector2<int>{11, 7},
+			r4::vector2<int>{-1, 13}, r4::vector2<int>{7, 14}, r4::vector2<int>{13, 17}
 		}};
 
 		ASSERT_ALWAYS(!r.overlaps(p[0]))
