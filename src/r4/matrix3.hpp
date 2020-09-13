@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <array>
 
 #include <utki/debug.hpp>
 
@@ -9,85 +10,51 @@
 
 namespace r4{
 
-template <class T> class vector2;
-template <class T> class vector3;
+template <typename T> class vector2;
+template <typename T> class vector3;
 
 /**
  * @brief 4x4 matrix template class.
- * Note, that this matrix class stores elements in memory column by column.
- * This is the same way as OpenGL matrices are stored in memory.
- * This means easy use of this class with OpenGL.
+ * Note, that this matrix class stores elements in row-major order.
  */
-template <typename T> class matrix3{
+template <typename T> class matrix3 : public std::array<vector3<T>, 3>{
+	typedef std::array<vector3<T>, 3> base_type;
 public:
-	/**
-	 * @brief 0th column of the matrix.
-	 */
-	vector3<T> c0;
-
-	/**
-	 * @brief 1st column of the matrix.
-	 */
-	vector3<T> c1;
-
-	/**
-	 * @brief 2nd column of the matrix.
-     */
-	vector3<T> c2;
-
 	/**
 	 * @brief Default constructor.
 	 * NOTE: it does not initialize the matrix with any values.
 	 * Matrix elements are undefined after the matrix is created with this constructor.
 	 */
-	matrix3()noexcept{}
+	constexpr matrix3()noexcept{}
 
 	/**
 	 * @brief Construct initialized matrix.
-	 * Creates a matrix and initializes its columns by the given values.
-     * @param column0 - 0th column of the matrix.
-	 * @param column1 - 1st column of the matrix.
-	 * @param column2 - 2nd column of the matrix.
+	 * Creates a matrix and initializes its rows with the given values.
+     * @param row0 - 0th row of the matrix.
+	 * @param row1 - 1st row of the matrix.
+	 * @param row2 - 2nd row of the matrix.
      */
-	matrix3(
-			const vector4<T>& column0,
-			const vector4<T>& column1,
-			const vector4<T>& column2
+	constexpr matrix3(
+			const vector3<T>& row0,
+			const vector3<T>& row1,
+			const vector3<T>& row2
 		)noexcept :
-			c0(column0),
-			c1(column1),
-			c2(column2)
+			std::array<vector3<T>, 3>{{row0, row1, row2}}
 	{}
 
-	template <class TT> matrix3(const matrix3<TT>& m) :
-			c0(m.c0),
-			c1(m.c1),
-			c2(m.c2)
-	{}
-
-	matrix3(const matrix3&) = default;
+	constexpr matrix3(const matrix3&) = default;
 	matrix3& operator=(const matrix3&) = default;
 
 	/**
-	 * @brief returns reference to specified column.
-	 * Returns reference to the matrix column indicated by the argument.
-	 * @param col - column number, must be from 0 to 2.
-	 * @return reference to the matrix column indicated by the argument.
+	 * @brief Convert to different element type.
+	 * @return matrix3 with converted element type.
 	 */
-	vector3<T>& operator[](unsigned col)noexcept{
-		ASSERT(col < 3)
-		return (&this->c0)[col];
-	}
-
-	/**
-	 * @brief returns reference to specified column.
-	 * Constant variant of operator[].
-	 * @param col - column number, must be from 0 to 2.
-	 * @return reference to the matrix column indicated by the argument.
-	 */
-	const vector3<T>& operator[](unsigned col)const noexcept{
-		ASSERT(col < 3)
-		return (&this->c0)[col];
+	template <typename TT> matrix3<TT> to()noexcept{
+		return matrix3<TT>{
+				this->row(0).template to<TT>(),
+				this->row(1).template to<TT>(),
+				this->row(2).template to<TT>()
+			};
 	}
 
 	/**
@@ -110,13 +77,46 @@ public:
 
 	/**
 	 * @brief Get matrix row.
-	 * Constructs a vector4 holding requested row of the matrix.
-	 * @param rowNum - row number to get, must be from 0 to 3.
-     * @return vector4 representing the row of this matrix.
+	 * @param index - row index to get, must be from 0 to 2.
+     * @return reference to vector3 representing the row of this matrix.
      */
-	vector3<T> row(unsigned rowNum)const noexcept{
-		ASSERT(rowNum < 3)
-		return vector3<T>(this->c0[rowNum], this->c1[rowNum], this->c2[rowNum]);
+	vector3<T>& row(unsigned index)noexcept{
+		ASSERT(index < 3)
+		return this->operator[](index);
+	}
+
+	/**
+	 * @brief Get constant matrix row.
+	 * @param index - row index to get, must be from 0 to 2.
+     * @return constant reference to vector3 representing the row of this matrix.
+     */
+	const vector3<T>& row(unsigned index)const noexcept{
+		ASSERT(index < 3)
+		return this->operator[](index);
+	}
+
+	/**
+	 * @brief Get matrix column.
+	 * Constructs and returns a vector3 representing the requested matrix column.
+	 * @param index - column index to get, must be from 0 to 2;
+	 * @return vector3 representing the requested matrix column.
+	 */
+	vector3<T> col(unsigned index)const noexcept{
+		return vector3<T>{
+				this->row(0)[index],
+				this->row(1)[index],
+				this->row(2)[index]
+			};
+	}
+
+	/**
+	 * @brief Transpose matrix.
+	 */
+	matrix3& transpose()noexcept{
+		std::swap(this->row(1)[0], this->row(0)[1]);
+		std::swap(this->row(2)[0], this->row(0)[2]);
+		std::swap(this->row(2)[1], this->row(1)[2]);
+		return *this;
 	}
 
 	/**
@@ -126,22 +126,11 @@ public:
      * @return New matrix as a result of matrices product.
      */
 	matrix3 operator*(const matrix3& matr)const noexcept{
-		return matrix3(
-				vector3<T>(this->row(0) * matr[0], this->row(1) * matr[0], this->row(2) * matr[0]),
-				vector3<T>(this->row(0) * matr[1], this->row(1) * matr[1], this->row(2) * matr[1]),
-				vector3<T>(this->row(0) * matr[2], this->row(1) * matr[2], this->row(2) * matr[2])
-			);
-	}
-
-	/**
-	 * @brief Transpose matrix.
-	 */
-	matrix3& transpose()noexcept{
-		std::swap(this->c0[1], this->c1[0]);
-		std::swap(this->c0[2], this->c2[0]);
-
-		std::swap(this->c1[2], this->c2[1]);
-		return (*this);
+		return matrix3{
+				vector3<T>{this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2)},
+				vector3<T>{this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2)},
+				vector3<T>{this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2)}
+			};
 	}
 
 	/**
@@ -160,7 +149,7 @@ public:
 	 * @param matr - matrix to multiply by.
 	 * @return reference to this matrix object.
 	 */
-	matrix3& right_mul(const matrix3& matr)noexcept{
+	matrix3& right_multiply(const matrix3& matr)noexcept{
 		return this->operator*=(matr);
 	}
 
@@ -170,18 +159,18 @@ public:
 	 * @param matr - matrix to multiply by.
 	 * @return reference to this matrix object.
 	 */
-	matrix3& left_mul(const matrix3& matr)noexcept{
+	matrix3& left_multiply(const matrix3& matr)noexcept{
 		return this->operator=(matr.operator*(*this));
 	}
 
 	/**
 	 * @brief Initialize this matrix with identity matrix.
 	 */
-	matrix3& identity()noexcept{
-		this->c0 = vector3<T>(1, 0, 0);
-		this->c1 = vector3<T>(0, 1, 0);
-		this->c2 = vector3<T>(0, 0, 1);
-		return (*this);
+	matrix3& set_identity()noexcept{
+		this->row(0) = {1, 0, 0};
+		this->row(1) = {0, 1, 0};
+		this->row(2) = {0, 0, 1};
+		return *this;
 	}
 
 	/**
@@ -192,14 +181,47 @@ public:
 	 * @return reference to this matrix instance.
 	 */
 	matrix3& scale(T x, T y)noexcept{
-		//update 0th column
-		this->c0 *= x;
+		// multiply this matrix from the right by the scale matrix:
+		//               / x 0 0 \
+		// this = this * | 0 y 0 |
+		//               \ 0 0 1 /
 
-		//update 1st column
-		this->c1 *= y;
+		// update 0th column
+		this->row(0)[0] *= x;
+		this->row(1)[0] *= x;
+		this->row(2)[0] *= x;
 
-		//NOTE: 2nd column remains unchanged
-		return (*this);
+		// update 1st column
+		this->row(0)[1] *= y;
+		this->row(1)[1] *= y;
+		this->row(2)[1] *= y;
+
+		// NOTE: 2nd column remains unchanged
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply current matrix by scale matrix.
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
+	 * @param x - scaling factor in x direction.
+	 * @param y - scaling factor in y direction.
+	 * @param z - scaling factor in z direction.
+	 * @return reference to this matrix instance.
+	 */
+	matrix3& scale(T x, T y, T z)noexcept{
+		// multiply this matrix from the right by the scale matrix:
+		//               / x 0 0 \
+		// this = this * | 0 y 0 |
+		//               \ 0 0 z /
+
+		this->scale(x, y);
+
+		// update 2nd column
+		this->row(0)[2] *= z;
+		this->row(1)[2] *= z;
+		this->row(2)[2] *= z;
+
+		return *this;
 	}
 
 	/**
@@ -228,12 +250,18 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	matrix3& translate(T x, T y)noexcept{
-		//NOTE: 0th and 1st columns remain unchanged
+		// multiply this matrix from the right by the translation matrix:
+		//               / 1 0 x \
+		// this = this * | 0 1 y |
+		//               \ 0 0 1 /
 
-		//calculate 2nd column
-		this->c2 = this->c0 * x + this->c1 * y + this->c2;
+		// NOTE: 0th and 1st columns remain unchanged
 
-		return (*this);
+		// calculate 2nd column
+		this->row(0)[2] += this->row(0).x() * x + this->row(0).y() * y;
+		this->row(1)[2] += this->row(1).x() * x + this->row(1).y() * y;
+
+		return *this;
 	}
 
 	/**
@@ -247,17 +275,45 @@ public:
 	/**
 	 * @brief Multiply this matrix by rotation matrix.
 	 * Multiplies this matrix M by rotation matrix R from the right (M = M * R).
-	 * Positive direction of rotation is counter-clockwise.
-	 * @param rot - the angle of rotation in radians.
+	 * Positive direction of rotation is counter-clockwise, i.e. from X-axis to Y-axis.
+	 * @param a - the angle of rotation in radians.
 	 * @return reference to this matrix object.
 	 */
-	matrix3& rotate(T rot)noexcept;
+	matrix3& rotate(T a)noexcept{
+		// multiply this matrix from the right by the rotation matrix:
+		//               / cos(a) -sin(a) 0 \
+		// this = this * | sin(a)  cos(a) 0 |
+		//               \      0       0 1 /
+
+		using std::cos;
+		using std::sin;
+		T sina = sin(a);
+		T cosa = cos(a);
+
+		T m00 = this->row(0)[0] * cosa + this->row(0)[1] * sina;
+		T m10 = this->row(1)[0] * cosa + this->row(1)[1] * sina;
+		T m20 = this->row(2)[0] * cosa + this->row(2)[1] * sina;
+		sina = -sina;
+		T m01 = this->row(0)[0] * sina + this->row(0)[1] * cosa;
+		T m11 = this->row(1)[0] * sina + this->row(1)[1] * cosa;
+		T m21 = this->row(2)[0] * sina + this->row(2)[1] * cosa;
+
+		this->row(0)[0] = m00;
+		this->row(1)[0] = m10;
+		this->row(2)[0] = m20;
+
+		this->row(0)[1] = m01;
+		this->row(1)[1] = m11;
+		this->row(2)[1] = m21;
+
+		return *this;
+	}
 
 	friend std::ostream& operator<<(std::ostream& s, const matrix3<T>& mat){
 		s << "\n";
-		s << "\t/" << mat[0][0] << " " << mat[1][0] << " " << mat[2][0] << "\\" << std::endl;
-		s << "\t|" << mat[0][1] << " " << mat[1][1] << " " << mat[2][1] << "|" << std::endl;
-		s << "\t\\" << mat[0][2] << " " << mat[1][2] << " " << mat[2][2] << "/";
+		s << "\t/" << mat[0][0] << " " << mat[0][1] << " " << mat[0][2] << "\\" << std::endl;
+		s << "\t|" << mat[1][0] << " " << mat[1][1] << " " << mat[1][2] << "|" << std::endl;
+		s << "\t\\" << mat[2][0] << " " << mat[2][1] << " " << mat[2][2] << "/";
 		return s;
 	};
 };
@@ -270,6 +326,7 @@ public:
 namespace r4{
 
 template <class T> vector2<T> matrix3<T>::operator*(const vector2<T>& vec)const noexcept{
+	// TRACE_ALWAYS(<< "this->row(1) = " << this->row(1) << " vec = " << vec << std::endl)
 	return vector2<T>(
 			this->row(0) * vec,
 			this->row(1) * vec
@@ -289,7 +346,7 @@ template <class T> matrix3<T>& matrix3<T>::scale(const vector2<T>& s)noexcept{
 }
 
 template <class T> matrix3<T>& matrix3<T>::translate(const vector2<T>& t)noexcept{
-	return this->translate(t.x, t.y);
+	return this->translate(t.x(), t.y());
 }
 
 typedef matrix3<float> mat3f;

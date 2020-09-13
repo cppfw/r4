@@ -4,9 +4,20 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "test",
+            "label": "test_clang++",
             "type": "shell",
-            "command": "make test"
+            "command": "make test CXX=clang++",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "test_g++",
+            "type": "shell",
+            "command": "make test CXX=g++",
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ]
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <array>
 
 #include <utki/debug.hpp>
 #include <utki/math.hpp>
@@ -12,26 +13,35 @@ template <class T> class vector3;
 /**
  * @brief Two-dimensional vector class.
  */
-template <class T> class vector2{
+template <class T> class vector2 : public std::array<T, 2>{
+	typedef std::array<T, 2> base_type;
 public:
-	typedef T value_type;
+	/**
+	 * @brief 0th vector component.
+	 */
+	T& x()noexcept{
+		return this->operator[](0);
+	}
 
 	/**
 	 * @brief 0th vector component.
 	 */
-	T x;
+	const T& x()const noexcept{
+		return this->operator[](0);
+	}
 
 	/**
 	 * @brief 1th vector component.
 	 */
-	T y;
+	T& y()noexcept{
+		return this->operator[](1);
+	}
 
 	/**
-	 * @brief Get number of vector components.
-     * @return Number of vector components.
-     */
-	size_t size()const{
-		return 2;
+	 * @brief 1th vector component.
+	 */
+	const T& y()const noexcept{
+		return this->operator[](1);
 	}
 
 	/**
@@ -39,8 +49,15 @@ public:
 	 * It does not initialize vector components.
 	 * Their values are undefined right after construction.
 	 */
-	constexpr vector2()noexcept :
-			x(0), y(0) //TODO: remove initialization list when C++14 is supported by all compilers
+	constexpr vector2() = default;
+
+	/**
+	 * @brief Create vector with given values.
+	 * @param x - x component of the vector.
+	 * @param y - y component of the vector.
+	 */
+	constexpr vector2(T x, T y)noexcept :
+			base_type{x, y}
 	{}
 
 	/**
@@ -49,16 +66,7 @@ public:
 	 * @param xy - value to assign to all components of the vector.
 	 */
 	constexpr vector2(T xy)noexcept :
-			x(xy), y(xy)
-	{}
-
-	/**
-	 * @brief Create vector with given values.
-	 * @param x - x component of the vector.
-	 * @param y - y component of the vector.
-	 */
-	constexpr vector2(T x, T y)noexcept :
-			x(x), y(y)
+			vector2(xy, xy)
 	{}
 
 	/**
@@ -67,34 +75,20 @@ public:
 	 * from x and y of given 3 dimensional vector.
 	 * @param vec - 3 dimensional vector to copy x and y from.
 	 */
-	vector2(const vector3<T>& vec)noexcept;
-
-	//TODO: doxygen
-	template <class TT> explicit vector2(const vector2<TT>& v) :
-			x(T(v.x)),
-			y(T(v.y))
-	{}
+	constexpr vector2(const vector3<T>& vec)noexcept;
 
 	/**
-	 * @brief Access vector components.
-	 * @param i - index of the component, can be 0 or 1.
-	 */
-	T& operator[](unsigned i)noexcept{
-		ASSERT(i < 2)
-		ASSERT( &((&this->x)[0]) == &this->x)
-		ASSERT( &((&this->x)[1]) == &this->y)
-		return (&this->x)[i];
-	}
-
-	/**
-	 * @brief Access vector components.
-	 * @param i - index of the component, can be 0 or 1.
-	 */
-	const T& operator[](unsigned i)const noexcept{
-		ASSERT(i < 2)
-		ASSERT( &((&this->x)[0]) == &this->x)
-		ASSERT( &((&this->x)[1]) == &this->y)
-		return (&this->x)[i];
+	 * @brief Convert to vector2 with different type of component.
+	 * Convert this vector2 to a vector2 whose component type is different from T.
+	 * Components are converted using constructor of target type passing the source
+	 * component as argument of the target type constructor.
+     * @return converted vector2.
+     */
+	template <class TT> vector2<TT> to()const noexcept{
+		return vector2<TT>{
+				TT(this->x()),
+				TT(this->y())
+			};
 	}
 
 	/**
@@ -120,9 +114,9 @@ public:
 	 * @return reference to this vector2 object.
 	 */
 	vector2& operator+=(const vector2& vec)noexcept{
-		this->x += vec.x;
-		this->y += vec.y;
-		return (*this);
+		this->x() += vec.x();
+		this->y() += vec.y();
+		return *this;
 	}
 
 	/**
@@ -141,9 +135,9 @@ public:
      * @return Reference to this vector object.
      */
 	vector2& operator-=(const vector2& vec)noexcept{
-		this->x -= vec.x;
-		this->y -= vec.y;
-		return (*this);
+		this->x() -= vec.x();
+		this->y() -= vec.y();
+		return *this;
 	}
 
 	/**
@@ -169,7 +163,7 @@ public:
 	 * @return Vector resulting from negating this vector.
 	 */
 	vector2 operator-()const noexcept{
-		return vector2(-this->x, -this->y);
+		return vector2(-this->x(), -this->y());
 	}
 
 	/**
@@ -179,9 +173,9 @@ public:
      * @return Reference to this vector object.
      */
 	vector2& operator*=(T num)noexcept{
-		this->x *= num;
-		this->y *= num;
-		return (*this);
+		this->x() *= num;
+		this->y() *= num;
+		return *this;
 	}
 
 	/**
@@ -211,9 +205,9 @@ public:
      */
 	vector2& operator/=(T num)noexcept{
 		ASSERT(num != 0)
-		this->x /= num;
-		this->y /= num;
-		return (*this);
+		this->x() /= num;
+		this->y() /= num;
+		return *this;
 	}
 
 	/**
@@ -232,28 +226,7 @@ public:
 	 * @return Dot product of two vectors (x1 * x2 + y1 * y2).
 	 */
 	T operator*(const vector2& vec)const noexcept{
-		return (this->x * vec.x + this->y * vec.y);
-	}
-
-	/**
-	 * @brief Check if this vector equals to the given vector.
-	 * @param vec - vector to compare to.
-	 * @return true if corresponding components of both vectors are equal.
-	 * @return false otherwise.
-	 */
-	bool operator==(const vector2& vec)const noexcept{
-		return this->x == vec.x && this->y == vec.y;
-	}
-
-	/**
-	 * @brief Check if this vector is not equal to the given vector.
-	 * This is a logical NOT of result from operator==().
-	 * @param vec - vector to compare to.
-	 * @return true if any of corresponding components of two vectors are not equal.
-	 * @return false otherwise.
-	 */
-	bool operator!=(const vector2& vec)const noexcept{
-		return !this->operator==(vec);
+		return this->x() * vec.x() + this->y() * vec.y();
 	}
 
 	/**
@@ -264,11 +237,11 @@ public:
      * @param vec - vector to multiply by.
      * @return Vector resulting from component-wise multiplication.
      */
-	vector2 comp_multiplied(const vector2& vec)const noexcept{
-		return vector2(
-				this->x * vec.x,
-				this->y * vec.y
-			);
+	vector2 comp_mul(const vector2& vec)const noexcept{
+		return vector2{
+				this->x() * vec.x(),
+				this->y() * vec.y()
+			};
 	}
 
 	/**
@@ -279,8 +252,8 @@ public:
      * @return reference to this vector2 instance.
      */
 	vector2& comp_multiply(const vector2& vec)noexcept{
-		this->x *= vec.x;
-		this->y *= vec.y;
+		this->x() *= vec.x();
+		this->y() *= vec.y();
 		return *this;
 	}
 
@@ -292,11 +265,11 @@ public:
      * @param v - vector to divide by.
      * @return Vector resulting from component-wise division.
      */
-	vector2 comp_divided(const vector2& v)const noexcept{
-		return vector2(
-				this->x / v.x,
-				this->y / v.y
-			);
+	vector2 comp_div(const vector2& v)const noexcept{
+		return vector2{
+				this->x() / v.x(),
+				this->y() / v.y()
+			};
 	}
 
 	/**
@@ -307,8 +280,8 @@ public:
      * @return reference to this vector2 instance.
      */
 	vector2& comp_divide(const vector2& v)noexcept{
-		this->x /= v.x;
-		this->y /= v.y;
+		this->x() /= v.x();
+		this->y() /= v.y();
 		return *this;
 	}
 
@@ -318,7 +291,7 @@ public:
 	 * @return false otherwise.
 	 */
 	bool is_zero()const noexcept{
-		return this->x == 0 && this->y == 0;
+		return this->x() == 0 && this->y() == 0;
 	}
 
 	/**
@@ -327,7 +300,7 @@ public:
 	 * @return false otherwise.
 	 */
 	bool is_positive_or_zero()const noexcept{
-		return this->x >= 0 && this->y >= 0;
+		return this->x() >= 0 && this->y() >= 0;
 	}
 
 	/**
@@ -336,7 +309,7 @@ public:
      * @return false otherwise.
      */
 	bool is_positive()const noexcept{
-		return this->x > 0 && this->y > 0;
+		return this->x() > 0 && this->y() > 0;
 	}
 
 	/**
@@ -345,7 +318,7 @@ public:
      * @return false otherwise.
      */
 	bool is_negative()const noexcept{
-		return this->x < 0 && this->y < 0;
+		return this->x() < 0 && this->y() < 0;
 	}
 
 	/**
@@ -354,9 +327,9 @@ public:
      */
 	vector2& negate()noexcept{
 		// NOTE: this should be faster than (*this) = -(*this);
-		this->x = -this->x;
-		this->y = -this->y;
-		return (*this);
+		this->x() = -this->x();
+		this->y() = -this->y();
+		return *this;
 	}
 
 	/**
@@ -364,10 +337,11 @@ public:
      * @return vector2 holding absolute values of this vector's components.
      */
 	vector2 abs()const noexcept{
-		return vector2(
-				std::abs(this->x),
-				std::abs(this->y)
-			);
+		using std::abs;
+		return vector2{
+				abs(this->x()),
+				abs(this->y())
+			};
 	}
 
 	/**
@@ -375,7 +349,7 @@ public:
 	 * @return Power 2 of this vector norm.
 	 */
 	T norm_pow2()noexcept{
-		return utki::pow2(this->x) + utki::pow2(this->y);
+		return utki::pow2(this->x()) + utki::pow2(this->y());
 	}
 
 	/**
@@ -393,12 +367,20 @@ public:
 	 */
 	vector2& normalize()noexcept{
 		T mag = this->norm();
-		if(mag == 0){
-			this->x = 1;
-			this->y = 0;
+		if(mag == T(0)){
+			this->x() = T(1);
+			this->y() = T(0);
 			return *this;
 		}
 		return (*this) /= this->norm();
+	}
+
+	/**
+	 * @brief Calculate normalized vector.
+	 * @return normalized vector.
+	 */
+	vector2 normed()const noexcept{
+		return vector2(*this).normalize();
 	}
 
 	/**
@@ -407,25 +389,27 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector2& set(T val)noexcept{
-		this->x = val;
-		this->y = val;
-		return (*this);
+		this->x() = val;
+		this->y() = val;
+		return *this;
 	}
 
 	/**
 	 * @brief Rotate vector.
 	 * Rotate this vector around (0, 0, 1) axis. Direction of the rotation is
-	 * determined by right-hand rule.
+	 * determined by right-hand rule. I.e. positive angle rotation is from X-axis to Y-axis.
      * @param angle - angle of rotation in radians.
      * @return Reference to this vector object.
      */
 	vector2& rotate(T angle)noexcept{
-		T cosa = std::cos(angle);
-		T sina = std::sin(angle);
-		T tmp = this->x * cosa - this->y * sina;
-		this->y = this->y * cosa + this->x * sina;
-		this->x = tmp;
-		return (*this);
+		using std::sin;
+		using std::cos;
+		T cosa = cos(angle);
+		T sina = sin(angle);
+		T tmp = this->x() * cosa - this->y() * sina;
+		this->y() = this->y() * cosa + this->x() * sina;
+		this->x() = tmp;
+		return *this;
 	}
 
 	/**
@@ -435,33 +419,31 @@ public:
 	 * @param angle - angle of rotation in radians.
 	 * @return Vector resulting from rotation of this vector.
 	 */
-	vector2 rotated(T angle)const noexcept{
+	vector2 rot(T angle)const noexcept{
 		return vector2(*this).rotate(angle);
 	}
 
+	/**
+	 * @brief Round vector components.
+	 * @return reference to this vector.
+	 */
 	vector2& round()noexcept{
-		this->x = std::round(this->x);
-		this->y = std::round(this->y);
+		using std::round;
+		this->x() = round(this->x());
+		this->y() = round(this->y());
 		return *this;
 	}
 
-	vector2 rounded()const noexcept{
+	/**
+	 * @brief Round vector components.
+	 * @return rounded vector.
+	 */
+	vector2 rou()const noexcept{
 		return vector2(*this).round();
 	}
 
-	/**
-	 * @brief Convert to vector2 with different type of component.
-	 * Convert this vector2 to a vector2 whose component type is different from T.
-	 * Components are converted using constructor of target type passing the source
-	 * component as argument of the target type constructor.
-     * @return converted vector2.
-     */
-	template <class TS> vector2<TS> to()const noexcept{
-		return vector2<TS>(TS(this->x), TS(this->y));
-	}
-
 	friend std::ostream& operator<<(std::ostream& s, const vector2<T>& vec){
-		s << "(" << vec.x << ", " << vec.y << ")";
+		s << "(" << vec.x() << ", " << vec.y() << ")";
 		return s;
 	}
 };
@@ -472,28 +454,28 @@ public:
 
 namespace r4{
 
-template <class T> vector2<T>::vector2(const vector3<T>& vec)noexcept{
-	this->operator=(vec);
-}
+template <class T> constexpr vector2<T>::vector2(const vector3<T>& vec)noexcept :
+		vector2{vec[0], vec[1]}
+{}
 
 template <class T> vector2<T>& vector2<T>::operator=(const vector3<T>& vec)noexcept{
-	this->x = vec.x;
-	this->y = vec.y;
-	return (*this);
+	this->x() = vec.x();
+	this->y() = vec.y();
+	return *this;
 }
 
 template <class T> vector2<T> vector2<T>::operator+(const vector3<T>& vec)const noexcept{
-	return vector2<T>(
-				this->x + vec.x,
-				this->y + vec.y
-			);
+	return vector2<T>{
+			this->x() + vec.x(),
+			this->y() + vec.y()
+		};
 }
 
 template <class T> vector2<T> vector2<T>::operator-(const vector3<T>& vec)const noexcept{
-	return vector2<T>(
-				this->x - vec.x,
-				this->y - vec.y
-			);
+	return vector2<T>{
+			this->x() - vec.x(),
+			this->y() - vec.y()
+		};
 }
 
 typedef vector2<bool> vec2b;
