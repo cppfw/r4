@@ -374,6 +374,9 @@ int main(int argc, char** argv){
 
         auto cmp = m * rot;
 
+        cmp *= 1000.0f;
+        res *= 1000.0f;
+
         ASSERT_INFO_ALWAYS(res.to<int>() == cmp.to<int>(), "res = " << res << " cmp = " << cmp)
     }
 
