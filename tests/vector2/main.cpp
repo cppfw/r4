@@ -157,6 +157,28 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(r[1] == 9)
 	}
 
+	// test min(vector2, vector2)
+	{
+		r4::vector2<int> a{2, 3};
+		r4::vector2<int> b{5, 1};
+
+		auto r = min(a, b);
+
+		ASSERT_ALWAYS(r[0] == 2)
+		ASSERT_ALWAYS(r[1] == 1)
+	}
+
+	// test max(vector2, vector2)
+	{
+		r4::vector2<int> a{2, 3};
+		r4::vector2<int> b{5, 1};
+
+		auto r = max(a, b);
+
+		ASSERT_ALWAYS(r[0] == 5)
+		ASSERT_ALWAYS(r[1] == 3)
+	}
+
 	// test operator/=(n)
 	{
 		r4::vector2<int> v2{6, 9};

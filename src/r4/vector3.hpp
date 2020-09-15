@@ -409,6 +409,36 @@ public:
 	 */
 	vector3<T>& rotate(const quaternion<T>& q)noexcept;
 
+	/**
+	 * @brief Get component-wise minimum of two vectors.
+	 * @param va - first vector.
+	 * @param vb - second vector.
+	 * @return vector3 whose components are component-wise minimum of initial vectors.
+	 */
+	friend vector3 min(const vector3& va, const vector3& vb)noexcept{
+		using std::min;
+		return vector3{
+				min(va[0], vb[0]),
+				min(va[1], vb[1]),
+				min(va[2], vb[2])
+			};
+	}
+
+	/**
+	 * @brief Get component-wise maximum of two vectors.
+	 * @param va - first vector.
+	 * @param vb - second vector.
+	 * @return vector3 whose components are component-wise maximum of initial vectors.
+	 */
+	friend vector3 max(const vector3& va, const vector3& vb)noexcept{
+		using std::max;
+		return vector3{
+				max(va[0], vb[0]),
+				max(va[1], vb[1]),
+				max(va[2], vb[2])
+			};
+	}
+
 	friend std::ostream& operator<<(std::ostream& s, const vector3<T>& vec){
 		s << "(" << vec.x() << ", " << vec.y() << ", " << vec.z() << ")";
 		return s;

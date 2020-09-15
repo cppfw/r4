@@ -400,6 +400,38 @@ public:
 		return (*this) /= this->norm();
 	}
 
+	/**
+	 * @brief Get component-wise minimum of two vectors.
+	 * @param va - first vector.
+	 * @param vb - second vector.
+	 * @return vector4 whose components are component-wise minimum of initial vectors.
+	 */
+	friend vector4 min(const vector4& va, const vector4& vb)noexcept{
+		using std::min;
+		return vector4{
+				min(va[0], vb[0]),
+				min(va[1], vb[1]),
+				min(va[2], vb[2]),
+				min(va[3], vb[3])
+			};
+	}
+
+	/**
+	 * @brief Get component-wise maximum of two vectors.
+	 * @param va - first vector.
+	 * @param vb - second vector.
+	 * @return vector4 whose components are component-wise maximum of initial vectors.
+	 */
+	friend vector4 max(const vector4& va, const vector4& vb)noexcept{
+		using std::max;
+		return vector4{
+				max(va[0], vb[0]),
+				max(va[1], vb[1]),
+				max(va[2], vb[2]),
+				max(va[3], vb[3])
+			};
+	}
+
 	friend std::ostream& operator<<(std::ostream& s, const vector4<T>& vec){
 		s << "(" << vec.x() << ", " << vec.y() << ", " << vec.z() << ", " << vec.w() << ")";
 		return s;

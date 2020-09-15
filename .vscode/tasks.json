@@ -6,7 +6,7 @@
         {
             "label": "test_clang++",
             "type": "shell",
-            "command": "make test CXX=clang++",
+            "command": "make test CXX=clang++ autojobs=true",
             "problemMatcher": [
                 "$gcc"
             ]
@@ -14,7 +14,7 @@
         {
             "label": "test_g++",
             "type": "shell",
-            "command": "make test CXX=g++",
+            "command": "make test CXX=g++ autojobs=true",
             "problemMatcher": [
                 "$gcc"
             ]

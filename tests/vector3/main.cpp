@@ -367,5 +367,29 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(r[2] == 4672, "r = " << r)
 	}
 
+	// test min(vector3, vector3)
+	{
+		r4::vector3<int> a{2, 3, 4};
+		r4::vector3<int> b{5, 1, -5};
+
+		auto r = min(a, b);
+
+		ASSERT_ALWAYS(r[0] == 2)
+		ASSERT_ALWAYS(r[1] == 1)
+		ASSERT_ALWAYS(r[2] == -5)
+	}
+
+	// test max(vector3, vector3)
+	{
+		r4::vector3<int> a{2, 3, -4};
+		r4::vector3<int> b{5, 1, -5};
+
+		auto r = max(a, b);
+
+		ASSERT_ALWAYS(r[0] == 5)
+		ASSERT_ALWAYS(r[1] == 3)
+		ASSERT_ALWAYS(r[2] == -4)
+	}
+
     return 0;
 }
