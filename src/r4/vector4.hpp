@@ -32,6 +32,20 @@ public:
 	}
 
 	/**
+	 * @brief First vector component.
+	 */
+	T& r()noexcept{
+		return this->operator[](0);
+	}
+
+	/**
+	 * @brief First vector component.
+	 */
+	const T& r()const noexcept{
+		return this->operator[](0);
+	}
+
+	/**
 	 * @brief Second vector component.
 	 */
 	T& y()noexcept{
@@ -42,6 +56,20 @@ public:
 	 * @brief Second vector component.
 	 */
 	const T& y()const noexcept{
+		return this->operator[](1);
+	}
+
+	/**
+	 * @brief Second vector component.
+	 */
+	T& g()noexcept{
+		return this->operator[](1);
+	}
+
+	/**
+	 * @brief Second vector component.
+	 */
+	const T& g()const noexcept{
 		return this->operator[](1);
 	}
 
@@ -60,6 +88,20 @@ public:
 	}
 
 	/**
+	 * @brief Third vector component.
+     */
+	T& b()noexcept{
+		return this->operator[](2);
+	}
+
+	/**
+	 * @brief Third vector component.
+     */
+	const T& b()const noexcept{
+		return this->operator[](2);
+	}
+
+	/**
 	 * @brief Fourth vector component.
      */
 	T& w()noexcept{
@@ -70,6 +112,20 @@ public:
 	 * @brief Fourth vector component.
      */
 	const T& w()const noexcept{
+		return this->operator[](3);
+	}
+
+	/**
+	 * @brief Fourth vector component.
+     */
+	T& a()noexcept{
+		return this->operator[](3);
+	}
+
+	/**
+	 * @brief Fourth vector component.
+     */
+	const T& a()const noexcept{
 		return this->operator[](3);
 	}
 
