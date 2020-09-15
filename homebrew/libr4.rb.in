@@ -1,4 +1,4 @@
-class R4 < Formula
+class Libr4 < Formula
   desc "C++ 3d math library."
   homepage "https://github.com/igagis/r4"
   url "https://github.com/igagis/r4/archive/$(version).tar.gz"
