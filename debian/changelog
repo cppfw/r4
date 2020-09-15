@@ -1,3 +1,9 @@
+libr4 (1.0.25) unstable; urgency=medium
+
+  * add vectorX::min/max() functions
+
+ -- Ivan Gagis <igagis@gmail.com>  Tue, 15 Sep 2020 17:40:07 +0300
+
 libr4 (1.0.24) unstable; urgency=medium
 
   * package namings unified
