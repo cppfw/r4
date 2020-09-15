@@ -13,7 +13,7 @@ configurations {
 
 nuget{
 	nuspec{
-		id = r4;
+		id = libr4;
 		version : $(version);
 		title: C++ 3d math library;
 		authors: {Ivan Gagis};
