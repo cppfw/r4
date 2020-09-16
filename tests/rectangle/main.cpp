@@ -75,16 +75,16 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(r == cmp, "r = " << r)
 	}
 
-	// test intersection(rectangle)
+	// test unite(rectangle)
 	{
 		r4::rectangle<int> r0{ {3, 4}, {6, 8} };
 		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
 
-		auto r = r0.intersection(r1);
+		r0.unite(r1);
 
-		r4::rectangle<int> cmp{ {5, 6}, {4, 6} };
+		r4::rectangle<int> cmp{ {3, 4}, {8, 10} };
 
-		ASSERT_INFO_ALWAYS(r == cmp, "r = " << r)
+		ASSERT_INFO_ALWAYS(r0 == cmp, "r0 = " << r0)
 	}
 
 	// test pdx_pdy()

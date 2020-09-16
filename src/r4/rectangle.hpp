@@ -127,12 +127,19 @@ public:
 	}
 
 	/**
-	 * @brief Get intersection of two rectangles.
-	 * @param rect - the other rectangle to get intersection with.
-	 * @return rectangle representing the intersection of this rectangle anf the given one.
+	 * @brief Unite this rectangle with given rectangle.
+	 * @param rect - rectangle to unite this rectangle with.
+	 * @return reference to this rectangle.
 	 */
-	rectangle intersection(const rectangle& rect)const noexcept{
-		return rectangle(*this).intersect(rect);
+	rectangle& unite(const rectangle& rect)noexcept{
+		using std::min;
+		using std::max;
+		auto min_xy = min(this->p, rect.p);
+		auto max_xy = max(this->pdx_pdy(), rect.pdx_pdy());
+
+		this->p = min_xy;
+		this->d = max_xy - min_xy;
+		return *this;
 	}
 
 	/**
