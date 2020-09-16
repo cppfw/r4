@@ -1,3 +1,9 @@
+libr4 (1.0.27) unstable; urgency=medium
+
+  * add r4::round/ceil/floor(vector2)
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 16 Sep 2020 15:24:54 +0300
+
 libr4 (1.0.26) unstable; urgency=medium
 
   * add rectangle::unite()
