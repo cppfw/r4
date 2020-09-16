@@ -361,10 +361,7 @@ template <class T> matrix3<T>& matrix3<T>::translate(const vector2<T>& t)noexcep
 	return this->translate(t.x(), t.y());
 }
 
-typedef matrix3<float> mat3f;
-static_assert(sizeof(mat3f) == sizeof(float) * 3 * 3, "size mismatch");
-
-typedef matrix3<double> mat3d;
-static_assert(sizeof(mat3d) == sizeof(double) * 3 * 3, "size mismatch");
+static_assert(sizeof(matrix3<float>) == sizeof(float) * 3 * 3, "size mismatch");
+static_assert(sizeof(matrix3<double>) == sizeof(double) * 3 * 3, "size mismatch");
 
 }

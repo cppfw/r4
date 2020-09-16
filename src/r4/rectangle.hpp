@@ -197,12 +197,4 @@ public:
 	}
 };
 
-typedef rectangle<float> rectf;
-
-typedef rectangle<double> rectd;
-
-typedef rectangle<int> recti;
-
-typedef rectangle<unsigned> rectu;
-
 }

@@ -538,10 +538,7 @@ template <class T> vector4<T>& vector4<T>::operator+=(const vector3<T>& vec)noex
 	return *this;
 }
 
-typedef vector4<float> vec4f;
-static_assert(sizeof(vec4f) == sizeof(float) * 4, "size mismatch");
-
-typedef vector4<double> vec4d;
-static_assert(sizeof(vec4d) == sizeof(double) * 4, "size mismatch");
+static_assert(sizeof(vector4<float>) == sizeof(float) * 4, "size mismatch");
+static_assert(sizeof(vector4<double>) == sizeof(double) * 4, "size mismatch");
 
 }
