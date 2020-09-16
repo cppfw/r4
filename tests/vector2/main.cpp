@@ -453,18 +453,6 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(r[1] == 46, "r = " << r)
 	}
 
-	// test round()
-	{
-		r4::vector2<float> v{4.8f, 3.3f};
-
-		v.round();
-
-		auto r = v.to<int>();
-
-		ASSERT_ALWAYS(r[0] == 5)
-		ASSERT_ALWAYS(r[1] == 3)
-	}
-
 	// test round(vector2)
 	{
 		using std::round;

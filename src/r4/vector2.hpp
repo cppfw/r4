@@ -453,16 +453,6 @@ public:
 
 	/**
 	 * @brief Round vector components.
-	 * @return reference to this vector.
-	 */
-	vector2& round()noexcept{
-		using std::round;
-		this->operator=(round(*this));
-		return *this;
-	}
-
-	/**
-	 * @brief Round vector components.
 	 * @return rounded vector.
 	 */
 	friend vector2 round(const vector2& v)noexcept{
