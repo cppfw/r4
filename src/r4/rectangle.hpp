@@ -113,15 +113,10 @@ public:
 	rectangle& intersect(const rectangle& rect)noexcept{
 		using std::min;
 		using std::max;
-		for(unsigned i = 0; i != 2; ++i){
-			T end = min(this->p[i] + this->d[i], rect.p[i] + rect.d[i]);
-			this->p[i] = max(this->p[i], rect.p[i]);
-			if(end > this->p[i]){
-				this->d[i] = end - this->p[i];
-			}else{
-				this->d[i] = 0;
-			}
-		}
+
+		auto end = min(this->pdx_pdy(), rect.pdx_pdy());
+		this->p = max(this->p, rect.p);
+		this->d = max(end - this->p, 0); // clamp bottom
 
 		return *this;
 	}
