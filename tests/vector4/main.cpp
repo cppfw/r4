@@ -128,7 +128,7 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(v4[0] == 10, "v4[0] = " << v4[0])
         ASSERT_INFO_ALWAYS(v4[1] == 12, "v4[1] = " << v4[1])
 		ASSERT_INFO_ALWAYS(v4[2] == 5, "v4[2] = " << v4[2])
-		ASSERT_INFO_ALWAYS(v4[3] == 6, "v4[3] = " << v4[3])
+		ASSERT_INFO_ALWAYS(v4[3] == 7, "v4[3] = " << v4[3])
 	}
 
 	// test operator+=(vector3)
@@ -141,7 +141,7 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(v4[0] == 10, "v4[0] = " << v4[0])
         ASSERT_INFO_ALWAYS(v4[1] == 12, "v4[1] = " << v4[1])
 		ASSERT_INFO_ALWAYS(v4[2] == 14, "v4[2] = " << v4[2])
-		ASSERT_INFO_ALWAYS(v4[3] == 6, "v4[3] = " << v4[3])
+		ASSERT_INFO_ALWAYS(v4[3] == 7, "v4[3] = " << v4[3])
 	}
 
 	// test operator+=(vector4)

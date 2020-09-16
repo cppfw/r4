@@ -128,6 +128,13 @@ public:
 		return (vector2(*this) += vec);
 	}
 
+	vector2 operator+(T num)const noexcept{
+		return vector2{
+			this->x() + num,
+			this->y() + num
+		};
+	}
+
 	/**
 	 * @brief Subtract vector and assign.
 	 * Subtracts given vector from this one and assigns result back to this vector.

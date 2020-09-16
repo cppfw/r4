@@ -85,6 +85,16 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(r[1] == 6)
 	}
 
+	// test operator+(n)
+	{
+		r4::vector2<int> v2{3, 4};
+
+		auto r = v2 + 5;
+
+		ASSERT_ALWAYS(r[0] == 8)
+		ASSERT_ALWAYS(r[1] == 9)
+	}
+
 	// test operator-=(vector2)
 	{
 		r4::vector2<int> v2{1, 2};
