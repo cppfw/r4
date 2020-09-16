@@ -529,8 +529,8 @@ static_assert(sizeof(vec2b) == sizeof(bool) * 2, "size mismatch");
 typedef vector2<int> vec2i;
 static_assert(sizeof(vec2i) == sizeof(int) * 2, "size mismatch");
 
-typedef vector2<unsigned> vec2ui;
-static_assert(sizeof(vec2ui) == sizeof(unsigned) * 2, "size mismatch");
+typedef vector2<unsigned> vec2u;
+static_assert(sizeof(vec2u) == sizeof(unsigned) * 2, "size mismatch");
 
 typedef vector2<float> vec2f;
 static_assert(sizeof(vec2f) == sizeof(float) * 2, "size mismatch");
