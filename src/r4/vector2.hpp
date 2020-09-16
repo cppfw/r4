@@ -457,8 +457,7 @@ public:
 	 */
 	vector2& round()noexcept{
 		using std::round;
-		this->x() = round(this->x());
-		this->y() = round(this->y());
+		this->operator=(round(*this));
 		return *this;
 	}
 
@@ -466,8 +465,36 @@ public:
 	 * @brief Round vector components.
 	 * @return rounded vector.
 	 */
-	vector2 rou()const noexcept{
-		return vector2(*this).round();
+	friend vector2 round(const vector2& v)noexcept{
+		using std::round;
+		return vector2{
+			round(v.x()),
+			round(v.y())
+		};
+	}
+
+	/**
+	 * @brief Ceil vector components.
+	 * @return ceiled vector.
+	 */
+	friend vector2 ceil(const vector2& v)noexcept{
+		using std::ceil;
+		return vector2{
+			ceil(v.x()),
+			ceil(v.y())
+		};
+	}
+
+	/**
+	 * @brief Floor vector components.
+	 * @return floored vector.
+	 */
+	friend vector2 floor(const vector2& v)noexcept{
+		using std::floor;
+		return vector2{
+			floor(v.x()),
+			floor(v.y())
+		};
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const vector2<T>& vec){

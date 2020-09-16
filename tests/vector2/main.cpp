@@ -465,13 +465,36 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(r[1] == 3)
 	}
 
-	// test rou()
+	// test round(vector2)
 	{
-		auto v = r4::vector2<float>{4.8f, 3.3f}.rou();
+		using std::round;
+		auto v = round(r4::vector2<float>{4.8f, 3.3f});
 
 		auto r = v.to<int>();
 
 		ASSERT_ALWAYS(r[0] == 5)
+		ASSERT_ALWAYS(r[1] == 3)
+	}
+
+	// test ceil(vector2)
+	{
+		using std::ceil;
+		auto v = ceil(r4::vector2<float>{4.8f, 3.3f});
+
+		auto r = v.to<int>();
+
+		ASSERT_ALWAYS(r[0] == 5)
+		ASSERT_ALWAYS(r[1] == 4)
+	}
+
+	// test floor(vector2)
+	{
+		using std::floor;
+		auto v = floor(r4::vector2<float>{4.8f, 3.3f});
+
+		auto r = v.to<int>();
+
+		ASSERT_ALWAYS(r[0] == 4)
 		ASSERT_ALWAYS(r[1] == 3)
 	}
 
