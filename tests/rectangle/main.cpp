@@ -75,7 +75,7 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(r == cmp, "r = " << r)
 	}
 
-	// test rectangle<unsigned>{0, 0}.intersect({4, 5, 6, 7})
+	// test rectangle<unsigned>{0, 0}.intersect(rectangle)
 	{
 		r4::rectangle<unsigned> r{ 0, 0 };
 		r4::rectangle<unsigned> r1{ 289, 3, 149, 248 };
