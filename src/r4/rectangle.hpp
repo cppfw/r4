@@ -116,7 +116,7 @@ public:
 
 		auto end = min(this->pdx_pdy(), rect.pdx_pdy());
 		this->p = max(this->p, rect.p);
-		this->d = max(end - this->p, 0); // clamp bottom
+		this->d = end - min(this->p, end); // d components are clamped from bottom by 0
 
 		return *this;
 	}
