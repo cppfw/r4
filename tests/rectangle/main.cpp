@@ -136,5 +136,16 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(r.to<int>() == cmp)
 	}
 
+	// test operator=(rectangle)
+	{
+		r4::rectangle<int> r{3, 4, 5, 6};
+
+		r4::rectangle<int> r2{5, 6, 7, 8};
+
+		r = r2;
+
+		ASSERT_ALWAYS(r == r2)
+	}
+
 	return 0;
 }
