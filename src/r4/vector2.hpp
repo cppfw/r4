@@ -449,7 +449,7 @@ public:
 
 	/**
 	 * @brief Rotation of vector.
-	 * Calculate vector resulting from rotation this vector around (0, 0, 1) axis.
+	 * Calculate vector resulting from rotation of this vector around (0, 0, 1) axis.
 	 * Direction of the rotation is determined by right-hand rule.
 	 * @param angle - angle of rotation in radians.
 	 * @return Vector resulting from rotation of this vector.
