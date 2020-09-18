@@ -128,6 +128,11 @@ public:
 		return (vector2(*this) += vec);
 	}
 
+	/**
+	 * @brief Add number to all vector components.
+	 * @param num - number to add.
+	 * @return resulting vector.
+	 */
 	vector2 operator+(T num)const noexcept{
 		return vector2{
 			this->x() + num,
