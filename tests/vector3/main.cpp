@@ -258,6 +258,29 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(a[2] == 5 * 8)
 	}
 
+	// test comp_div(vector3)
+	{
+		r4::vector3<int> a{6, 15, 24};
+		r4::vector3<int> b{3, 5, 6};
+
+		auto r = a.comp_div(b);
+
+		ASSERT_ALWAYS(r[0] == 2)
+		ASSERT_ALWAYS(r[1] == 3)
+		ASSERT_ALWAYS(r[2] == 4)
+	}
+
+	// test comp_divide(vector3)
+	{
+		r4::vector3<int> a{6, 15, 24};
+
+		a.comp_divide(r4::vector3<int>{3, 5, 6});
+
+		ASSERT_ALWAYS(a[0] == 2)
+		ASSERT_ALWAYS(a[1] == 3)
+		ASSERT_ALWAYS(a[2] == 4)
+	}
+
 	// test operator%(vector3)
 	{
 		r4::vector3<int> a{3, 4, 5};
@@ -393,3 +416,4 @@ int main(int argc, char** argv){
 
     return 0;
 }
+

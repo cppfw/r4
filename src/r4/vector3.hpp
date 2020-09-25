@@ -365,6 +365,36 @@ public:
 	}
 
 	/**
+	 * @brief Component-wise division.
+	 * Performs component-wise division of two vectors.
+	 * Resulting vector is (x1 / x2, y1 / y2, z1 / z2).
+	 * The result of such operation is also vector.
+     * @param v - vector to divide by.
+     * @return Vector resulting from component-wise division.
+     */
+	vector3 comp_div(const vector3& v)const noexcept{
+		return vector3{
+				this->x() / v.x(),
+				this->y() / v.y(),
+				this->z() / v.z()
+			};
+	}
+
+	/**
+	 * @brief Component-wise division.
+	 * Performs component-wise division of this vector by another given vector.
+	 * See comp_div() for details.
+     * @param v - vector to divide by.
+     * @return reference to this vector instance.
+     */
+	vector3& comp_divide(const vector3& v)noexcept{
+		this->x() /= v.x();
+		this->y() /= v.y();
+		this->z() /= v.z();
+		return *this;
+	}
+
+	/**
 	 * @brief Cross product.
 	 * @param vec - vector to multiply by.
 	 * @return Vector resulting from the cross product.

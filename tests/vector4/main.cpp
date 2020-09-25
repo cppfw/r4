@@ -285,6 +285,57 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(r[3] == 60, "r[3] = " << r[3])
 	}
 
+	// test comp_mul(vector4)
+	{
+		r4::vector4<int> a{3, 4, 5, 6};
+		r4::vector4<int> b{6, 7, 8, 9};
+
+		auto r = a.comp_mul(b);
+
+		ASSERT_ALWAYS(r[0] == 3 * 6)
+		ASSERT_ALWAYS(r[1] == 4 * 7)
+		ASSERT_ALWAYS(r[2] == 5 * 8)
+		ASSERT_ALWAYS(r[3] == 6 * 9)
+	}
+
+	// test comp_multiply(vector4)
+	{
+		r4::vector4<int> a{3, 4, 5, 6};
+		r4::vector4<int> b{6, 7, 8, 9};
+
+		a.comp_multiply(b);
+
+		ASSERT_ALWAYS(a[0] == 3 * 6)
+		ASSERT_ALWAYS(a[1] == 4 * 7)
+		ASSERT_ALWAYS(a[2] == 5 * 8)
+		ASSERT_ALWAYS(a[3] == 6 * 9)
+	}
+
+	// test comp_div(vector4)
+	{
+		r4::vector4<int> a{6, 15, 24, 35};
+		r4::vector4<int> b{3, 5, 6, 7};
+
+		auto r = a.comp_div(b);
+
+		ASSERT_ALWAYS(r[0] == 2)
+		ASSERT_ALWAYS(r[1] == 3)
+		ASSERT_ALWAYS(r[2] == 4)
+		ASSERT_ALWAYS(r[3] == 5)
+	}
+
+	// test comp_divide(vector4)
+	{
+		r4::vector4<int> a{6, 15, 24, 35};
+
+		a.comp_divide(r4::vector4<int>{3, 5, 6, 7});
+
+		ASSERT_ALWAYS(a[0] == 2)
+		ASSERT_ALWAYS(a[1] == 3)
+		ASSERT_ALWAYS(a[2] == 4)
+		ASSERT_ALWAYS(a[3] == 5)
+	}
+
 	// test negate()
 	{
 		r4::vector4<int> v4{3, 4, 5, 6};

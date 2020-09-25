@@ -406,6 +406,69 @@ public:
 	}
 
 	/**
+	 * @brief Component-wise multiplication.
+	 * Performs component-wise multiplication of two vectors.
+	 * The result of such operation is also a vector.
+	 * @param vec - vector to multiply by.
+	 * @return Vector resulting from component-wise multiplication.
+	 */
+	vector4 comp_mul(const vector4& vec)const noexcept{
+		return vector4{
+				this->x() * vec.x(),
+				this->y() * vec.y(),
+				this->z() * vec.z(),
+				this->w() * vec.w()
+			};
+	}
+
+	/**
+	 * @brief Component-wise multiplication.
+	 * Performs component-wise multiplication of this vector by given vector.
+	 * The result of such operation is also a vector and is stored in this vector.
+	 * @param vec - vector to multiply by.
+	 * @return reference to this vector.
+	 */
+	vector4& comp_multiply(const vector4& vec)noexcept{
+		this->x() *= vec.x();
+		this->y() *= vec.y();
+		this->z() *= vec.z();
+		this->w() *= vec.w();
+		return *this;
+	}
+
+	/**
+	 * @brief Component-wise division.
+	 * Performs component-wise division of two vectors.
+	 * Resulting vector is (x1 / x2, y1 / y2, z1 / z2, w1 / w2).
+	 * The result of such operation is also vector.
+     * @param v - vector to divide by.
+     * @return Vector resulting from component-wise division.
+     */
+	vector4 comp_div(const vector4& v)const noexcept{
+		return vector4{
+				this->x() / v.x(),
+				this->y() / v.y(),
+				this->z() / v.z(),
+				this->w() / v.w()
+			};
+	}
+
+	/**
+	 * @brief Component-wise division.
+	 * Performs component-wise division of this vector by another given vector.
+	 * See comp_div() for details.
+     * @param v - vector to divide by.
+     * @return reference to this vector instance.
+     */
+	vector4& comp_divide(const vector4& v)noexcept{
+		this->x() /= v.x();
+		this->y() /= v.y();
+		this->z() /= v.z();
+		this->w() /= v.w();
+		return *this;
+	}
+
+	/**
 	 * @brief Negate this vector.
 	 * Negates this vector.
 	 * @return Reference to this vector object.
