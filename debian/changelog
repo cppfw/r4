@@ -1,3 +1,9 @@
+libr4 (1.0.32) unstable; urgency=medium
+
+  * rename some rectangle methods
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 30 Sep 2020 00:18:33 +0300
+
 libr4 (1.0.31) unstable; urgency=medium
 
   * add comp_mul and comp_div functions to all vectors
