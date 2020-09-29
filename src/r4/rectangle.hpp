@@ -99,8 +99,8 @@ public:
 		return
 				point.x() >= this->p.x() &&
 				point.y() >= this->p.y() &&
-				point.x() < this->pdx() &&
-				point.y() < this->pdy()
+				point.x() < this->x2() &&
+				point.y() < this->y2()
 			;
 	}
 
@@ -114,7 +114,7 @@ public:
 		using std::min;
 		using std::max;
 
-		auto end = min(this->pdx_pdy(), rect.pdx_pdy());
+		auto end = min(this->x2_y2(), rect.x2_y2());
 		this->p = max(this->p, rect.p);
 		this->d = end - min(this->p, end); // d components are clamped from bottom by 0
 
@@ -130,7 +130,7 @@ public:
 		using std::min;
 		using std::max;
 		auto min_xy = min(this->p, rect.p);
-		auto max_xy = max(this->pdx_pdy(), rect.pdx_pdy());
+		auto max_xy = max(this->x2_y2(), rect.x2_y2());
 
 		this->p = min_xy;
 		this->d = max_xy - min_xy;
@@ -141,7 +141,7 @@ public:
 	 * @brief Get point of the rectangle with maxium X and Y coordinates.
 	 * @return point of the rectangle with maximal X anf Y coordinates.
 	 */
-	vector2<T> pdx_pdy()const noexcept{
+	vector2<T> x2_y2()const noexcept{
 		return this->p + this->d;
 	}
 
@@ -149,23 +149,23 @@ public:
 	 * @brief Get point of the rectangle with minimal X and maximal Y coordinates.
 	 * @return point of the rectangle with minimal X and maximal Y coordinates.
 	 */
-	vector2<T> x_pdy()const noexcept{
-		return vector2<T>(this->p.x(), this->pdy());
+	vector2<T> x1_y2()const noexcept{
+		return vector2<T>(this->p.x(), this->y2());
 	}
 
 	/**
 	 * @brief Get maximal Y coordinate.
 	 * @return maximal Y coordinate of the rectangle's point.
 	 */
-	T pdy()const noexcept{
+	T y2()const noexcept{
 		return this->p.y() + this->d.y();
 	}
 
 	/**
-	 * @brief Get maximal X coordinate.
-	 * @return maximal X coordinate of the rectangle's point.
+	 * @brief Get x+width coordinate.
+	 * @return x+width coordinate of the rectangle.
 	 */
-	T pdx()const noexcept{
+	T x2()const noexcept{
 		return this->p.x() + this->d.x();
 	}
 
@@ -173,8 +173,8 @@ public:
 	 * @brief Get point of the rectangle with maximal X and minimal Y coordinates.
 	 * @return point of the rectangle with maximal X and minimal Y coordinates.
 	 */
-	vector2<T> pdx_y()const noexcept{
-		return vector2<T>(this->pdx(), this->p.y());
+	vector2<T> x2_y1()const noexcept{
+		return vector2<T>(this->x2(), this->p.y());
 	}
 
 	/**

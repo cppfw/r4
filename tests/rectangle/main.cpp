@@ -103,7 +103,7 @@ int main(int argc, char** argv){
 
 		r4::vector2<int> cmp{9, 12};
 
-		ASSERT_ALWAYS(r.pdx_pdy() == cmp)
+		ASSERT_ALWAYS(r.x2_y2() == cmp)
 	}
 
 	// test x_pdy()
@@ -112,21 +112,21 @@ int main(int argc, char** argv){
 
 		r4::vector2<int> cmp{3, 12};
 
-		ASSERT_ALWAYS(r.x_pdy() == cmp)
+		ASSERT_ALWAYS(r.x1_y2() == cmp)
 	}
 
 	// test pdy()
 	{
 		r4::rectangle<int> r{ {3, 4}, {6, 8} };
 
-		ASSERT_ALWAYS(r.pdy() == 12)
+		ASSERT_ALWAYS(r.y2() == 12)
 	}
 
 	// test pdx()
 	{
 		r4::rectangle<int> r{ {3, 4}, {6, 8} };
 
-		ASSERT_ALWAYS(r.pdx() == 9)
+		ASSERT_ALWAYS(r.x2() == 9)
 	}
 
 	// test pdx_y()
@@ -135,7 +135,7 @@ int main(int argc, char** argv){
 
 		r4::vector2<int> cmp{9, 4};
 
-		ASSERT_ALWAYS(r.pdx_y() == cmp)
+		ASSERT_ALWAYS(r.x2_y1() == cmp)
 	}
 
 	// test to()
