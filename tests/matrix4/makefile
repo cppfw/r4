@@ -8,6 +8,10 @@ this_srcs := main.cpp
 
 this_cxxflags += -std=c++14 -fPIC
 
+ifeq ($(debug),true)
+    this_cxxflags += -D DEBUG
+endif
+
 this_ldlibs += -lstdc++ -lm
 
 this_no_install := true

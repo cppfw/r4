@@ -192,12 +192,10 @@ public:
 		// update 0th column
 		this->row(0)[0] *= x;
 		this->row(1)[0] *= x;
-		this->row(2)[0] *= x;
 
 		// update 1st column
 		this->row(0)[1] *= y;
 		this->row(1)[1] *= y;
-		this->row(2)[1] *= y;
 
 		// NOTE: 2nd column remains unchanged
 		return *this;
