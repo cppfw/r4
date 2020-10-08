@@ -1,3 +1,9 @@
+libr4 (1.0.34) unstable; urgency=medium
+
+  * matrix2,3,4 inversion
+
+ -- Ivan Gagis <igagis@gmail.com>  Thu, 08 Oct 2020 23:58:48 +0300
+
 libr4 (1.0.33) unstable; urgency=medium
 
   * matrix2::scale() bugfix
