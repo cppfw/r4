@@ -268,7 +268,7 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(res.to<int>() == cmp.to<int>(), "res = " << res << " cmp = " << cmp)
     }
 
-		// test det()
+	// test det()
 	{
 		r4::matrix2<int> m{
                 { 10, 20, 30 },
@@ -276,6 +276,24 @@ int main(int argc, char** argv){
             };
 		
 		ASSERT_ALWAYS(m.det() == -300)
+	}
+
+	// test inv()
+	{
+		r4::matrix2<float> m{
+		 	{1, 3, 5},
+			{2, 3, 1},
+		};
+
+		auto i = m * m.inv();
+
+		const float epsilon = 1e-6;
+
+		auto diff = decltype(m)().set_identity() - i;
+
+		diff.snap_to_zero(epsilon);
+
+		ASSERT_INFO_ALWAYS(diff == decltype(m)().set(0), std::endl << "i = " << i.snap_to_zero(epsilon) << std::endl << "diff = " << diff)
 	}
 
     return 0;

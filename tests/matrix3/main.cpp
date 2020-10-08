@@ -412,5 +412,24 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(m.det() == -3000)
 	}
 
+	// test inv()
+	{
+		r4::matrix3<float> m{
+		 	{1, 3, 5},
+			{1, 3, 1},
+			{4, 3, 9},
+		};
+
+		auto i = m * m.inv();
+
+		const float epsilon = 1e-6;
+
+		auto diff = decltype(m)().set_identity() - i;
+
+		diff.snap_to_zero(epsilon);
+
+		ASSERT_INFO_ALWAYS(diff == decltype(m)().set(0), std::endl << "i = " << i.snap_to_zero(epsilon) << std::endl << "diff = " << diff)
+	}
+
     return 0;
 }

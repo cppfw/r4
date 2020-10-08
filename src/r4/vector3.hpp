@@ -290,6 +290,20 @@ public:
 	}
 
 	/**
+	 * @brief Divide by scalar.
+	 * Divides this vector by scalar.
+     * @param num - scalar to divide by.
+     * @return Vector resulting from division of this vector by scalar.
+     */
+	vector3 operator/(T num)const noexcept{
+		return {
+			this->x() / num,
+			this->y() / num,
+			this->z() / num
+		};
+	}
+
+	/**
 	 * @brief Multiply scalar by vector.
 	 * @param num - scalar to multiply.
 	 * @param vec - vector to multiply by.
@@ -480,6 +494,22 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector3<T>& rotate(const quaternion<T>& q)noexcept;
+
+	/**
+	 * @brief Snap each vector component to 0.
+	 * For each component, set it to 0 if its absolute value does not exceed the given threshold.
+	 * @param threshold - the snapping threshold.
+	 * @return reference to this vector.
+	 */
+	vector3& snap_to_zero(T threshold)noexcept{
+		for(auto& e : *this){
+			using std::abs;
+			if(abs(e) <= threshold){
+				e = 0;
+			}
+		}
+		return *this;
+	}
 
 	/**
 	 * @brief Get component-wise minimum of two vectors.

@@ -57,6 +57,18 @@ public:
 	}
 
 	/**
+	 * @brief Subtract matrix from this matrix.
+	 * @param m - matrix to subtract from this matrix.
+	 * @return resulting matrix of the subtraction.
+	 */
+	matrix2 operator-(const matrix2& m)const noexcept{
+		return {
+				this->row(0) - m.row(0),
+				this->row(1) - m.row(1)
+			};
+	}
+
+	/**
 	 * @brief Transform vector by matrix.
 	 * Multiply vector V by this matrix M from the right (M * V).
 	 * i.e. transform vector with this transformation matrix.
@@ -291,8 +303,45 @@ public:
 		return this->row(0)[0] * this->row(1)[1] - this->row(0)[1] * this->row(1)[0];
 	}
 
+	/**
+	 * @brief Calculate right inverse of the matrix.
+	 * The resulting inverse matrix is to multiply this matrix from the right to get identioty matrix.
+	 *     T * T^-1 = I
+	 * @return right inverse matrix of this matrix.
+	 */
+	matrix2 inv()const noexcept;
+
+	/**
+	 * @brief Invert this matrix.
+	 * @return reference to this matrix.
+	 */
 	matrix2& invert()noexcept{
-		
+		this->operator=(this->inv());
+		return *this;
+	}
+
+	/**
+	 * @brief Snap each component to 0.
+	 * For each component, set it to 0 if its absolute value does not exceed the given threshold.
+	 * @param threshold - the snapping threshold.
+	 * @return reference to this object.
+	 */
+	matrix2& snap_to_zero(T threshold)noexcept{
+		for(auto& e : *this){
+			e.snap_to_zero(threshold);
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Set each element of this matrix to a given number.
+	 * @param num - number to set each matrix element to.
+	 */
+	matrix2& set(T num)noexcept{
+		for(auto& e : *this){
+			e.set(num);
+		}
+		return *this;
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const matrix2<T>& mat){
@@ -307,6 +356,7 @@ public:
 
 #include "vector2.hpp"
 #include "vector3.hpp"
+#include "matrix3.hpp"
 
 namespace r4{
 
@@ -324,6 +374,21 @@ template <class T> matrix2<T>& matrix2<T>::scale(const vector2<T>& s)noexcept{
 
 template <class T> matrix2<T>& matrix2<T>::translate(const vector2<T>& t)noexcept{
 	return this->translate(t.x(), t.y());
+}
+
+template <class T> matrix2<T> matrix2<T>::inv()const noexcept{
+	matrix3<T> m{
+		this->row(0),
+		this->row(1),
+		{0, 0, 1}
+	};
+
+	m.invert();
+
+	return {
+		m[0],
+		m[1]
+	};
 }
 
 static_assert(sizeof(matrix2<float>) == sizeof(float) * 2 * 3, "size mismatch");

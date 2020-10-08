@@ -541,6 +541,12 @@ public:
 		return ret;
 	}
 
+	/**
+	 * @brief Snap each matrix component to 0.
+	 * For each component, set it to 0 if its absolute value does not exceed the given threshold.
+	 * @param threshold - the snapping threshold.
+	 * @return reference to this matrix.
+	 */
 	matrix4& snap_to_zero(T threshold)noexcept{
 		for(auto& e : *this){
 			e.snap_to_zero(threshold);
@@ -549,7 +555,7 @@ public:
 	}
 
 	/**
-	 * @breif Calculate right inverse of the matrix.
+	 * @brief Calculate right inverse of the matrix.
 	 * The resulting inverse matrix is to multiply this matrix from the right to get identioty matrix.
 	 *     T * T^-1 = I
 	 * @return right inverse matrix of this matrix.

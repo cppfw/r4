@@ -58,6 +58,19 @@ public:
 	}
 
 	/**
+	 * @brief Subtract matrix from this matrix.
+	 * @param m - matrix to subtract from this matrix.
+	 * @return resulting matrix of the subtraction.
+	 */
+	matrix3 operator-(const matrix3& m)const noexcept{
+		return {
+				this->row(0) - m.row(0),
+				this->row(1) - m.row(1),
+				this->row(2) - m.row(2)
+			};
+	}
+
+	/**
 	 * @brief Transform vector by matrix.
 	 * Multiply vector V by this matrix M from the right (M * V).
 	 * i.e. transform vector with this transformation matrix.
@@ -117,6 +130,32 @@ public:
 		std::swap(this->row(2)[0], this->row(0)[2]);
 		std::swap(this->row(2)[1], this->row(1)[2]);
 		return *this;
+	}
+
+	/**
+	 * @brief Multiply matrix by scalar.
+	 * @param num - scalar to multiply the matrix by.
+	 * @return multiplied matrix.
+	 */
+	matrix3 operator*(T num)const noexcept{
+		return {
+				this->row(0) * num,
+				this->row(1) * num,
+				this->row(2) * num
+			};
+	}
+
+	/**
+	 * @brief Divide matrix by scalar.
+	 * @param num - scalar to divide the matrix by.
+	 * @return divided matrix.
+	 */
+	matrix3 operator/(T num)const noexcept{
+		return {
+				this->row(0) / num,
+				this->row(1) / num,
+				this->row(2) / num
+			};
 	}
 
 	/**
@@ -182,6 +221,17 @@ public:
 		this->row(0) = {1, 0, 0};
 		this->row(1) = {0, 1, 0};
 		this->row(2) = {0, 0, 1};
+		return *this;
+	}
+
+	/**
+	 * @brief Set each element of this matrix to a given number.
+	 * @param num - number to set each matrix element to.
+	 */
+	matrix3& set(T num)noexcept{
+		for(auto& e : *this){
+			e.set(num);
+		}
 		return *this;
 	}
 
@@ -365,6 +415,53 @@ public:
 				- this->row(0)[2] * this->row(1)[1] * this->row(2)[0]
 				- this->row(0)[1] * this->row(1)[0] * this->row(2)[2]
 				- this->row(0)[0] * this->row(1)[2] * this->row(2)[1];
+	}
+
+	/**
+	 * @brief Calculate right inverse of the matrix.
+	 * The resulting inverse matrix is to multiply this matrix from the right to get identioty matrix.
+	 *     T * T^-1 = I
+	 * @return right inverse matrix of this matrix.
+	 */
+	matrix3<T> inv()const noexcept{
+		T d = this->det();
+
+		// calculate matrix of minors
+		matrix3<T> mm;
+
+		T sign = 1;
+		for(unsigned r = 0; r != this->size(); ++r){
+			for(unsigned c = 0; c != this->row(r).size(); ++c){
+				mm[r][c] = sign * this->minor(r, c);
+				sign = -sign;
+			}
+		}
+
+		mm.transpose();
+
+		return mm / d;
+	}
+
+	/**
+	 * @brief Invert this matrix.
+	 * @return reference to this matrix.
+	 */
+	matrix3& invert()noexcept{
+		this->operator=(this->inv());
+		return *this;
+	}
+
+	/**
+	 * @brief Snap each matrix component to 0.
+	 * For each component, set it to 0 if its absolute value does not exceed the given threshold.
+	 * @param threshold - the snapping threshold.
+	 * @return reference to this matrix.
+	 */
+	matrix3& snap_to_zero(T threshold)noexcept{
+		for(auto& e : *this){
+			e.snap_to_zero(threshold);
+		}
+		return *this;
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const matrix3<T>& mat){
