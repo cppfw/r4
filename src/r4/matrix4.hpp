@@ -8,6 +8,10 @@
 
 #include "vector4.hpp"
 
+#ifdef minor
+#	undef minor
+#endif
+
 namespace r4{
 
 template <class T> class vector2;
