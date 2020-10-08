@@ -322,6 +322,36 @@ public:
 	}
 
 	/**
+	 * @brief Calculate matrix's minor.
+	 * @param r - index of the row to remove from this matrix.
+	 * @param c - index of the column to remove from this matrix.
+	 * @return determinant of the matrix constructed from this matrix by removing given row and given column.
+	 */
+	T minor(T r, T c)const noexcept{
+		std::array<std::array<T, 2>, 2> mm;
+
+		for(unsigned dr = 0; dr != r; ++dr){
+			for(unsigned dc = 0; dc != c; ++dc){
+				mm[dr][dc] = this->row(dr)[dc];
+			}
+			for(unsigned dc = c; dc != mm[dr].size(); ++dc){
+				mm[dr][dc] = this->row(dr)[dc + 1];
+			}
+		}
+
+		for(unsigned dr = r; dr != mm.size(); ++dr){
+			for(unsigned dc = 0; dc != c; ++dc){
+				mm[dr][dc] = this->row(dr + 1)[dc];
+			}
+			for(unsigned dc = c; dc != mm[dr].size(); ++dc){
+				mm[dr][dc] = this->row(dr + 1)[dc + 1];
+			}
+		}
+
+		return mm[0][0] * mm[1][1] - mm[0][1] * mm[1][0];
+	}
+
+	/**
 	 * @brief Calculate matrix determinant.
 	 * @return matrix determinant.
 	 */

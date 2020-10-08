@@ -614,7 +614,7 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(m.to<int>() == cmp.to<int>(), "m = " << m << " cmp = " << cmp)
 	}
 
-	// test minor_matrix(r, c)
+	// test minor_matrix(r, c) and minor(r, c)
 	{
 		r4::matrix4<int> m{
 		 	{1 , 2 , 3 , 4 },
@@ -741,6 +741,27 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(m.minor_matrix(3, 1) == m31)
 		ASSERT_ALWAYS(m.minor_matrix(3, 2) == m32)
 		ASSERT_ALWAYS(m.minor_matrix(3, 3) == m33)
+
+
+		ASSERT_ALWAYS(m.minor(0, 0) == m00.det())
+		ASSERT_ALWAYS(m.minor(0, 1) == m01.det())
+		ASSERT_ALWAYS(m.minor(0, 2) == m02.det())
+		ASSERT_ALWAYS(m.minor(0, 3) == m03.det())
+
+		ASSERT_ALWAYS(m.minor(1, 0) == m10.det())
+		ASSERT_ALWAYS(m.minor(1, 1) == m11.det())
+		ASSERT_ALWAYS(m.minor(1, 2) == m12.det())
+		ASSERT_ALWAYS(m.minor(1, 3) == m13.det())
+
+		ASSERT_ALWAYS(m.minor(2, 0) == m20.det())
+		ASSERT_ALWAYS(m.minor(2, 1) == m21.det())
+		ASSERT_ALWAYS(m.minor(2, 2) == m22.det())
+		ASSERT_ALWAYS(m.minor(2, 3) == m23.det())
+
+		ASSERT_ALWAYS(m.minor(3, 0) == m30.det())
+		ASSERT_ALWAYS(m.minor(3, 1) == m31.det())
+		ASSERT_ALWAYS(m.minor(3, 2) == m32.det())
+		ASSERT_ALWAYS(m.minor(3, 3) == m33.det())
 	}
 
 	// test det()

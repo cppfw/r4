@@ -380,6 +380,27 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(res.to<int>() == cmp.to<int>(), "res = " << res << " cmp = " << cmp)
     }
 
+	// test minor(r, c)
+	{
+		r4::matrix3<int> m{
+			{3, 0, 2},
+			{2, 0, -2},
+			{0, 1, 1}
+		};
+
+		ASSERT_ALWAYS(m.minor(0, 0) == 2)
+		ASSERT_ALWAYS(m.minor(0, 1) == 2)
+		ASSERT_ALWAYS(m.minor(0, 2) == 2)
+
+		ASSERT_ALWAYS(m.minor(1, 0) == -2)
+		ASSERT_ALWAYS(m.minor(1, 1) == 3)
+		ASSERT_ALWAYS(m.minor(1, 2) == 3)
+
+		ASSERT_ALWAYS(m.minor(2, 0) == 0)
+		ASSERT_ALWAYS(m.minor(2, 1) == -10)
+		ASSERT_ALWAYS(m.minor(2, 2) == 0)
+	}
+
 	// test det()
 	{
 		r4::matrix3<int> m{
