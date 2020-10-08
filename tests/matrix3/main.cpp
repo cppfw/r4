@@ -380,5 +380,16 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(res.to<int>() == cmp.to<int>(), "res = " << res << " cmp = " << cmp)
     }
 
+	// test det()
+	{
+		r4::matrix3<int> m{
+                { 10, 20, 30 },
+                { 40, 50, 60 },
+                { 70, 80, 100 }
+            };
+		
+		ASSERT_ALWAYS(m.det() == -3000)
+	}
+
     return 0;
 }

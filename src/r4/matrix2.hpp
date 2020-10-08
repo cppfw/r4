@@ -280,6 +280,17 @@ public:
 		return *this;
 	}
 
+	/**
+	 * @brief Calculate matrix determinant.
+	 * @return matrix determinant.
+	 */
+	T det()const noexcept{
+		//    |a b c|          |e f|          |d f|          |d e|
+		// det|d e f| = a * det|0 1| - b * det|0 1| + c * det|0 0| = ae - bd
+		//    |0 0 1|
+		return this->row(0)[0] * this->row(1)[1] - this->row(0)[1] * this->row(1)[0];
+	}
+
 	friend std::ostream& operator<<(std::ostream& s, const matrix2<T>& mat){
 		s << "\n";
 		s << "\t/" << mat[0][0] << " " << mat[0][1] << " " << mat[0][2] << "\\" << std::endl;

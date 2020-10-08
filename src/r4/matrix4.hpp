@@ -13,6 +13,7 @@ namespace r4{
 template <class T> class vector2;
 template <class T> class vector3;
 template <class T> class quaternion;
+template <class T> class matrix3;
 
 /**
  * @brief 4x4 matrix template class.
@@ -452,6 +453,28 @@ public:
 	 */
 	matrix4& rotate(T rot)noexcept;
 
+	/**
+	 * @brief Get minor matrix.
+	 * Retruns a 3x3 matrix which is constructed from this matrix by removing first row and given column.
+	 * @param c - index of the column to remove.
+	 * @return minor matrix.
+	 */
+	matrix3<T> minor(T c)const noexcept;
+
+	/**
+	 * @brief Calculate matrix determinant.
+	 * @return matrix determinant.
+	 */
+	T det()const noexcept{
+		T ret = 0;
+		T sign = 1;
+		for(unsigned i = 0; i != this->row(0).size(); ++i, sign = -sign){
+			ret += sign * this->row(0)[i] * this->minor(i).det();
+		}
+
+		return ret;
+	}
+
 	friend std::ostream& operator<<(std::ostream& s, const matrix4<T>& mat){
 		s << "\n";
 		s << "\t/" << mat[0][0] << " " << mat[0][1] << " " << mat[0][2] << " " << mat[0][3] << "\\" << std::endl;
@@ -467,6 +490,7 @@ public:
 #include "vector2.hpp"
 #include "vector3.hpp"
 #include "quaternion.hpp"
+#include "matrix3.hpp"
 
 namespace r4{
 
@@ -558,6 +582,21 @@ template <class T> matrix4<T>& matrix4<T>::set(const quaternion<T>& quat)noexcep
 	this->row(3)[3] = T(1);
 
 	return *this;
+}
+
+template <class T> matrix3<T> matrix4<T>::minor(T c)const noexcept{
+	matrix3<T> ret;
+
+	for(unsigned dr = 0; dr != ret.size(); ++dr){
+		for(unsigned dc = 0; dc != c; ++dc){
+			ret[dr][dc] = this->row(dr + 1)[dc];
+		}
+		for(unsigned dc = c; dc != ret[dr].size(); ++dc){
+			ret[dr][dc] = this->row(dr + 1)[dc + 1];
+		}
+	}
+
+	return ret;
 }
 
 static_assert(sizeof(matrix4<float>) == sizeof(float) * 4 * 4, "size mismatch");

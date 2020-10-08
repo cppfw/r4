@@ -321,6 +321,22 @@ public:
 		return *this;
 	}
 
+	/**
+	 * @brief Calculate matrix determinant.
+	 * @return matrix determinant.
+	 */
+	T det()const noexcept{
+		//    |a b c|          |e f|          |d f|          |d e|
+		// det|d e f| = a * det|h i| - b * det|g i| + c * det|g h| = aei + bfg + cdh - ceg - bdi - afh
+		//    |g h i|
+		return this->row(0)[0] * this->row(1)[1] * this->row(2)[2]
+				+ this->row(0)[1] * this->row(1)[2] * this->row(2)[0]
+				+ this->row(0)[2] * this->row(1)[0] * this->row(2)[1]
+				- this->row(0)[2] * this->row(1)[1] * this->row(2)[0]
+				- this->row(0)[1] * this->row(1)[0] * this->row(2)[2]
+				- this->row(0)[0] * this->row(1)[2] * this->row(2)[1];
+	}
+
 	friend std::ostream& operator<<(std::ostream& s, const matrix3<T>& mat){
 		s << "\n";
 		s << "\t/" << mat[0][0] << " " << mat[0][1] << " " << mat[0][2] << "\\" << std::endl;

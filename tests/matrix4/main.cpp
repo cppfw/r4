@@ -614,6 +614,57 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(m.to<int>() == cmp.to<int>(), "m = " << m << " cmp = " << cmp)
 	}
 
+	// test minor(c)
+	{
+		r4::matrix4<int> m{
+		 	{1, 2, 3, 4},
+			{5, 6, 7, 8},
+			{9, 10, 11, 12},
+			{13, 14, 15, 16}
+		};
+
+		r4::matrix3<int> m0{
+			{6, 7, 8},
+			{10, 11, 12},
+			{14, 15, 16}
+		};
+
+		r4::matrix3<int> m1{
+			{5, 7, 8},
+			{9, 11, 12},
+			{13, 15, 16}
+		};
+
+		r4::matrix3<int> m2{
+			{5, 6, 8},
+			{9, 10, 12},
+			{13, 14, 16}
+		};
+
+		r4::matrix3<int> m3{
+			{5, 6, 7},
+			{9, 10, 11},
+			{13, 14, 15}
+		};
+
+		ASSERT_ALWAYS(m.minor(0) == m0)
+		ASSERT_ALWAYS(m.minor(1) == m1)
+		ASSERT_ALWAYS(m.minor(2) == m2)
+		ASSERT_ALWAYS(m.minor(3) == m3)
+	}
+
+	// test det()
+	{
+		r4::matrix4<int> m{
+		 	{1, 3, 5, 9},
+			{1, 3, 1, 7},
+			{4, 3, 9, 7},
+			{5, 2, 0, 9}
+		};
+		
+		ASSERT_ALWAYS(m.det() == -376)
+	}
+
     // test operator<<
     {
         r4::matrix4<int> m;
