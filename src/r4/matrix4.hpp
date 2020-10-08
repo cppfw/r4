@@ -61,7 +61,7 @@ public:
 	constexpr matrix4(const matrix4&) = default;
 	matrix4& operator=(const matrix4&) = default;
 
-		/**
+	/**
 	 * @brief Convert to different element type.
 	 * @return matrix4 with converted element type.
 	 */
@@ -71,6 +71,20 @@ public:
 				this->row(1).template to<TT>(),
 				this->row(2).template to<TT>(),
 				this->row(3).template to<TT>()
+			};
+	}
+
+	/**
+	 * @brief Subtract matrix from this matrix.
+	 * @param m - matrix to subtract from this matrix.
+	 * @return resulting matrix of the subtraction.
+	 */
+	matrix4 operator-(const matrix4& m)const noexcept{
+		return {
+				this->row(0) - m.row(0),
+				this->row(1) - m.row(1),
+				this->row(2) - m.row(2),
+				this->row(3) - m.row(3)
 			};
 	}
 
@@ -143,12 +157,40 @@ public:
      * @return New matrix as a result of matrices product.
      */
 	matrix4 operator*(const matrix4& matr)const noexcept{
-		return matrix4(
-				vector4<T>(this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2), this->row(0) * matr.col(3)),
-				vector4<T>(this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2), this->row(1) * matr.col(3)),
-				vector4<T>(this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2), this->row(2) * matr.col(3)),
-				vector4<T>(this->row(3) * matr.col(0), this->row(3) * matr.col(1), this->row(3) * matr.col(2), this->row(3) * matr.col(3))
-			);
+		return matrix4{
+				vector4<T>{this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2), this->row(0) * matr.col(3)},
+				vector4<T>{this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2), this->row(1) * matr.col(3)},
+				vector4<T>{this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2), this->row(2) * matr.col(3)},
+				vector4<T>{this->row(3) * matr.col(0), this->row(3) * matr.col(1), this->row(3) * matr.col(2), this->row(3) * matr.col(3)}
+			};
+	}
+
+	/**
+	 * @brief Multiply matrix by scalar.
+	 * @param num - scalar to multiply the matrix by.
+	 * @return multiplied matrix.
+	 */
+	matrix4 operator*(T num)const noexcept{
+		return {
+				this->row(0) * num,
+				this->row(1) * num,
+				this->row(2) * num,
+				this->row(3) * num
+			};
+	}
+
+	/**
+	 * @brief Divide matrix by scalar.
+	 * @param num - scalar to divide the matrix by.
+	 * @return divided matrix.
+	 */
+	matrix4 operator/(T num)const noexcept{
+		return {
+				this->row(0) / num,
+				this->row(1) / num,
+				this->row(2) / num,
+				this->row(3) / num
+			};
 	}
 
 	/**
@@ -283,6 +325,17 @@ public:
 		f.set_frustum(left, right, bottom, top, nearVal, farVal);
 
 		return this->right_mul(f);
+	}
+
+	/**
+	 * @brief Set each element of this matrix to a given number.
+	 * @param num - number to set each matrix element to.
+	 */
+	matrix4& set(T num)noexcept{
+		for(auto& e : *this){
+			e.set(num);
+		}
+		return *this;
 	}
 
 	/**
@@ -482,6 +535,39 @@ public:
 		}
 
 		return ret;
+	}
+
+	matrix4& snap_to_zero(T threshold)noexcept{
+		for(auto& e : *this){
+			e.snap_to_zero(threshold);
+		}
+		return *this;
+	}
+
+	/**
+	 * @breif Calculate right inverse of the matrix.
+	 * The resulting inverse matrix is to multiply this matrix from the right to get identioty matrix.
+	 *     T * T^-1 = I
+	 * @return right inverse matrix of this matrix.
+	 */
+	matrix4<T> inv()const noexcept{
+		T d = this->det();
+
+		// calculate matrix of minors
+		matrix4<T> mm;
+
+		T sign = 1;
+		for(unsigned r = 0; r != this->size(); ++r){
+			for(unsigned c = 0; c != this->row(r).size(); ++c){
+				mm[r][c] = sign * this->minor(r, c);
+				sign = -sign;
+			}
+			sign = -sign;
+		}
+
+		mm.transpose();
+
+		return mm / d;
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const matrix4<T>& mat){

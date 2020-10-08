@@ -776,6 +776,33 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(m.det() == -376)
 	}
 
+	// test inv()
+	{
+		// r4::matrix4<float> m{
+		//  	{1, 3, 5, 9},
+		// 	{1, 3, 1, 7},
+		// 	{4, 3, 9, 7},
+		// 	{5, 2, 0, 9}
+		// };
+
+		r4::matrix4<float> m{
+		 	{1, 0, 0, 0},
+			{0, 1, 0, 0},
+			{0, 0, 1, 0},
+			{0, 0, 0, 1}
+		};
+
+		auto i = m * m.inv();
+
+		const float epsilon = 1e-6;
+
+		auto diff = decltype(m)().set_identity() - i;
+
+		diff.snap_to_zero(epsilon);
+
+		ASSERT_INFO_ALWAYS(diff == decltype(m)().set(0), std::endl << "i = " << i.snap_to_zero(epsilon) << std::endl << "diff = " << diff)
+	}
+
     // test operator<<
     {
         r4::matrix4<int> m;
