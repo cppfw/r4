@@ -291,6 +291,10 @@ public:
 		return this->row(0)[0] * this->row(1)[1] - this->row(0)[1] * this->row(1)[0];
 	}
 
+	matrix2& invert()noexcept{
+		
+	}
+
 	friend std::ostream& operator<<(std::ostream& s, const matrix2<T>& mat){
 		s << "\n";
 		s << "\t/" << mat[0][0] << " " << mat[0][1] << " " << mat[0][2] << "\\" << std::endl;

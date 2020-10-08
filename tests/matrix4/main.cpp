@@ -614,43 +614,133 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(m.to<int>() == cmp.to<int>(), "m = " << m << " cmp = " << cmp)
 	}
 
-	// test minor(c)
+	// test minor_matrix(r, c)
 	{
 		r4::matrix4<int> m{
-		 	{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+		 	{1 , 2 , 3 , 4 },
+			{5 , 6 , 7 , 8 },
+			{9 , 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
-		r4::matrix3<int> m0{
+		r4::matrix3<int> m00{
 			{6, 7, 8},
 			{10, 11, 12},
 			{14, 15, 16}
 		};
 
-		r4::matrix3<int> m1{
+		r4::matrix3<int> m01{
 			{5, 7, 8},
 			{9, 11, 12},
 			{13, 15, 16}
 		};
 
-		r4::matrix3<int> m2{
+		r4::matrix3<int> m02{
 			{5, 6, 8},
 			{9, 10, 12},
 			{13, 14, 16}
 		};
 
-		r4::matrix3<int> m3{
+		r4::matrix3<int> m03{
 			{5, 6, 7},
 			{9, 10, 11},
 			{13, 14, 15}
 		};
 
-		ASSERT_ALWAYS(m.minor(0) == m0)
-		ASSERT_ALWAYS(m.minor(1) == m1)
-		ASSERT_ALWAYS(m.minor(2) == m2)
-		ASSERT_ALWAYS(m.minor(3) == m3)
+
+		r4::matrix3<int> m10{
+		 	{2,  3,  4 },
+			{10, 11, 12},
+			{14, 15, 16}
+		};
+
+		r4::matrix3<int> m11{
+		 	{1,  3,  4 },
+			{9,  11, 12},
+			{13, 15, 16}
+		};
+
+		r4::matrix3<int> m12{
+		 	{1,  2,  4 },
+			{9,  10, 12},
+			{13, 14, 16}
+		};
+
+		r4::matrix3<int> m13{
+		 	{1,  2,  3 },
+			{9,  10, 11},
+			{13, 14, 15}
+		};
+
+
+		r4::matrix3<int> m20{
+		 	{2 , 3 , 4 },
+			{6 , 7 , 8 },
+			{14, 15, 16}
+		};
+
+		r4::matrix3<int> m21{
+		 	{1 , 3 , 4 },
+			{5 , 7 , 8 },
+			{13, 15, 16}
+		};
+
+		r4::matrix3<int> m22{
+		 	{1 , 2 , 4 },
+			{5 , 6 , 8 },
+			{13, 14, 16}
+		};
+
+		r4::matrix3<int> m23{
+		 	{1 , 2 , 3 },
+			{5 , 6 , 7 },
+			{13, 14, 15}
+		};
+
+
+		r4::matrix3<int> m30{
+		 	{2 , 3 , 4 },
+			{6 , 7 , 8 },
+			{10, 11, 12}
+		};
+
+		r4::matrix3<int> m31{
+		 	{1 , 3 , 4 },
+			{5 , 7 , 8 },
+			{9 , 11, 12}
+		};
+
+		r4::matrix3<int> m32{
+		 	{1 , 2 , 4 },
+			{5 , 6 , 8 },
+			{9 , 10, 12}
+		};
+
+		r4::matrix3<int> m33{
+		 	{1 , 2 , 3 },
+			{5 , 6 , 7 },
+			{9 , 10, 11}
+		};
+
+		ASSERT_ALWAYS(m.minor_matrix(0, 0) == m00)
+		ASSERT_ALWAYS(m.minor_matrix(0, 1) == m01)
+		ASSERT_ALWAYS(m.minor_matrix(0, 2) == m02)
+		ASSERT_ALWAYS(m.minor_matrix(0, 3) == m03)
+
+		ASSERT_ALWAYS(m.minor_matrix(1, 0) == m10)
+		ASSERT_ALWAYS(m.minor_matrix(1, 1) == m11)
+		ASSERT_ALWAYS(m.minor_matrix(1, 2) == m12)
+		ASSERT_ALWAYS(m.minor_matrix(1, 3) == m13)
+
+		ASSERT_ALWAYS(m.minor_matrix(2, 0) == m20)
+		ASSERT_ALWAYS(m.minor_matrix(2, 1) == m21)
+		ASSERT_ALWAYS(m.minor_matrix(2, 2) == m22)
+		ASSERT_ALWAYS(m.minor_matrix(2, 3) == m23)
+
+		ASSERT_ALWAYS(m.minor_matrix(3, 0) == m30)
+		ASSERT_ALWAYS(m.minor_matrix(3, 1) == m31)
+		ASSERT_ALWAYS(m.minor_matrix(3, 2) == m32)
+		ASSERT_ALWAYS(m.minor_matrix(3, 3) == m33)
 	}
 
 	// test det()

@@ -455,11 +455,20 @@ public:
 
 	/**
 	 * @brief Get minor matrix.
-	 * Retruns a 3x3 matrix which is constructed from this matrix by removing first row and given column.
+	 * Retruns a 3x3 matrix which is constructed from this matrix by removing given row and given column.
+	 * @param r - index of the row to remove.
 	 * @param c - index of the column to remove.
 	 * @return minor matrix.
 	 */
-	matrix3<T> minor(T c)const noexcept;
+	matrix3<T> minor_matrix(T r, T c)const noexcept;
+
+	/**
+	 * @brief Claculate minor.
+	 * This is equivalent to matrix_minor(r, c).det().
+	 */
+	T minor(T r, T c)const noexcept{
+		return this->minor_matrix(r, c).det();
+	}
 
 	/**
 	 * @brief Calculate matrix determinant.
@@ -469,7 +478,7 @@ public:
 		T ret = 0;
 		T sign = 1;
 		for(unsigned i = 0; i != this->row(0).size(); ++i, sign = -sign){
-			ret += sign * this->row(0)[i] * this->minor(i).det();
+			ret += sign * this->row(0)[i] * this->minor(0, i);
 		}
 
 		return ret;
@@ -584,10 +593,19 @@ template <class T> matrix4<T>& matrix4<T>::set(const quaternion<T>& quat)noexcep
 	return *this;
 }
 
-template <class T> matrix3<T> matrix4<T>::minor(T c)const noexcept{
+template <class T> matrix3<T> matrix4<T>::minor_matrix(T r, T c)const noexcept{
 	matrix3<T> ret;
 
-	for(unsigned dr = 0; dr != ret.size(); ++dr){
+	for(unsigned dr = 0; dr != r; ++dr){
+		for(unsigned dc = 0; dc != c; ++dc){
+			ret[dr][dc] = this->row(dr)[dc];
+		}
+		for(unsigned dc = c; dc != ret[dr].size(); ++dc){
+			ret[dr][dc] = this->row(dr)[dc + 1];
+		}
+	}
+
+	for(unsigned dr = r; dr != ret.size(); ++dr){
 		for(unsigned dc = 0; dc != c; ++dc){
 			ret[dr][dc] = this->row(dr + 1)[dc];
 		}
