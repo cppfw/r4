@@ -74,7 +74,7 @@ public:
 	 */
 	T width()const noexcept{
 		using std::max;
-		return max(0, this->dx());
+		return max(T(0), this->dx());
 	}
 
 	/**
@@ -84,7 +84,7 @@ public:
 	 */
 	T height()const noexcept{
 		using std::max;
-		return max(0, this->dy());
+		return max(T(0), this->dy());
 	}
 
 	/**
