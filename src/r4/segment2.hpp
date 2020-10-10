@@ -108,15 +108,14 @@ public:
 	segment2& set_empty_bounding_box()noexcept{
 		using std::numeric_limits;
 		typedef numeric_limits<typename decltype(this->p1)::value_type> limits;
-		this->p1 = {
+		this->p1 = decltype(this->p1){
 				limits::max(),
 				limits::max()
 			};
-		this->p2 = {
+		this->p2 = decltype(this->p2){
 				limits::min(),
 				limits::min()
 			};
-		
 		return *this;
 	}
 
