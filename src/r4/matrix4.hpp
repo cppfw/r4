@@ -517,13 +517,13 @@ public:
 	 * @param c - index of the column to remove.
 	 * @return minor matrix.
 	 */
-	matrix3<T> minor_matrix(T r, T c)const noexcept;
+	matrix3<T> minor_matrix(unsigned r, unsigned c)const noexcept;
 
 	/**
 	 * @brief Claculate minor.
 	 * This is equivalent to matrix_minor(r, c).det().
 	 */
-	T minor(T r, T c)const noexcept{
+	T minor(unsigned r, unsigned c)const noexcept{
 		return this->minor_matrix(r, c).det();
 	}
 
@@ -689,7 +689,7 @@ template <class T> matrix4<T>& matrix4<T>::set(const quaternion<T>& quat)noexcep
 	return *this;
 }
 
-template <class T> matrix3<T> matrix4<T>::minor_matrix(T r, T c)const noexcept{
+template <class T> matrix3<T> matrix4<T>::minor_matrix(unsigned r, unsigned c)const noexcept{
 	matrix3<T> ret;
 
 	for(unsigned dr = 0; dr != r; ++dr){

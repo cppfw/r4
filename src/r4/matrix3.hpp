@@ -377,7 +377,7 @@ public:
 	 * @param c - index of the column to remove from this matrix.
 	 * @return determinant of the matrix constructed from this matrix by removing given row and given column.
 	 */
-	T minor(T r, T c)const noexcept{
+	T minor(unsigned r, unsigned c)const noexcept{
 		std::array<std::array<T, 2>, 2> mm;
 
 		for(unsigned dr = 0; dr != r; ++dr){
