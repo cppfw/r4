@@ -1,3 +1,9 @@
+libr4 (1.0.38) unstable; urgency=medium
+
+  * MSVC workaround: undef min and max macors
+
+ -- Ivan Gagis <igagis@gmail.com>  Thu, 12 Nov 2020 14:22:55 +0200
+
 libr4 (1.0.37) unstable; urgency=medium
 
   * fix index argument type
