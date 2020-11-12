@@ -6,6 +6,14 @@
 #include <utki/debug.hpp>
 #include <utki/math.hpp>
 
+// Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
+#ifdef min
+#	undef min
+#endif
+#ifdef max
+#	undef max
+#endif
+
 namespace r4{
 
 template <class T> class vector3;
