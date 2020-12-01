@@ -18,9 +18,9 @@ nuget{
 		title: C++ 3d math library;
 		authors: {Ivan Gagis};
 		owners: {Ivan Gagis};
-		licenseUrl: "https://raw.githubusercontent.com/igagis/r4/master/LICENSE";
-		projectUrl: "https://github.com/igagis/r4";
-		iconUrl: "https://github.com/igagis/r4/blob/master/logo.svg";
+		licenseUrl: "https://raw.githubusercontent.com/cppfw/r4/master/LICENSE";
+		projectUrl: "https://github.com/cppfw/r4";
+		iconUrl: "https://github.com/cppfw/r4/blob/master/logo.svg";
 		requireLicenseAcceptance:false;
 		summary: C++ 3d math library;
 
