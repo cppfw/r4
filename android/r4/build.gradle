@@ -50,7 +50,7 @@ repositories {
     }
 }
 dependencies {
-    implementation 'io.github.cppfw:libutki:+'
+    implementation 'io.github.cppfw:utki:+'
 }
 
 // copy and rename release AAR to unified name
