@@ -1,3 +1,9 @@
+libr4 (1.0.39) unstable; urgency=medium
+
+  * github actions
+
+ -- Ivan Gagis <igagis@gmail.com>  Tue, 01 Dec 2020 03:39:46 +0200
+
 libr4 (1.0.38) unstable; urgency=medium
 
   * MSVC workaround: undef min and max macors
