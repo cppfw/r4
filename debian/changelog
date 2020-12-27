@@ -1,3 +1,9 @@
+libr4 (1.0.41) unstable; urgency=medium
+
+  * github actions build for raspbain
+
+ -- Ivan Gagis <igagis@gmail.com>  Sun, 27 Dec 2020 22:24:47 +0200
+
 libr4 (1.0.40) unstable; urgency=medium
 
   * build for ubuntu focal
