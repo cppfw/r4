@@ -9,7 +9,8 @@
             "command": "make test CXX=clang++ autojobs=true",
             "problemMatcher": [
                 "$gcc"
-            ]
+            ],
+            "group": "build"
         },
         {
             "label": "test_g++",
@@ -17,7 +18,8 @@
             "command": "make test CXX=g++ autojobs=true",
             "problemMatcher": [
                 "$gcc"
-            ]
+            ],
+            "group": "build"
 		},
 		{
             "label": "test_clang++_debug",
@@ -25,7 +27,8 @@
             "command": "make test CXX=clang++ autojobs=true debug=true",
             "problemMatcher": [
                 "$gcc"
-            ]
+            ],
+            "group": "build"
         },
         {
             "label": "test_g++_debug",
@@ -33,7 +36,8 @@
             "command": "make test CXX=g++ autojobs=true debug=true",
             "problemMatcher": [
                 "$gcc"
-            ]
+            ],
+            "group": "build"
         }
     ]
 }

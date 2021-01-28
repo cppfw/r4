@@ -118,6 +118,18 @@ int main(int argc, char** argv){
 		ASSERT_INFO_ALWAYS(v4[3] == 8, "v4[3] = " << v4[3])
 	}
 
+	// test set(x, y, z, w)
+	{
+		r4::vector4<int> v4{3, 4, 5, 6};
+
+		v4.set(8, 9, 10, 11);
+
+		ASSERT_INFO_ALWAYS(v4[0] == 8, "v4[0] = " << v4[0])
+        ASSERT_INFO_ALWAYS(v4[1] == 9, "v4[1] = " << v4[1])
+		ASSERT_INFO_ALWAYS(v4[2] == 10, "v4[2] = " << v4[2])
+		ASSERT_INFO_ALWAYS(v4[3] == 11, "v4[3] = " << v4[3])
+	}
+
 	// test operator+=(vector2)
 	{
 		r4::vector4<int> v4{3, 4, 5, 6};

@@ -97,6 +97,17 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(b[2] == b[1])
 	}
 
+	// test set(x, y, z)
+	{
+		r4::vector3<int> b{5, 6, 7};
+
+		b.set(3, 4, 5);
+
+		ASSERT_ALWAYS(b[0] == 3)
+		ASSERT_ALWAYS(b[1] == 4)
+		ASSERT_ALWAYS(b[2] == 5)
+	}
+
 	// test operator+=(vector2)
 	{
 		r4::vector2<int> a{3, 4};

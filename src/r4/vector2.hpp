@@ -432,14 +432,24 @@ public:
 	}
 
 	/**
+	 * @brief Set vector components to given values.
+	 * @param x - value to set vector's x component to.
+	 * @param y - value to set vector's y component to.
+	 * @return Reference to this vector object.
+	 */
+	vector2& set(T x, T y)noexcept{
+		this->x() = x;
+		this->y() = y;
+		return *this;
+	}
+
+	/**
 	 * @brief Set both vector components to given value.
 	 * @param val - value to set vector components to.
 	 * @return Reference to this vector object.
 	 */
 	vector2& set(T val)noexcept{
-		this->x() = val;
-		this->y() = val;
-		return *this;
+		return this->set(val, val);
 	}
 
 	/**

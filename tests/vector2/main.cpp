@@ -441,6 +441,16 @@ int main(int argc, char** argv){
 		ASSERT_ALWAYS(v[1] == v[0])
 	}
 
+	// test set(x, y)
+	{
+		r4::vector2<int> v{3, 4};
+
+		v.set(5, 6);
+
+		ASSERT_ALWAYS(v[0] == 5)
+		ASSERT_ALWAYS(v[1] == 6)
+	}
+
 	// test rotate(a)
 	{
 		r4::vector2<float> v{41.0f, 30.0f};

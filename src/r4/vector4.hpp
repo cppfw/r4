@@ -238,16 +238,28 @@ public:
 	}
 
 	/**
+	 * @brief Set vector components to given values.
+	 * @param x - value to set vector's x component to.
+	 * @param y - value to set vector's y component to.
+	 * @param z - value to set vector's z component to.
+	 * @param w - value to set vector's w component to.
+	 * @return Reference to this vector object.
+	 */
+	vector4& set(T x, T y, T z, T w)noexcept{
+		this->x() = x;
+		this->y() = y;
+		this->z() = z;
+		this->w() = w;
+		return *this;
+	}
+
+	/**
 	 * @brief Set all vector components to given value.
 	 * @param val - value to set vector components to.
 	 * @return Reference to this vector object.
 	 */
 	vector4& set(T val)noexcept{
-		this->x() = val;
-		this->y() = val;
-		this->z() = val;
-		this->w() = val;
-		return *this;
+		return this->set(val, val, val, val);
 	}
 
 	/**
