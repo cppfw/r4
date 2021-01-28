@@ -257,7 +257,6 @@ public:
                 this->operator[](i) = T(0);
             }
             this->operator[](3) = T(1);
-            ++i;
             for(; i != S; ++i){
                 this->operator[](i) = T(0);
             }

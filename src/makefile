@@ -4,9 +4,6 @@ this_name := r4
 
 this_soname := 0
 
-this_out_dir := build
-
-# though we have no source files, we still need to indicate the C++ standard version because header files will be tested for compilation
-this_cxxflags += -std=c++17
+$(eval $(call prorab-config, ../config))
 
 $(eval $(prorab-build-lib))
