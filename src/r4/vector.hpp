@@ -223,13 +223,11 @@ public:
 	 * component as argument of the target type constructor.
 	 * @return converted vector.
 	 */
-	template <typename TT> vector<TT, S> to()noexcept{
+	template <typename TT> vector<TT, S> to()const noexcept{
 		vector<TT, S> ret;
-
 		for(unsigned i = 0; i != S; ++i){
 			ret[i] = T(this->operator[](i));
 		}
-
 		return ret;
 	}
 
