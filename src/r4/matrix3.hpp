@@ -10,9 +10,6 @@
 
 namespace r4{
 
-template <typename T> class vector2;
-template <typename T> class vector3;
-
 /**
  * @brief 3x3 matrix template class.
  * Note, that this matrix class stores elements in row-major order.

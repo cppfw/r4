@@ -4,10 +4,9 @@
 
 #include <utki/math.hpp>
 
-namespace r4{
+#include "quaternion.hpp"
 
-template <class T> class vector2;
-template <class T> class vector3;
+namespace r4{
 
 template <class T, size_t S> class vector : public std::array<T, S>{
     static_assert(S > 0, "vector size template parameter S must be above zero");
@@ -73,56 +72,56 @@ public:
 	/**
 	 * @brief Third vector component.
      */
-	std::enable_if_t<(S > 2), T&> z()noexcept{
+	template <typename E = T> std::enable_if_t<(S > 2), E&> z()noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
      */
-	std::enable_if_t<(S > 2), const T&> z()const noexcept{
+	template <typename E = T> std::enable_if_t<(S > 2), const E&> z()const noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
      */
-	std::enable_if_t<(S > 2), T&> b()noexcept{
+	template <typename E = T> std::enable_if_t<(S > 2), E&> b()noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
      */
-	std::enable_if_t<(S > 2), const T&> b()const noexcept{
+	template <typename E = T> std::enable_if_t<(S > 2), const E&> b()const noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Fourth vector component.
      */
-	std::enable_if_t<(S > 3), T&> w()noexcept{
+	template <typename E = T> std::enable_if_t<(S > 3), E&> w()noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
      */
-	std::enable_if_t<(S > 3), const T&> w()const noexcept{
+	template <typename E = T> std::enable_if_t<(S > 3), const E&> w()const noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
      */
-	std::enable_if_t<(S > 3), T&> a()noexcept{
+	template <typename E = T> std::enable_if_t<(S > 3), E&> a()noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
      */
-	std::enable_if_t<(S > 3), const T&> a()const noexcept{
+	template <typename E = T> std::enable_if_t<(S > 3), const E&> a()const noexcept{
 		return this->operator[](3);
 	}
 
@@ -135,13 +134,10 @@ public:
 	/**
 	 * @brief Constructor.
 	 * Initializes vector components to given values.
-     * @param x - value for first vector component.
-     * @param y - value for second vector component.
-     * @param z - value for third vector component.
-     * @param w - value for fourth vector component.
+     * @param v - parameter pack with initializing values.
      */
-	constexpr vector(T x, T y, T z, T w)noexcept :
-			base_type{{x, y, z, w}}
+	template <typename... A> constexpr vector(A... v)noexcept :
+			base_type{{T(v)...}}
 	{}
 
 	/**
@@ -149,36 +145,69 @@ public:
 	 * Initializes all vector components to a given value.
      * @param num - value to initialize all vector compone with.
      */
-	constexpr vector(T num)noexcept :
-			vector(num, num, num, num)
-	{}
+	constexpr vector(T num)noexcept{
+        for(auto& c : *this){
+            c = num;
+        }
+    }
 
 	/**
 	 * @brief Constructor.
+     * Defined only for 4 component vector.
 	 * Initializes first three vector components to the same given value and fourth component to another given value.
      * @param num - value to use for initialization of first three vector components.
      * @param w - value to use for initialization of fourth vector component.
      */
-	constexpr vector(T num, T w)noexcept :
-			vector(num, num, num, w)
-	{}
+	template <typename E = T> constexpr vector(std::enable_if_t<S == 4, E> num, T w)noexcept{
+        for(unsigned i = 0; i != S - 1; ++i){
+            this->operator[](i) = num;
+        }
+        this->operator[](S - 1) = w;
+    }
 
 	/**
 	 * @brief Constructor.
+     * Defined only for 3 component vector.
+	 * Initializes components to a given values.
+	 * @param vec - 2d vector to use for initialization of first two vector components.
+	 * @param z - value to use for initialization of 3rd vector component.
+	 */
+	template <typename E = T> constexpr vector(const vector<T, 2>& vec, std::enable_if_t<S == 3, E> z = 0)noexcept :
+            vector(vec.x(), vec.y(), z)
+    {}
+
+    /**
+	 * @brief Constructor.
+     * Defined only for 3 component vector.
+	 * Initializes components to a given values.
+	 * @param vec - 4d vector to use for initialization of first two vector components.
+	 */
+	template <typename E = T> constexpr vector(const vector<std::enable_if_t<S == 3, E>, 4>& vec)noexcept :
+            vector(vec.x(), vec.y(), vec.z())
+    {}
+
+	/**
+	 * @brief Constructor.
+     * Defined only for 4 component vector.
 	 * Initializes components to a given values.
 	 * @param vec - 2d vector to use for initialization of first two vector components.
 	 * @param z - value to use for initialization of 3rd vector component.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	constexpr vector(const vector2<T>& vec, T z = 0, T w = 1)noexcept;
+	template <typename E = T> constexpr vector(const vector<T, 2>& vec, std::enable_if_t<S == 4, E> z = 0, T w = 1)noexcept :
+            vector(vec.x(), vec.y(), z, w)
+    {}
 
 	/**
 	 * @brief Constructor.
+     * Defined only for 4 component vector.
 	 * Initializes components to a given values.
 	 * @param vec - 23 vector to use for initialization of first three vector components.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	constexpr vector(const vector3<T>& vec, T w = 1)noexcept;
+	template <typename E = T> constexpr vector(const vector<T, 3>& vec, std::enable_if_t<S == 4, E> w = 1)noexcept :
+            vector(vec.x(), vec.y(), vec.z(), w)
+    {}
 
 	/**
 	 * @brief Convert to vector with different type of component.
@@ -188,32 +217,53 @@ public:
 	 * @return converted vector.
 	 */
 	template <typename TT> vector<TT, S> to()noexcept{
-		return vector<TT, S>{
-				TT(this->x()),
-				TT(this->y()),
-				TT(this->z()),
-				TT(this->w())
-			};
+        vector<TT, S> ret;
+
+        for(unsigned i = 0; i != S; ++i){
+            ret[i] = T(this->operator[](i));
+        }
+
+        return ret;
 	}
 
 	/**
-	 * @brief Assign from 3d vector.
-	 * Assigns first 3 components of this vector from components of given 3d vector.
-	 * Fourth component of this vector is assigned a value of 1.
-	 * @param vec - 3d vector to assign first three components from.
-	 * @return Reference to this vector object.
-	 */
-	vector& operator=(const vector3<T>& vec)noexcept;
-
-	/**
-	 * @brief Assign from 2d vector.
-	 * Assigns first 2 components of this vector from components of given 2d vector.
-	 * Third component of this vector is assigned a value of 0.
-	 * Fourth component of this vector is assigned a value of 1.
+	 * @brief Assign from another vector.
+     * TODO:
 	 * @param vec - 2d vector to assign first two components from.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator=(const vector2<T>& vec)noexcept;
+	template <size_t SS> vector& operator=(const vector<T, SS>& vec)noexcept{
+        if constexpr (SS >= S){
+            for(unsigned i = 0; i != S; ++i){
+                this->operator[](i) = vec[i];
+            }
+        }else if constexpr (S < 4 || SS >= 4){
+            static_assert(SS < S, "");
+            unsigned i = 0;
+            for(; i != SS; ++i){
+                this->operator[](i) = vec[i];
+            }
+            for(; i != S; ++i){
+                this->operator[](i) = T(0);
+            }
+        }else{
+            static_assert(SS < 4, "");
+            static_assert(S >= 4, "");
+            unsigned i = 0;
+            for(; i != SS; ++i){
+                this->operator[](i) = vec[i];
+            }
+            for(; i != 4; ++i){
+                this->operator[](i) = T(0);
+            }
+            this->operator[](3) = T(1);
+            ++i;
+            for(; i != S; ++i){
+                this->operator[](i) = T(0);
+            }
+        }
+        return *this;
+    }
 
 	/**
 	 * @brief Assign a number.
@@ -234,11 +284,8 @@ public:
 	 * @param w - value to set vector's w component to.
 	 * @return Reference to this vector object.
 	 */
-	vector& set(T x, T y, T z, T w)noexcept{
-		this->x() = x;
-		this->y() = y;
-		this->z() = z;
-		this->w() = w;
+	template <typename... A> vector& set(A... a)noexcept{
+		this->base_type::operator=(base_type{a...});
 		return *this;
 	}
 
@@ -248,40 +295,38 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector& set(T val)noexcept{
-		return this->set(val, val, val, val);
-	}
-
-	/**
-	 * @brief Add and assign.
-	 * Adds corresponding components of a given vector to first two components of this vector and assigns
-	 * the result back to this vector components.
-	 * @param vec - 2d vector to use for addition.
-	 * @return Reference to this vector object.
-	 */
-	vector& operator+=(const vector2<T>& vec)noexcept;
-
-	/**
-	 * @brief Add and assign.
-	 * Adds corresponding components of a given vector to first three components of this vector and assigns
-	 * the result back to this vector components.
-	 * @param vec - 3d vector to use for addition.
-	 * @return Reference to this vector object.
-	 */
-	vector& operator+=(const vector3<T>& vec)noexcept;
-
-	/**
-	 * @brief Add and assign.
-	 * Adds given vector to this vector and assigns result back to this vector.
-	 * @param vec - vector to add.
-	 * @return Reference to this vector object.
-	 */
-	vector& operator+=(const vector& vec)noexcept{
-		this->x() += vec.x();
-		this->y() += vec.y();
-		this->z() += vec.z();
-		this->w() += vec.w();
+        for(auto& c : *this){
+            c = val;
+        }
 		return *this;
 	}
+
+	/**
+	 * @brief Add and assign.
+     * TODO:
+	 * @param vec - vector to use for addition.
+	 * @return Reference to this vector object.
+	 */
+	template <size_t SS> vector& operator+=(const vector<T, SS>& vec)noexcept{
+        if constexpr (SS >= S){
+            for(unsigned i = 0; i != S; ++i){
+                this->operator[](i) += vec[i];
+            }
+        }else if constexpr (S < 4 || SS >= 4){
+            static_assert(SS < S, "");
+            for(unsigned i = 0; i != SS; ++i){
+                this->operator[](i) += vec[i];
+            }
+        }else{
+            static_assert(SS < 4, "");
+            static_assert(S >= 4, "");
+            for(unsigned i = 0; i != SS; ++i){
+                this->operator[](i) += vec[i];
+            }
+            this->operator[](3) += T(1);
+        }
+        return *this;
+    }
 
 	/**
 	 * @brief Add vector.
@@ -299,12 +344,25 @@ public:
 	 * @param vec - vector to subtract.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator-=(const vector& vec)noexcept{
-		this->x() -= vec.x();
-		this->y() -= vec.y();
-		this->z() -= vec.z();
-		this->w() -= vec.w();
-		return *this;
+	template <size_t SS> vector& operator-=(const vector<T, SS>& vec)noexcept{
+		if constexpr (SS >= S){
+            for(unsigned i = 0; i != S; ++i){
+                this->operator[](i) -= vec[i];
+            }
+        }else if constexpr (S < 4 || SS >= 4){
+            static_assert(SS < S, "");
+            for(unsigned i = 0; i != SS; ++i){
+                this->operator[](i) -= vec[i];
+            }
+        }else{
+            static_assert(SS < 4, "");
+            static_assert(S >= 4, "");
+            for(unsigned i = 0; i != SS; ++i){
+                this->operator[](i) -= vec[i];
+            }
+            this->operator[](3) -= T(1);
+        }
+        return *this;
 	}
 
 	/**
@@ -332,10 +390,9 @@ public:
      * @return Reference to this vector object.
      */
 	vector& operator*=(T num)noexcept{
-		this->x() *= num;
-		this->y() *= num;
-		this->z() *= num;
-		this->w() *= num;
+        for(auto& c : *this){
+            c *= num;
+        }
 		return *this;
 	}
 
@@ -356,12 +413,7 @@ public:
      * @return Vector resulting from division of this vector by scalar.
      */
 	vector operator/(T num)const noexcept{
-		return {
-			this->x() / num,
-			this->y() / num,
-			this->z() / num,
-			this->w() / num
-		};
+		return vector(*this) /= num;
 	}
 
 	/**
@@ -382,10 +434,9 @@ public:
 	 */
 	vector& operator/=(T num)noexcept{
 		ASSERT_INFO(num != 0, "vector::operator/=(): division by 0")
-		this->x() /= num;
-		this->y() /= num;
-		this->z() /= num;
-		this->w() /= num;
+        for(auto& c : *this){
+            c /= num;
+        }
 		return *this;
 	}
 
@@ -406,10 +457,11 @@ public:
      * @return Dot product of this vector and given vector.
      */
 	T operator*(const vector& vec)const noexcept{
-		return this->x() * vec.x()
-				+ this->y() * vec.y()
-				+ this->z() * vec.z()
-				+ this->w() * vec.w();
+        T res = 0;
+        for(unsigned i = 0; i != S; ++i){
+            res += this->operator[](i) * vec[i];
+        }
+		return res;
 	}
 
 	/**
@@ -420,13 +472,22 @@ public:
      * @param vec - vector to multiply by.
      * @return Four-dimensional vector resulting from the cross product.
      */
-	vector operator%(const vector& vec)const noexcept{
-		return vector(
+	template <typename E = vector> std::enable_if_t<S >= 3, E> operator%(const vector& vec)const noexcept{
+        static_assert(S >= 3, "cross product makes no sense for vectors with less than 3 components");
+		if constexpr (S == 3){
+            return vector{
+                    this->y() * vec.z() - this->z() * vec.y(),
+                    this->z() * vec.x() - this->x() * vec.z(),
+                    this->x() * vec.y() - this->y() * vec.x()
+                };
+        }else{
+            return vector{
 				this->y() * vec.z() - this->z() * vec.y(),
 				this->z() * vec.x() - this->x() * vec.z(),
 				this->x() * vec.y() - this->y() * vec.x(),
 				this->w() * vec.w()
-			);
+            };
+        }
 	}
 
 	/**
@@ -437,12 +498,11 @@ public:
 	 * @return Vector resulting from component-wise multiplication.
 	 */
 	vector comp_mul(const vector& vec)const noexcept{
-		return vector{
-				this->x() * vec.x(),
-				this->y() * vec.y(),
-				this->z() * vec.z(),
-				this->w() * vec.w()
-			};
+        vector res;
+        for(unsigned i = 0; i != S; ++i){
+            res[i] = this->operator[](i) * vec[i];
+        }
+		return res;
 	}
 
 	/**
@@ -453,10 +513,9 @@ public:
 	 * @return reference to this vector.
 	 */
 	vector& comp_multiply(const vector& vec)noexcept{
-		this->x() *= vec.x();
-		this->y() *= vec.y();
-		this->z() *= vec.z();
-		this->w() *= vec.w();
+        for(unsigned i = 0; i != S; ++i){
+            this->operator[](i) *= vec[i];
+        }
 		return *this;
 	}
 
@@ -469,12 +528,11 @@ public:
      * @return Vector resulting from component-wise division.
      */
 	vector comp_div(const vector& v)const noexcept{
-		return vector{
-				this->x() / v.x(),
-				this->y() / v.y(),
-				this->z() / v.z(),
-				this->w() / v.w()
-			};
+        vector res;
+        for(unsigned i = 0; i != S; ++i){
+            res[i] = this->operator[](i) / v[i];
+        }
+        return res;
 	}
 
 	/**
@@ -485,10 +543,9 @@ public:
      * @return reference to this vector instance.
      */
 	vector& comp_divide(const vector& v)noexcept{
-		this->x() /= v.x();
-		this->y() /= v.y();
-		this->z() /= v.z();
-		this->w() /= v.w();
+        for(unsigned i = 0; i != S; ++i){
+            this->operator[](i) /= v[i];
+        }
 		return *this;
 	}
 
@@ -498,10 +555,9 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector& negate()noexcept{
-		this->x() = -this->x();
-		this->y() = -this->y();
-		this->z() = -this->z();
-		this->w() = -this->w();
+        for(auto& c : *this){
+            c = -c;
+        }
 		return *this;
 	}
 
@@ -510,10 +566,11 @@ public:
 	 * @return Power 2 of this vector norm.
 	 */
 	T norm_pow2()const noexcept{
-		return utki::pow2(this->x())
-				+ utki::pow2(this->y())
-				+ utki::pow2(this->z())
-				+ utki::pow2(this->w());
+        T res = 0;
+        for(unsigned i = 0; i != S; ++i){
+            res += utki::pow2(this->operator[](i));
+        }
+        return res;
 	}
 
 	/**
@@ -533,10 +590,10 @@ public:
 	vector& normalize()noexcept{
 		T mag = this->norm();
 		if(mag == 0){
-			this->x() = 1;
-			this->y() = 0;
-			this->z() = 0;
-			this->w() = 0;
+            this->x() = 1;
+			for(auto i = std::next(this->begin()); i != this->end(); ++i){
+                *i = T(0);
+            }
 			return *this;
 		}
 
@@ -559,6 +616,37 @@ public:
 		return *this;
 	}
 
+    /**
+	 * @brief Check if all vector components are zero.
+	 * @return true if all vector components are zero.
+	 * @return false otherwise.
+	 */
+	bool is_zero()const noexcept{
+        for(auto& c : *this){
+            if(c != 0) return false;
+        }
+		return true;
+	}
+
+	/**
+	 * @brief Project this vector onto a given vector.
+	 * @param vec - vector to project onto, it does not have to be normalized.
+	 * @return Reference to this vector object.
+	 */
+	vector& project(const vector& vec)noexcept{
+		ASSERT(this->norm_pow2() != 0)
+		(*this) = vec * (vec * (*this)) / vec.norm_pow2();
+		return *this;
+	}
+
+    /**
+	 * @brief Rotate this vector.
+	 * Rotate this vector with unit quaternion.
+	 * @param q - quaternion which defines the rotation.
+	 * @return Reference to this vector object.
+	 */
+	template <typename E = T> vector& rotate(const quaternion<std::enable_if_t<S == 3 || S == 4, E>>& q)noexcept;
+
 	/**
 	 * @brief Get component-wise minimum of two vectors.
 	 * @param va - first vector.
@@ -567,12 +655,11 @@ public:
 	 */
 	friend vector min(const vector& va, const vector& vb)noexcept{
 		using std::min;
-		return vector{
-				min(va[0], vb[0]),
-				min(va[1], vb[1]),
-				min(va[2], vb[2]),
-				min(va[3], vb[3])
-			};
+        vector ret;
+        for(unsigned i = 0; i != S; ++i){
+            ret[i] = min(va[i], vb[i]);
+        }
+		return ret;
 	}
 
 	/**
@@ -583,65 +670,41 @@ public:
 	 */
 	friend vector max(const vector& va, const vector& vb)noexcept{
 		using std::max;
-		return vector{
-				max(va[0], vb[0]),
-				max(va[1], vb[1]),
-				max(va[2], vb[2]),
-				max(va[3], vb[3])
-			};
+        vector ret;
+        for(unsigned i = 0; i != S; ++i){
+            ret[i] = max(va[i], vb[i]);
+        }
+        return ret;
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const vector<T, S>& vec){
-		s << "(" << vec.x() << ", " << vec.y() << ", " << vec.z() << ", " << vec.w() << ")";
+        s << "(" << vec.x();
+        for(auto i = std::next(vec.begin()); i != vec.end(); ++i){
+            s << (*i) << " ";
+        }
+		s << ")";
 		return s;
 	}
 };
 
-}
-
-#include "vector3.hpp"
-
-namespace r4{
-template <class T, size_t S> constexpr vector<T, S>::vector(const vector2<T>& vec, T z, T w)noexcept :
-		vector(vec.x(), vec.y(), z, w)
-{}
-
-template <class T, size_t  S> constexpr vector<T, S>::vector(const vector3<T>& vec, T w)noexcept :
-		vector(vec.x(), vec.y(), vec.z(), w)
-{}
-
-template <class T, size_t S> vector<T, S>& vector<T, S>::operator=(const vector3<T>& vec)noexcept{
-	this->x() = vec.x();
-	this->y() = vec.y();
-	this->z() = vec.z();
-	this->w() = T(1);
-	return *this;
-}
-
-template <class T, size_t S> vector<T, S>& vector<T, S>::operator=(const vector2<T>& vec)noexcept{
-	this->x() = vec.x();
-	this->y() = vec.y();
-	this->z() = 0;
-	this->w() = T(1);
-	return *this;
-}
-
-template <class T, size_t S> vector<T, S>& vector<T, S>::operator+=(const vector2<T>& vec)noexcept{
-	this->x() += vec.x();
-	this->y() += vec.y();
-	this->w() += T(1);
-	return *this;
-}
-
-template <class T, size_t S> vector<T, S>& vector<T, S>::operator+=(const vector3<T>& vec)noexcept{
-	this->x() += vec.x();
-	this->y() += vec.y();
-	this->z() += vec.z();
-	this->w() += T(1);
-	return *this;
-}
+template <typename TT> using vector2 = vector<TT, 2>;
+template <typename TT> using vector3 = vector<TT, 3>;
+template <typename TT> using vector4 = vector<TT, 4>;
 
 static_assert(sizeof(vector<float, 4>) == sizeof(float) * 4, "size mismatch");
 static_assert(sizeof(vector<double, 4>) == sizeof(double) * 4, "size mismatch");
+
+}
+
+#include "matrix4.hpp"
+
+namespace r4{
+
+template <class T, size_t S>
+template <typename E>
+vector<T, S>& vector<T, S>::rotate(const quaternion<std::enable_if_t<S == 3 || S == 4, E>>& q)noexcept{
+    *this = q.to_matrix4() * (*this);
+    return *this;
+}
 
 }

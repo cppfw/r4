@@ -6,7 +6,7 @@ this_out_dir := build
 
 this_srcs := main.cpp
 
-this_cxxflags += -std=c++14 -fPIC
+this_cxxflags += -std=c++17 -fPIC
 
 ifeq ($(debug),true)
     this_cxxflags += -D DEBUG

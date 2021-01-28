@@ -2,10 +2,6 @@
 
 #include "vector.hpp"
 
-namespace r4{
-template <class T> using vector4 = vector<T, 4>;
-}
-
 // #include <iostream>
 // #include <array>
 
