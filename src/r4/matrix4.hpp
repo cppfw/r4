@@ -23,8 +23,8 @@ template <class T> class matrix3;
  * @brief 4x4 matrix template class.
  * Elements are stored in memory in row-major order.
  */
-template <typename T> class matrix4 : public std::array<r4::vector4<T>, 4>{
-	typedef std::array<r4::vector4<T>, 4> base_type;
+template <typename T> class matrix4 : public std::array<r4::vector<T, 4>, 4>{
+	typedef std::array<r4::vector<T, 4>, 4> base_type;
 public:
 	/**
 	 * @brief Default constructor.
@@ -42,10 +42,10 @@ public:
 	 * @param row3 - 3rd row of the matrix.
      */
 	constexpr matrix4(
-			const vector4<T>& row0,
-			const vector4<T>& row1,
-			const vector4<T>& row2,
-			const vector4<T>& row3
+			const vector<T, 4>& row0,
+			const vector<T, 4>& row1,
+			const vector<T, 4>& row2,
+			const vector<T, 4>& row3
 		)noexcept :
 			base_type{
 					row0,
@@ -117,14 +117,14 @@ public:
 	 * @param vec - vector to transform.
      * @return Transformed vector.
      */
-	vector4<T> operator*(const vector4<T>& vec)const noexcept;
+	vector<T, 4> operator*(const vector<T, 4>& vec)const noexcept;
 
 	/**
 	 * @brief Get matrix row.
 	 * @param rowNum - row number to get, must be from 0 to 3.
      * @return reference to vector4 representing the row of this matrix.
      */
-	vector4<T>& row(unsigned rowNum)noexcept{
+	vector<T, 4>& row(unsigned rowNum)noexcept{
 		ASSERT(rowNum < 4)
 		return this->operator[](rowNum);
 	}
@@ -134,7 +134,7 @@ public:
 	 * @param rowNum - row number to get, must be from 0 to 3.
      * @return reference to vector4 representing the row of this matrix.
      */
-	const vector4<T>& row(unsigned rowNum)const noexcept{
+	const vector<T, 4>& row(unsigned rowNum)const noexcept{
 		ASSERT(rowNum < 4)
 		return this->operator[](rowNum);
 	}
@@ -145,8 +145,8 @@ public:
 	 * @param index - column index to get, must be from 0 to 3;
 	 * @return vector4 representing the requested matrix column.
 	 */
-	vector4<T> col(unsigned index)const noexcept{
-		return vector4<T>{
+	vector<T, 4> col(unsigned index)const noexcept{
+		return vector<T, 4>{
 				this->row(0)[index],
 				this->row(1)[index],
 				this->row(2)[index],
@@ -162,10 +162,10 @@ public:
      */
 	matrix4 operator*(const matrix4& matr)const noexcept{
 		return matrix4{
-				vector4<T>{this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2), this->row(0) * matr.col(3)},
-				vector4<T>{this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2), this->row(1) * matr.col(3)},
-				vector4<T>{this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2), this->row(2) * matr.col(3)},
-				vector4<T>{this->row(3) * matr.col(0), this->row(3) * matr.col(1), this->row(3) * matr.col(2), this->row(3) * matr.col(3)}
+				vector<T, 4>{this->row(0) * matr.col(0), this->row(0) * matr.col(1), this->row(0) * matr.col(2), this->row(0) * matr.col(3)},
+				vector<T, 4>{this->row(1) * matr.col(0), this->row(1) * matr.col(1), this->row(1) * matr.col(2), this->row(1) * matr.col(3)},
+				vector<T, 4>{this->row(2) * matr.col(0), this->row(2) * matr.col(1), this->row(2) * matr.col(2), this->row(2) * matr.col(3)},
+				vector<T, 4>{this->row(3) * matr.col(0), this->row(3) * matr.col(1), this->row(3) * matr.col(2), this->row(3) * matr.col(3)}
 			};
 	}
 
@@ -259,10 +259,10 @@ public:
 	 * @brief Initialize this matrix with identity matrix.
 	 */
 	matrix4& set_identity()noexcept{
-		this->row(0) = vector4<T>(1, 0, 0, 0);
-		this->row(1) = vector4<T>(0, 1, 0, 0);
-		this->row(2) = vector4<T>(0, 0, 1, 0);
-		this->row(3) = vector4<T>(0, 0, 0, 1);
+		this->row(0) = vector<T, 4>(1, 0, 0, 0);
+		this->row(1) = vector<T, 4>(0, 1, 0, 0);
+		this->row(2) = vector<T, 4>(0, 0, 1, 0);
+		this->row(3) = vector<T, 4>(0, 0, 0, 1);
 		return *this;
 	}
 
@@ -614,8 +614,8 @@ template <class T> vector3<T> matrix4<T>::operator*(const vector3<T>& vec)const 
 		);
 }
 
-template <class T> vector4<T> matrix4<T>::operator*(const vector4<T>& vec)const noexcept{
-	return vector4<T>(
+template <class T> vector<T, 4> matrix4<T>::operator*(const vector<T, 4>& vec)const noexcept{
+	return vector<T, 4>(
 			this->row(0) * vec,
 			this->row(1) * vec,
 			this->row(2) * vec,

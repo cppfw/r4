@@ -17,7 +17,7 @@
 namespace r4{
 
 template <class T> class vector2;
-template <class T> class vector4;
+template <class T, size_t S> class vector;
 template <class T> class matrix4;
 template <class T> class quaternion;
 
@@ -160,7 +160,7 @@ public:
 	 * Initializes components to a given values.
 	 * @param vec - 4d vector to use for initialization, the w-value of the vector is ignored.
 	 */
-	constexpr vector3(const vector4<T>& vec)noexcept;
+	constexpr vector3(const vector<T, 4>& vec)noexcept;
 
 	/**
 	 * @brief Convert to vector3 with different type of component.
@@ -579,7 +579,7 @@ template <class T> constexpr vector3<T>::vector3(const vector2<T>& vec, T z)noex
 		std::array<T, 3>{{vec[0], vec[1], z}}
 {}
 
-template <class T> constexpr vector3<T>::vector3(const vector4<T>& vec)noexcept :
+template <class T> constexpr vector3<T>::vector3(const vector<T, 4>& vec)noexcept :
 		std::array<T, 3>{{vec[0], vec[1], vec[2]}}
 {}
 
