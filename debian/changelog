@@ -1,3 +1,9 @@
+libr4 (1.0.43) unstable; urgency=medium
+
+  * build fix
+
+ -- Ivan Gagis <igagis@gmail.com>  Thu, 28 Jan 2021 16:26:55 +0200
+
 libr4 (1.0.42) unstable; urgency=medium
 
   * add vectorX::set(xyzw) method
