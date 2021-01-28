@@ -393,8 +393,10 @@ int main(int argc, char** argv){
 	{
 		r4::vector2<int> v{-13, -14};
 
+		using std::abs;
+
 		ASSERT_ALWAYS(!v.is_positive_or_zero())
-		ASSERT_ALWAYS(v.abs().is_positive_or_zero())
+		ASSERT_ALWAYS(abs(v).is_positive_or_zero())
 	}
 
 	// test norm_pow2()
