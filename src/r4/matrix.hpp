@@ -188,7 +188,7 @@ public:
 	 * Multiply this matrix M by another matrix K from the right (M  = M * K).
      * @return reference to this matrix object.
      */
-	template <typename E = matrix> std::enable_if_t<R == C, matrix&> operator*=(const matrix& matr)noexcept{
+	template <typename E = matrix> std::enable_if_t<R == C, E&> operator*=(const matrix& matr)noexcept{
 		return this->operator=(this->operator*(matr));
 	}
 
@@ -237,7 +237,7 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename E = matrix>
-	std::enable_if_t<R == C, matrix&> left_mul(const matrix& matr)noexcept{
+	std::enable_if_t<R == C, E&> left_mul(const matrix& matr)noexcept{
 		return this->operator=(matr.operator*(*this));
 	}
 
