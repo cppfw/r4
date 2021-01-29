@@ -16,7 +16,10 @@ int main(int argc, char** argv){
 
 		ss << m;
 
-		auto cmp = "\n\t/1 0 0\\\n\t|0 1 0|\n\t\\0 0 1/";
+		auto cmp =
+                "|1 0 0" "\n"
+                "|0 1 0" "\n"
+                "|0 0 1" "\n";
 
 		// TRACE_ALWAYS(<< "m = " << ss.str() << std::endl)
 		// TRACE_ALWAYS(<< "cmp = " << cmp << std::endl)
@@ -49,7 +52,10 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/1 2 3\\\n\t|4 5 6|\n\t\\7 8 9/";
+        auto cmp =
+                "|1 2 3" "\n"
+                "|4 5 6" "\n"
+                "|7 8 9" "\n";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
@@ -67,7 +73,10 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/1 2 3\\\n\t|5 6 7|\n\t\\9 10 11/";
+        auto cmp =
+                "|1 2 3" "\n"
+                "|5 6 7" "\n"
+                "|9 10 11" "\n";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
@@ -87,7 +96,10 @@ int main(int argc, char** argv){
 
         ss << mi;
 
-        auto cmp = "\n\t/1 2 3\\\n\t|4 5 6|\n\t\\7 8 9/";
+        auto cmp =
+                "|1 2 3" "\n"
+                "|4 5 6" "\n"
+                "|7 8 9" "\n";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
@@ -140,9 +152,10 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/1 4 7\\"
-                   "\n\t|2 5 8|"
-                  "\n\t\\3 6 9/";
+        auto cmp =
+                "|1 4 7" "\n"
+                "|2 5 8" "\n"
+                "|3 6 9" "\n";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
@@ -198,7 +211,7 @@ int main(int argc, char** argv){
         ASSERT_INFO_ALWAYS(m1 == r, "m1 = " << m1 << " r = " << r)
     }
 
-    // test right_multiply(matrix3)
+    // test left_mul(matrix3)
     {
         r4::matrix3<int> m1{
                 { 1, 2, 3 },
@@ -214,28 +227,7 @@ int main(int argc, char** argv){
         
         auto r = m1 * m2;
 
-        m1.right_multiply(m2);
-
-        ASSERT_INFO_ALWAYS(m1 == r, "m1 = " << m1 << " r = " << r)
-    }
-
-    // test left_multiply(matrix3)
-    {
-        r4::matrix3<int> m1{
-                { 1, 2, 3 },
-                { 4, 5, 6 },
-                { 7, 8, 9 }
-            };
-
-        r4::matrix3<int> m2{
-                { 2, 3, 4 },
-                { 5, 6, 7 },
-                { 8, 9, 10 }
-            };
-        
-        auto r = m1 * m2;
-
-        m2.left_multiply(m1);
+        m2.left_mul(m1);
 
         ASSERT_INFO_ALWAYS(m2 == r, "m2 = " << m2 << " r = " << r)
     }
@@ -254,9 +246,10 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/2 6 12\\"
-                   "\n\t|8 15 24|"
-                  "\n\t\\14 24 36/";
+        auto cmp =
+                "|2 6 12" "\n"
+                "|8 15 24" "\n"
+                "|14 24 36" "\n";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
@@ -276,9 +269,10 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/2 6 3\\"
-                   "\n\t|8 15 6|"
-                  "\n\t\\14 24 9/";
+        auto cmp =
+                "|2 6 3" "\n"
+                "|8 15 6" "\n"
+                "|14 24 9" "\n";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
@@ -298,9 +292,10 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/2 4 6\\"
-                   "\n\t|8 10 12|"
-                  "\n\t\\14 16 18/";
+        auto cmp =
+                "|2 4 6" "\n"
+                "|8 10 12" "\n"
+                "|14 16 18" "\n";
         auto str = ss.str();
 
         ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
@@ -320,12 +315,13 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/1 2 11\\"
-                   "\n\t|4 5 29|"
-                  "\n\t\\7 8 9/";
+        auto cmp =
+                "|1 2 11" "\n"
+                "|4 5 29" "\n"
+                "|7 8 47" "\n";
         auto str = ss.str();
 
-        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+        ASSERT_INFO_ALWAYS(str == cmp, "m =\n" << str << "\ncmp =\n" << cmp)
     }
 
     // test translate(vector2)
@@ -342,12 +338,13 @@ int main(int argc, char** argv){
 
         ss << m;
 
-        auto cmp = "\n\t/1 2 11\\"
-                   "\n\t|4 5 29|"
-                  "\n\t\\7 8 9/";
+        auto cmp =
+            "|1 2 11" "\n"
+            "|4 5 29" "\n"
+            "|7 8 47" "\n";
         auto str = ss.str();
 
-        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+        ASSERT_INFO_ALWAYS(str == cmp, "m =\n" << str << "\ncmp =\n" << cmp)
     }
 
     // test rotate(a)

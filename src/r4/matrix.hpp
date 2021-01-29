@@ -23,6 +23,15 @@ public:
 	 */
 	constexpr matrix() = default;
 
+	/**
+	 * @brief Constructor.
+	 * Initializes matrix rows to given values.
+	 * @param v - parameter pack with initializing rows.
+	 */
+	template <typename... A> constexpr matrix(A... v)noexcept :
+			base_type{{v...}}
+	{}
+
 private:
 	template <size_t... I>
 	constexpr matrix(std::initializer_list<vector<T, C>> rows, std::index_sequence<I...>)noexcept :
@@ -221,24 +230,14 @@ public:
 	}
 
 	/**
-	 * @brief Multiply by matrix from the right.
-	 * Multiply this matrix M by another matrix K from the right (M  = M * K).
-	 * This is the same as operator*=().
-	 * @param matr - matrix to multiply by.
-	 * @return reference to this matrix object.
-	 */
-	template <typename E = matrix> std::enable_if_t<R == C, matrix&> right_mul(const matrix& matr)noexcept{
-		return this->operator*=(matr);
-	}
-
-	/**
 	 * @brief Multiply by matrix from the left.
 	 * Multiply this matrix M by another matrix K from the left (M  = K * M).
 	 * Defined only for square matrices.
 	 * @param matr - matrix to multiply by.
 	 * @return reference to this matrix object.
 	 */
-	matrix& left_mul(const matrix& matr)noexcept{
+	template <typename E = matrix>
+	std::enable_if_t<R == C, matrix&> left_mul(const matrix& matr)noexcept{
 		return this->operator=(matr.operator*(*this));
 	}
 
@@ -404,12 +403,13 @@ public:
 	 * @brief Multiply this matrix by translation matrix.
 	 * Multiplies this matrix M by translation matrix T from the right (M = M * T).
 	 * Translation only occurs in x-y plane, no translation in other directions.
-	 * Defined only for 2x3, and 4x4 matrices.
+	 * Defined only for 2x3, 3x3 and 4x4 matrices.
 	 * @param x - x component of translation vector.
 	 * @param y - y component of translation vector.
 	 * @return reference to this matrix object.
 	 */
-	template <typename E = T> matrix& translate(std::enable_if_t<(R == 2 && C == 3) || (R == C && R == 4), E> x, T y)noexcept{
+	template <typename E = T>
+	matrix& translate(std::enable_if_t<(R == 2 && C == 3) || (R == C && (R == 3 || R == 4)), E> x, T y)noexcept{
 		// only last column of the matrix changes
 		for(size_t r = 0; r != R; ++r){
 			this->row(r)[C - 1] += this->row(r)[0] * x + this->row(r)[1] * y;
@@ -437,14 +437,14 @@ public:
 	/**
 	 * @brief Multiply this matrix by translation matrix.
 	 * Multiplies this matrix M by translation matrix T from the right (M = M * T).
-	 * Defined only for 2x3 and 4x4 matrices.
+	 * Defined only for 2x3, 3x3 and 4x4 matrices.
 	 * @param t - translation vector, can have 2 or 3 components.
 	 * @return reference to this matrix object.
 	 */
 	template <typename E = T, size_t S>
 	matrix& translate(
 			const vector<std::enable_if_t<
-					((R == 2 && C == 3) || (R == C && R == 4)) && (S == 2 || S == 3)
+					((R == 2 && C == 3) || (R == C && (R == 3 || R == 4))) && (S == 2 || S == 3)
 				, E>, S>& t
 		)noexcept
 	{
@@ -468,7 +468,7 @@ public:
 	 */
 	template <typename E = T>
 	matrix& rotate(const quaternion<std::enable_if_t<R == C && (R == 3 || R == 4), E>>& q)noexcept{
-		return this->right_mul(matrix<T, R, C>(q));
+		return this->operator*=(matrix<T, R, C>(q));
 	}
 
 	/**
