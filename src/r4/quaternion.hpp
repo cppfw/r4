@@ -6,11 +6,10 @@
 #include <cmath>
 
 #include <utki/debug.hpp>
-
 namespace r4{
 
-template <class T> class matrix4;
 template <class T, size_t S> class vector;
+template <class T, size_t R, size_t C> class matrix;
 
 /**
  * @brief quaternion template class.
@@ -368,7 +367,7 @@ public:
 	 * to a rotation matrix.
      * @return Rotation matrix.
      */
-	matrix4<T> to_matrix4()const noexcept;
+	matrix<T, 4, 4> to_matrix4()const noexcept;
 
 	/**
 	 * @brief Spherical linear interpolation.
@@ -439,8 +438,7 @@ public:
 
 }
 
-// #include "vector3.hpp"
-// #include "matrix4.hpp"
+#include "matrix.hpp"
 
 namespace r4{
 
@@ -462,8 +460,8 @@ template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>
 	return this->set_rotation(axis.x(), axis.y(), axis.z(), angle);
 }
 
-template <class T> matrix4<T> quaternion<T>::to_matrix4()const noexcept{
-	return matrix4<T>(*this);
+template <class T> matrix<T, 4, 4> quaternion<T>::to_matrix4()const noexcept{
+	return matrix<T, 4, 4>(*this);
 }
 
 static_assert(sizeof(quaternion<float>) == sizeof(float) * 4, "size mismatch");

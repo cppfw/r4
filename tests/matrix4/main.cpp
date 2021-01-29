@@ -30,7 +30,7 @@ int main(int argc, char** argv){
 		r4::quaternion<float> q;
 		q.set_rotation(1, 2, 3, utki::pi<float>() / 6);
 
-		r4::matrix4<float> m{q};
+		r4::matrix4<float> m(q);
 
 		m *= 1000.0f;
 

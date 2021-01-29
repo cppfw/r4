@@ -813,11 +813,10 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const vector<T, S>& vec){
-		s << "(" << vec.x();
+		s << vec.x();
 		for(auto i = std::next(vec.begin()); i != vec.end(); ++i){
 			s << (*i) << " ";
 		}
-		s << ")";
 		return s;
 	}
 };
