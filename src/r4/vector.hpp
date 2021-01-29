@@ -52,84 +52,96 @@ public:
 	/**
 	 * @brief Second vector component.
 	 */
-	std::enable_if_t<(S > 1), T&> y()noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 1), E&> y()noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	std::enable_if_t<(S > 1), const T&> y()const noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 1), const E&> y()const noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	std::enable_if_t<(S > 1), T&> g()noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 1), E&> g()noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	std::enable_if_t<(S > 1), const T&> g()const noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 1), const E&> g()const noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 2), E&> z()noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 2), E&> z()noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 2), const E&> z()const noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 2), const E&> z()const noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 2), E&> b()noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 2), E&> b()noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 2), const E&> b()const noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 2), const E&> b()const noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 3), E&> w()noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 3), E&> w()noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 3), const E&> w()const noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 3), const E&> w()const noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 3), E&> a()noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 3), E&> a()noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E = T> std::enable_if_t<(S > 3), const E&> a()const noexcept{
+	template <typename E = T>
+	std::enable_if_t<(S > 3), const E&> a()const noexcept{
 		return this->operator[](3);
 	}
 
@@ -167,7 +179,7 @@ public:
 	 * @param w - value to use for initialization of fourth vector component.
 	 */
 	template <typename E = T> constexpr vector(std::enable_if_t<S == 4, E> num, T w)noexcept{
-		for(unsigned i = 0; i != S - 1; ++i){
+		for(size_t i = 0; i != S - 1; ++i){
 			this->operator[](i) = num;
 		}
 		this->operator[](S - 1) = w;
@@ -225,7 +237,7 @@ public:
 	 */
 	template <typename TT> vector<TT, S> to()const noexcept{
 		vector<TT, S> ret;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			ret[i] = T(this->operator[](i));
 		}
 		return ret;
@@ -239,12 +251,12 @@ public:
 	 */
 	template <size_t SS> vector& operator=(const vector<T, SS>& vec)noexcept{
 		if constexpr (SS >= S){
-			for(unsigned i = 0; i != S; ++i){
+			for(size_t i = 0; i != S; ++i){
 				this->operator[](i) = vec[i];
 			}
 		}else if constexpr (S < 4 || SS >= 4){
 			static_assert(SS < S, "");
-			unsigned i = 0;
+			size_t i = 0;
 			for(; i != SS; ++i){
 				this->operator[](i) = vec[i];
 			}
@@ -254,7 +266,7 @@ public:
 		}else{
 			static_assert(SS < 4, "");
 			static_assert(S >= 4, "");
-			unsigned i = 0;
+			size_t i = 0;
 			for(; i != SS; ++i){
 				this->operator[](i) = vec[i];
 			}
@@ -313,18 +325,18 @@ public:
 	 */
 	template <size_t SS> vector& operator+=(const vector<T, SS>& vec)noexcept{
 		if constexpr (SS >= S){
-			for(unsigned i = 0; i != S; ++i){
+			for(size_t i = 0; i != S; ++i){
 				this->operator[](i) += vec[i];
 			}
 		}else if constexpr (S < 4 || SS >= 4){
 			static_assert(SS < S, "");
-			for(unsigned i = 0; i != SS; ++i){
+			for(size_t i = 0; i != SS; ++i){
 				this->operator[](i) += vec[i];
 			}
 		}else{
 			static_assert(SS < 4, "");
 			static_assert(S >= 4, "");
-			for(unsigned i = 0; i != SS; ++i){
+			for(size_t i = 0; i != SS; ++i){
 				this->operator[](i) += vec[i];
 			}
 			this->operator[](3) += T(1);
@@ -350,18 +362,18 @@ public:
 	 */
 	template <size_t SS> vector& operator-=(const vector<T, SS>& vec)noexcept{
 		if constexpr (SS >= S){
-			for(unsigned i = 0; i != S; ++i){
+			for(size_t i = 0; i != S; ++i){
 				this->operator[](i) -= vec[i];
 			}
 		}else if constexpr (S < 4 || SS >= 4){
 			static_assert(SS < S, "");
-			for(unsigned i = 0; i != SS; ++i){
+			for(size_t i = 0; i != SS; ++i){
 				this->operator[](i) -= vec[i];
 			}
 		}else{
 			static_assert(SS < 4, "");
 			static_assert(S >= 4, "");
-			for(unsigned i = 0; i != SS; ++i){
+			for(size_t i = 0; i != SS; ++i){
 				this->operator[](i) -= vec[i];
 			}
 			this->operator[](3) -= T(1);
@@ -462,7 +474,7 @@ public:
 	 */
 	T operator*(const vector& vec)const noexcept{
 		T res = 0;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			res += this->operator[](i) * vec[i];
 		}
 		return res;
@@ -503,7 +515,7 @@ public:
 	 */
 	vector comp_mul(const vector& vec)const noexcept{
 		vector res;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			res[i] = this->operator[](i) * vec[i];
 		}
 		return res;
@@ -517,7 +529,7 @@ public:
 	 * @return reference to this vector.
 	 */
 	vector& comp_multiply(const vector& vec)noexcept{
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			this->operator[](i) *= vec[i];
 		}
 		return *this;
@@ -533,7 +545,7 @@ public:
 	 */
 	vector comp_div(const vector& v)const noexcept{
 		vector res;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			res[i] = this->operator[](i) / v[i];
 		}
 		return res;
@@ -547,7 +559,7 @@ public:
 	 * @return reference to this vector instance.
 	 */
 	vector& comp_divide(const vector& v)noexcept{
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			this->operator[](i) /= v[i];
 		}
 		return *this;
@@ -571,7 +583,7 @@ public:
 	 */
 	T norm_pow2()const noexcept{
 		T res = 0;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			res += utki::pow2(this->operator[](i));
 		}
 		return res;
@@ -651,7 +663,7 @@ public:
 	friend vector round(const vector& v)noexcept{
 		using std::round;
 		vector ret;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			ret[i] = round(v[i]);
 		}
 		return ret;
@@ -665,7 +677,7 @@ public:
 	friend vector ceil(const vector& v)noexcept{
 		using std::ceil;
 		vector ret;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			ret[i] = ceil(v[i]);
 		}
 		return ret;
@@ -679,7 +691,7 @@ public:
 	friend vector floor(const vector& v)noexcept{
 		using std::floor;
 		vector ret;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			ret[i] = floor(v[i]);
 		}
 		return ret;
@@ -692,10 +704,10 @@ public:
 	 * @return reference to this vector.
 	 */
 	vector& snap_to_zero(T threshold)noexcept{
-		for(auto& e : *this){
+		for(auto& c : *this){
 			using std::abs;
-			if(abs(e) <= threshold){
-				e = 0;
+			if(abs(c) <= threshold){
+				c = 0;
 			}
 		}
 		return *this;
@@ -757,7 +769,7 @@ public:
 	friend vector abs(const vector& v)noexcept{
 		using std::abs;
 		vector ret;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			ret[i] = abs(v[i]);
 		}
 		return ret;
@@ -791,7 +803,7 @@ public:
 	friend vector min(const vector& va, const vector& vb)noexcept{
 		using std::min;
 		vector ret;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			ret[i] = min(va[i], vb[i]);
 		}
 		return ret;
@@ -806,16 +818,17 @@ public:
 	friend vector max(const vector& va, const vector& vb)noexcept{
 		using std::max;
 		vector ret;
-		for(unsigned i = 0; i != S; ++i){
+		for(size_t i = 0; i != S; ++i){
 			ret[i] = max(va[i], vb[i]);
 		}
 		return ret;
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const vector<T, S>& vec){
+		static_assert(S >= 1, "");
 		s << vec.x();
 		for(auto i = std::next(vec.begin()); i != vec.end(); ++i){
-			s << (*i) << " ";
+			s << " " << (*i);
 		}
 		return s;
 	}

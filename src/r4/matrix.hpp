@@ -5,6 +5,11 @@
 #include "vector.hpp"
 #include "quaternion.hpp"
 
+// undefine possibly defined macro
+#ifdef minor
+#	undef minor
+#endif
+
 namespace r4{
 
 template <class T, size_t R, size_t C> class matrix : public std::array<vector<T, C>, R>{
@@ -50,7 +55,7 @@ public:
 	 */
 	template <typename TT> matrix<TT, R, C> to()noexcept{
 		matrix<TT, R, C> ret;
-		for(unsigned i = 0; i != R; ++i){
+		for(size_t i = 0; i != R; ++i){
 			ret[i] = this->row(i).template to<TT>();
 		}
 		return ret;
@@ -104,7 +109,7 @@ public:
 	 * @param r - row number to get.
 	 * @return reference to vector representing the row of this matrix.
 	 */
-	vector<T, C>& row(unsigned r)noexcept{
+	vector<T, C>& row(size_t r)noexcept{
 		ASSERT(r < this->size())
 		return this->operator[](r);
 	}
@@ -114,9 +119,22 @@ public:
 	 * @param r - row number to get.
      * @return reference to vector representing the row of this matrix.
      */
-	const vector<T, C>& row(unsigned r)const noexcept{
+	const vector<T, C>& row(size_t r)const noexcept{
 		ASSERT(r < this->size())
 		return this->operator[](r);
+	}
+
+	/**
+	 * @brief Subtract matrix from this matrix.
+	 * @param m - matrix to subtract from this matrix.
+	 * @return resulting matrix of the subtraction.
+	 */
+	matrix operator-(const matrix& m)const noexcept{
+		matrix res;
+		for(size_t r = 0; r != R; ++r){
+			res[r] = this->row(r) - m[r];
+		}
+		return res;
 	}
 
 	/**
@@ -128,7 +146,7 @@ public:
 	 */
 	vector<T, R> operator*(const vector<T, C>& vec)const noexcept{
 		vector<T, R> r;
-		for(unsigned i = 0; i != R; ++i){
+		for(size_t i = 0; i != R; ++i){
 			r[i] = this->row(i) * vec;
 		}
 		return r;
@@ -142,16 +160,15 @@ public:
      */
 	template <size_t CC> matrix<T, R, CC> operator*(const matrix<T, C, CC>& m)const noexcept{
 		matrix<T, R, CC> ret;
-		for(unsigned rd = 0; rd != ret.size(); ++rd){
+		for(size_t rd = 0; rd != ret.size(); ++rd){
 			auto& row_d = ret[rd];
-			for(unsigned cd = 0; cd != row_d.size(); ++cd){
-				auto v = 0;
-				for(unsigned i = 0; i != C; ++i){
+			for(size_t cd = 0; cd != row_d.size(); ++cd){
+				T v = 0;
+				for(size_t i = 0; i != C; ++i){
 					v += this->row(rd)[i] * m[i][cd];
 				}
 				ret[rd][cd] = v;
 			}
-
 		}
 		return ret;
 	}
@@ -176,6 +193,31 @@ public:
 			r *= n;
 		}
 		return *this;
+	}
+
+	/**
+	 * @brief Divide matrix by scalar.
+	 * @param n - scalar to divide the matrix by.
+	 * @return reference to this matrix.
+	 */
+	matrix& operator/=(T n){
+		for(auto& r : *this){
+			r /= n;
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Divide matrix by scalar.
+	 * @param num - scalar to divide the matrix by.
+	 * @return divided matrix.
+	 */
+	matrix operator/(T num)const noexcept{
+		matrix res;
+		for(unsigned r = 0; r != R; ++r){
+			res[r] = this->row(r) / num;
+		}
+		return res;
 	}
 
 	/**
@@ -206,17 +248,17 @@ public:
 	 */
 	matrix& set_identity()noexcept{
 		using std::min;
-		for(unsigned r = 1; r != R; ++r){
-			for(unsigned c = 0; c != min(r, C); ++c){
+		for(size_t r = 1; r != R; ++r){
+			for(size_t c = 0; c != min(r, C); ++c){
 				this->row(r)[c] = T(0);
 			}
 		}
-		for(unsigned i = 0; i != min(R, C); ++i){
+		for(size_t i = 0; i != min(R, C); ++i){
 			this->row(i)[i] = T(1);
 		}
-		for(unsigned r = 0; r != R - 1; ++r){
+		for(size_t r = 0; r != R - 1; ++r){
 			if(r >= C) continue;
-			for(unsigned c = r + 1; c != C; ++c){
+			for(size_t c = r + 1; c != C; ++c){
 				this->row(r)[c] = T(0);
 			}
 		}
@@ -235,9 +277,9 @@ public:
 	 * @param far_val - distance to the far clipping plane. Must be positive.
 	 * @return reference to this matrix instance.
 	 */
-	template <typename E = matrix>
-	std::enable_if_t<R == C && R == 4, matrix&> set_frustum(
-			 T left,
+	template <typename E = T>
+	matrix& set_frustum(
+			 std::enable_if_t<R == C && R == 4, E> left,
 			 T right,
 			 T bottom,
 			 T top,
@@ -292,40 +334,156 @@ public:
 		>scale(T s)noexcept
 	{
 		using std::min;
-		unsigned end_col = min(min(C, R), 3); // for 2x3 and 4x4 matrix do not scale last column
-		for(unsigned r = 0; r != R; ++r){
+		size_t end_col = min(min(C, R), size_t(3)); // for 2x3 and 4x4 matrix do not scale last column
+		for(size_t r = 0; r != R; ++r){
 			auto& cur_row = this->row(r);
-			for(unsigned c = 0; c != end_col; ++c) cur_row[c] *= s;
+			for(size_t c = 0; c != end_col; ++c){
+				cur_row[c] *= s;
+			}
 		}
-
-		return this->scale(s, s, s);
+		return *this;
 	}
 
 	/**
 	 * @brief Multiply current matrix by scale matrix.
 	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
-	 * Scaling factor in z direction is 1.
 	 * @param x - scaling factor in x direction.
 	 * @param y - scaling factor in y direction.
 	 * @return reference to this matrix instance.
 	 */
 	matrix& scale(T x, T y)noexcept{
-		// TODO:
-
-		// update 0th column
-		this->row(0)[0] * = x;
-		this->row(1)[0] *= x;
-		this->row(2)[0] *= x;
-		this->row(3)[0] *= x;
-
-		// update 1st column
-		this->row(0)[1] *= y;
-		this->row(1)[1] *= y;
-		this->row(2)[1] *= y;
-		this->row(3)[1] *= y;
-
-		// NOTE: 2nd and 3rd columns remain unchanged
+		for(size_t r = 0; r != R; ++r){
+			this->row(r)[0] *= x;
+		}
+		if constexpr (C >= 2){
+			for(size_t r = 0; r != R; ++r){
+				this->row(r)[1] *= y;
+			}
+		}
 		return *this;
+	}
+
+	/**
+	 * @brief Multiply current matrix by scale matrix.
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
+	 * @param x - scaling factor in x direction.
+	 * @param y - scaling factor in y direction.
+	 * @param z - scaling factor in z direction.
+	 * @return reference to this matrix instance.
+	 */
+	matrix& scale(T x, T y, T z)noexcept{
+		// update 0th and 1st columns
+		this->scale(x, y);
+
+		// update 2nd column
+		if constexpr (C >= 3){
+			for(size_t r = 0; r != R; ++r){
+				this->row(r)[2] *= z;
+			}
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply current matrix by scale matrix.
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
+	 * @param s - vector of scaling factors.
+	 * @return reference to this matrix instance.
+	 */
+	template <size_t S> matrix& scale(const vector<T, S>& s)noexcept{
+		using std::min;
+		for(size_t c = 0; c != min(S, C); ++c){
+			for(size_t r = 0; r != R; ++r){
+				this->row(r)[c] *= s[c];
+			}
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply this matrix by translation matrix.
+	 * Multiplies this matrix M by translation matrix T from the right (M = M * T).
+	 * Translation only occurs in x-y plane, no translation in other directions.
+	 * Defined only for 2x3, and 4x4 matrices.
+	 * @param x - x component of translation vector.
+	 * @param y - y component of translation vector.
+	 * @return reference to this matrix object.
+	 */
+	template <typename E = T> matrix& translate(std::enable_if_t<(R == 2 && C == 3) || (R == C && R == 4), E> x, T y)noexcept{
+		// only last column of the matrix changes
+		for(size_t r = 0; r != R; ++r){
+			this->row(r)[C - 1] += this->row(r)[0] * x + this->row(r)[1] * y;
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply this matrix by translation matrix.
+	 * Multiplies this matrix M by translation matrix T from the right (M = M * T).
+	 * Defined only for 4x4 matrix.
+	 * @param x - x component of translation vector.
+	 * @param y - y component of translation vector.
+	 * @param z - z component of translation vector.
+	 * @return reference to this matrix object.
+	 */
+	template <typename E = T> matrix& translate(std::enable_if_t<R == C && R == 4, E> x, T y, T z)noexcept{
+		// only last column of the matrix changes
+		for(size_t r = 0; r != R; ++r){
+			this->row(r)[C - 1] += this->row(r)[0] * x + this->row(r)[1] * y + this->row(r)[2] * z;
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply this matrix by translation matrix.
+	 * Multiplies this matrix M by translation matrix T from the right (M = M * T).
+	 * Defined only for 2x3 and 4x4 matrices.
+	 * @param t - translation vector, can have 2 or 3 components.
+	 * @return reference to this matrix object.
+	 */
+	template <typename E = T, size_t S>
+	matrix& translate(
+			const vector<std::enable_if_t<
+					((R == 2 && C == 3) || (R == C && R == 4)) && (S == 2 || S == 3)
+				, E>, S>& t
+		)noexcept
+	{
+		// only last column of the matrix changes
+		for(size_t r = 0; r != R; ++r){
+			auto& e = this->row(r)[C - 1];
+			using std::min;
+			for(size_t s = 0; s != min(S, C - 1); ++s){
+			 	e += this->row(r)[s] * t[s];
+			}
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply this matrix by rotation matrix.
+	 * Multiplies this matrix M by rotation matrix R from the right (M = M * R).
+	 * Defined only for 3x3 and 4x4 matrices.
+	 * @param q - unit quaternion, representing the rotation.
+	 * @return reference to this matrix object.
+	 */
+	template <typename E = T>
+	matrix& rotate(const quaternion<std::enable_if_t<R == C && (R == 3 || R == 4), E>>& q)noexcept{
+		return this->right_mul(matrix<T, R, C>(q));
+	}
+
+	/**
+	 * @brief Multiply this matrix by rotation matrix.
+	 * Multiplies this matrix M by rotation matrix R from the right (M = M * R).
+	 * Rotation is done around (0, 0, 1) axis by given number of radians.
+	 * Positive direction of rotation is determined by a right-hand rule, i.e. from X-axis to Y-axis.
+	 * Defined only for 2x3, 3x3 and 4x4 matrices.
+	 * @param rot - the angle of rotation in radians.
+	 * @return reference to this matrix object.
+	 */
+	template <typename E = T>
+	matrix& rotate(std::enable_if_t<(R == 2 && C == 3) || (R == C && (R == 3 || R == 4)), E> rot)noexcept{
+		// TODO: write for 2x3 matrix
+		return this->rotate(vector<T, 3>(0, 0, rot));
 	}
 
 	/**
@@ -333,10 +491,165 @@ public:
 	 */
 	matrix& transpose()noexcept{
 		using std::swap;
-		for(unsigned r = 1; r != this->size(); ++r){
-			for(unsigned c = 0; c != r; ++c){
+		for(size_t r = 1; r != this->size(); ++r){
+			for(size_t c = 0; c != r; ++c){
 				swap(this->row(r)[c], this->row(c)[r]);
 			}
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Get sub-matrix matrix by removing given row and column.
+	 * Retruns a sub-matrix matrix which is constructed from this matrix by removing given row and given column.
+	 * @param row - index of the row to remove.
+	 * @param col - index of the column to remove.
+	 * @return minor matrix.
+	 */
+	template <typename E = T>
+	matrix<std::enable_if_t<(R >= 2 && C >= 2), E>, R - 1, C - 1> remove(size_t row, size_t col)const noexcept{
+		matrix<T, R - 1, C - 1> ret;
+
+		for(size_t dr = 0; dr != row; ++dr){
+			for(size_t dc = 0; dc != col; ++dc){
+				ret[dr][dc] = this->row(dr)[dc];
+			}
+			for(size_t dc = col; dc != ret[dr].size(); ++dc){
+				ret[dr][dc] = this->row(dr)[dc + 1];
+			}
+		}
+
+		for(size_t dr = row; dr != ret.size(); ++dr){
+			for(size_t dc = 0; dc != col; ++dc){
+				ret[dr][dc] = this->row(dr + 1)[dc];
+			}
+			for(size_t dc = col; dc != ret[dr].size(); ++dc){
+				ret[dr][dc] = this->row(dr + 1)[dc + 1];
+			}
+		}
+
+		return ret;
+	}
+
+	/**
+	 * @brief Claculate minor.
+	 * Calculate determinant of submatrix with removed given row and column.
+	 * This is equivalent to remove(r, c).det().
+	 * Defined only for square matrices 2x2 or bigger.
+	 * @param row - index of the row to remove.
+	 * @param col - index of the column to remove.
+	 */
+	template <typename E = T>
+	std::enable_if_t<R == C && (R >= 2), E> minor(size_t r, size_t c)const noexcept{
+		return this->remove(r, c).det();
+	}
+
+	/**
+	 * @brief Calculate matrix determinant.
+	 * Defined only for square matrices and 2x3 matrix.
+	 * @return matrix determinant.
+	 */
+	template <typename E = T>
+	std::enable_if_t<R == C || (R == 2 && C == 3), E> det()const noexcept{
+		if constexpr (R == C){
+			if constexpr (R == 1){
+				return this->row(0)[0];
+			}else{
+				T ret = 0;
+				T sign = 1;
+				for(size_t i = 0; i != C; ++i, sign = -sign){
+					ret += sign * this->row(0)[i] * this->minor(0, i);
+				}
+				return ret;
+			}
+		}else{
+			static_assert(R == 2 && (C == 2 || C == 3), "");
+			// for 2x3 matrix:
+
+			//    |a b c|          |e f|          |d f|          |d e|
+			// det|d e f| = a * det|0 1| - b * det|0 1| + c * det|0 0| = ae - bd
+			//    |0 0 1|
+
+			// for 2x2 matrix:
+
+			//    |a b|
+			// det|d e| = ae - bd
+
+			// i.e. same formulae
+
+			return this->row(0)[0] * this->row(1)[1] - this->row(0)[1] * this->row(1)[0];
+		}
+	}
+
+	/**
+	 * @brief Calculate right inverse of the matrix.
+	 * The resulting inverse matrix T^-1 is to multiply this matrix from the right to get identity matrix.
+	 *     T * T^-1 = I
+	 * Defined only for square matrices and 2x3 matrix.
+	 * @return right inverse matrix of this matrix.
+	 */
+	template <typename E = T>
+	matrix<std::enable_if_t<R == C || (R == 2 && C == 3), E>, R, R> inv()const noexcept{
+		if constexpr (R == C){
+			if constexpr (R == 1){
+				return T(1) / this->row(0)[0];
+			}else{
+				T d = this->det();
+
+				// calculate matrix of minors
+				static_assert(R == C, "");
+				matrix<T, R, C> mm;
+
+				for(size_t r = 0; r != R; ++r){
+					T sign = r % 2 == 0 ? 1 : -1;
+					for(size_t c = 0; c != C; ++c){
+						mm[r][c] = sign * this->minor(r, c);
+						sign = -sign;
+					}
+				}
+
+				mm.transpose();
+				mm /= d;
+				return mm;
+			}
+		}else{
+			static_assert(R == 2 && C == 3, "");
+
+			matrix<T, 3, 3> m{
+				this->row(0),
+				this->row(1),
+				{0, 0, 1}
+			};
+
+			m.invert();
+
+			return {
+				m[0],
+				m[1]
+			};
+		}
+	}
+
+	/**
+	 * @brief Snap each matrix component to 0.
+	 * For each component, set it to 0 if its absolute value does not exceed the given threshold.
+	 * @param threshold - the snapping threshold.
+	 * @return reference to this matrix.
+	 */
+	matrix& snap_to_zero(T threshold)noexcept{
+		for(auto& r : *this){
+			r.snap_to_zero(threshold);
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Set each element of this matrix to a given number.
+	 * @param num - number to set each matrix element to.
+	 */
+	matrix& set(T num)noexcept{
+		for(auto& e : *this){
+			e.set(num);
 		}
 		return *this;
 	}
