@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include <utki/debug.hpp>
+
 namespace r4{
 
 template <class T, size_t S> class vector;
