@@ -153,22 +153,27 @@ public:
 	 * @param vec - vector to transform. Must have same number of components, as number of columns in this matrix.
 	 * @return Transformed vector.
 	 */
-	template <size_t S, typename E = T>
-	vector<T, R> operator*(const vector<std::enable_if_t<S == C || (R == 2 && C == 3 && S == 2), E>, S>& vec)const noexcept{
-		if constexpr (S == C){
-			vector<T, R> r;
-			for(size_t i = 0; i != R; ++i){
-				r[i] = this->row(i) * vec;
-			}
-			return r;
-		}else{
-			static_assert(R == 2 && C == 3, "2x3 matrix expected");
-			static_assert(S == 2, "2d vector expected");
-			return vector<T, 2>{
-					this->row(0) * vec + this->row(0)[2],
-					this->row(1) * vec + this->row(1)[2]
-				};
+	vector<T, R> operator*(const vector<T, C>& vec)const noexcept
+	{
+		vector<T, R> r;
+		for(size_t i = 0; i != R; ++i){
+			r[i] = this->row(i) * vec;
 		}
+		return r;
+	}
+
+	template <size_t S, typename E = T>
+	vector<std::enable_if_t<
+			(R == 2 && C == 3 && S == 2),
+			E
+		>, S> operator*(const vector<T, S>& vec)const noexcept
+	{
+		static_assert(R == 2 && C == 3, "2x3 matrix expected");
+		static_assert(S == 2, "2d vector expected");
+		return vector<T, 2>{
+				this->row(0) * vec + this->row(0)[2],
+				this->row(1) * vec + this->row(1)[2]
+			};
 	}
 
 	/**
@@ -293,8 +298,7 @@ public:
 		for(size_t i = 0; i != min(R, C); ++i){
 			this->row(i)[i] = T(1);
 		}
-		for(size_t r = 0; r != R - 1; ++r){
-			if(r >= C) continue;
+		for(size_t r = 0; r != C; ++r){
 			for(size_t c = r + 1; c != C; ++c){
 				this->row(r)[c] = T(0);
 			}
@@ -561,6 +565,21 @@ public:
 				swap(this->row(r)[c], this->row(c)[r]);
 			}
 		}
+		// in case the matrix is not square, then zero out the "non-square" parts
+		if constexpr (C > R){
+			for(size_t r = 0; r != R; ++r){
+				auto& cur_row = this->row(r);
+				for(size_t c = R; c != C; ++c){
+					cur_row[c] = T(0);
+				}
+			}
+		}else{
+			static_assert(R >= C, "");
+			for(size_t r = C; r != R; ++r){
+				this->row(r).set(T(0));
+			}
+		}
+
 		return *this;
 	}
 

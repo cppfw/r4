@@ -357,7 +357,7 @@ int main(int argc, char** argv){
         
         float a = utki::pi<float>() / 6;
 
-        decltype(m) res{m};
+        decltype(m) res(m);
         res.rotate(a);
 
         using std::sin;

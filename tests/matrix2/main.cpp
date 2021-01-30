@@ -24,7 +24,7 @@ int main(int argc, char** argv){
 
 		auto str = ss.str();
 
-        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+        ASSERT_INFO_ALWAYS(str == cmp, "m =\n" << str << "\ncmp =\n" << cmp)
         // v.negate();
 
         // ASSERT_ALWAYS(!v.is_negative())
@@ -88,8 +88,12 @@ int main(int argc, char** argv){
 
         m.transpose();
 
-        ASSERT_ALWAYS(m[0][0] == 1) ASSERT_ALWAYS(m[0][1] == 4) ASSERT_ALWAYS(m[0][2] == 0)
-        ASSERT_ALWAYS(m[1][0] == 2) ASSERT_ALWAYS(m[1][1] == 5) ASSERT_ALWAYS(m[1][2] == 0)
+        ASSERT_ALWAYS(m[0][0] == 1)
+		ASSERT_ALWAYS(m[0][1] == 4)
+		ASSERT_ALWAYS(m[0][2] == 0)
+        ASSERT_ALWAYS(m[1][0] == 2)
+		ASSERT_ALWAYS(m[1][1] == 5)
+		ASSERT_ALWAYS(m[1][2] == 0)
     }
 
     // test operator*(matrix2)
@@ -233,7 +237,7 @@ int main(int argc, char** argv){
 
         float a = utki::pi<float>() / 6;
 
-        decltype(m) res{m};
+        decltype(m) res(m);
         res.rotate(a);
 
         using std::sin;
