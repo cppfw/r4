@@ -687,7 +687,7 @@ public:
 				matrix<T, R, C> mm;
 
 				for(size_t r = 0; r != R; ++r){
-					T sign = r % 2 == 0 ? 1 : -1;
+					T sign = r % 2 == 0 ? T(1) : T(-1);
 					for(size_t c = 0; c != C; ++c){
 						mm[r][c] = sign * this->minor(r, c);
 						sign = -sign;

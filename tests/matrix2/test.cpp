@@ -269,8 +269,8 @@ void test_matrix2(){
 	// test inv()
 	{
 		r4::matrix2<float> m{
-		 	{1, 3, 5},
-			{2, 3, 1},
+		 	{1.0f, 3.0f, 5.0f},
+			{2.0f, 3.0f, 1.0f},
 		};
 
 		auto i = m * m.inv();
