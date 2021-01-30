@@ -2,7 +2,7 @@ include prorab.mk
 
 this_name := tests
 
-this_srcs := main.cpp
+this_srcs := $(call prorab-src-dir)
 
 $(eval $(call prorab-config, ../../config))
 
