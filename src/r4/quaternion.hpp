@@ -367,7 +367,8 @@ public:
 	 * to a rotation matrix.
      * @return Rotation matrix.
      */
-	matrix<T, 4, 4> to_matrix4()const noexcept;
+	template <size_t S>
+	matrix<std::enable_if_t<S == 3 || S == 4, T>, S, S> to_matrix()const noexcept;
 
 	/**
 	 * @brief Spherical linear interpolation.
@@ -460,8 +461,10 @@ template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>
 	return this->set_rotation(axis.x(), axis.y(), axis.z(), angle);
 }
 
-template <class T> matrix<T, 4, 4> quaternion<T>::to_matrix4()const noexcept{
-	return matrix<T, 4, 4>(*this);
+template <class T>
+template <size_t S>
+matrix<std::enable_if_t<S == 3 || S == 4, T>, S, S> quaternion<T>::to_matrix()const noexcept{
+	return matrix<T, S, S>(*this);
 }
 
 static_assert(sizeof(quaternion<float>) == sizeof(float) * 4, "size mismatch");

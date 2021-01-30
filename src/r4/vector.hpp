@@ -850,7 +850,7 @@ namespace r4{
 template <class T, size_t S>
 template <typename E>
 vector<T, S>& vector<T, S>::rotate(const quaternion<std::enable_if_t<S == 3 || S == 4, E>>& q)noexcept{
-	*this = q.to_matrix4() * (*this);
+	*this = q.template to_matrix<S>() * (*this);
 	return *this;
 }
 
