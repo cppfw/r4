@@ -2,7 +2,7 @@
 
 #include "../../src/r4/rectangle.hpp"
 
-void test(){
+void test_rectangle(){
 	// test constructor(x, y, w, h)
 	{
 		r4::rectangle<int> r{3, 4, 5, 6};

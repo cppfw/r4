@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-void test(){
+void test_matrix4(){
 	// test constructor(vector4, vector4, vector4, vector4)
 	{
 		r4::matrix4<int> m{

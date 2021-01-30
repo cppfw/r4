@@ -1,6 +1,6 @@
-void test();
+void test_quaternion();
 
 int main(int argc, char** argv){
-	test();
+	test_quaternion();
 	return 0;
 }

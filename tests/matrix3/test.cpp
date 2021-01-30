@@ -5,7 +5,7 @@
 
 #include <sstream>
 
-void test(){
+void test_matrix3(){
 	// test operator<<
     {
         r4::matrix3<int> m;

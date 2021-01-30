@@ -2,7 +2,7 @@
 
 #include "../../src/r4/quaternion.hpp"
 
-void test(){
+void test_quaternion(){
 	// test constructor(x, y, z, w)
 	{
 		r4::quaternion<int> a{3, 4, 5, 6};

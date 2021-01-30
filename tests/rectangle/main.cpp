@@ -1,6 +1,6 @@
-void test();
+void test_rectangle();
 
 int main(int argc, char** argv){
-	test();
+	test_rectangle();
 	return 0;
 }

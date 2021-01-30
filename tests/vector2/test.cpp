@@ -2,7 +2,7 @@
 
 #include "../../src/r4/vector.hpp"
 
-void test(){
+void test_vector2(){
 	// test constructor(x, y)
 	{
 		r4::vector2<int> v{2, 3};

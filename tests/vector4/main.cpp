@@ -1,6 +1,6 @@
-void test();
+void test_vector4();
 
 int main(int argc, char** argv){
-	test();
+	test_vector4();
 	return 0;
 }

@@ -1,7 +1,7 @@
-void test();
+void test_vector3();
 
 int main(int argc, char** argv){
-	test();
+	test_vector3();
     return 0;
 }
 
