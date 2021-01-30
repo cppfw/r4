@@ -624,8 +624,8 @@ public:
 	 * @param col - index of the column to remove.
 	 */
 	template <typename E = T>
-	std::enable_if_t<R == C && (R >= 2), E> minor(size_t r, size_t c)const noexcept{
-		return this->remove(r, c).det();
+	std::enable_if_t<R == C && (R >= 2), E> minor(size_t row, size_t col)const noexcept{
+		return this->remove(row, col).det();
 	}
 
 	/**

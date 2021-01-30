@@ -169,7 +169,7 @@ public:
 	/**
 	 * @brief Construct initialized vector.
 	 * Creates a vector and initializes its components by the given values.
-	 * @param rows - initializer list of numbers to set as components of the vector.
+	 * @param vals - initializer list of numbers to set as components of the vector.
 	 */
 	constexpr vector(std::initializer_list<T> vals)noexcept :
 			vector(vals, std::make_index_sequence<S>())
@@ -309,10 +309,7 @@ public:
 
 	/**
 	 * @brief Set vector components to given values.
-	 * @param x - value to set vector's x component to.
-	 * @param y - value to set vector's y component to.
-	 * @param z - value to set vector's z component to.
-	 * @param w - value to set vector's w component to.
+	 * @param a - parameter pack of values to set the vector to.
 	 * @return Reference to this vector object.
 	 */
 	template <typename... A> vector& set(A... a)noexcept{
@@ -778,7 +775,7 @@ public:
 
 	/**
 	 * @brief Absolute vector value.
-	 * @param va - vector to take absolute value of.
+	 * @param v - vector to take absolute value of.
 	 * @return vector holding absolute values of this vector's components.
 	 */
 	friend vector abs(const vector& v)noexcept{
