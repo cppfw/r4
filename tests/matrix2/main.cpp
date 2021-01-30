@@ -15,7 +15,9 @@ int main(int argc, char** argv){
 
 		ss << m;
 
-		auto cmp = "\n\t/1 0 0\\\n\t\\0 1 0/";
+		auto cmp =
+				"|1 0 0" "\n"
+				"|0 1 0" "\n";
 
 		// TRACE_ALWAYS(<< "m = " << ss.str() << std::endl)
 		// TRACE_ALWAYS(<< "cmp = " << cmp << std::endl)
@@ -126,24 +128,6 @@ int main(int argc, char** argv){
         ASSERT_ALWAYS(m[1][0] == 42) ASSERT_ALWAYS(m[1][1] == 51) ASSERT_ALWAYS(m[1][2] == 66)
     }
 
-    // test right_multiply(matrix2)
-    {
-        r4::matrix2<int> m{
-            {1, 2, 3},
-            {4, 5, 6}
-        };
-
-        r4::matrix2<int> m1{
-            {3, 4, 5},
-            {6, 7, 8}
-        };
-
-        m.right_multiply(m1);
-
-        ASSERT_ALWAYS(m[0][0] == 15) ASSERT_ALWAYS(m[0][1] == 18) ASSERT_ALWAYS(m[0][2] == 24)
-        ASSERT_ALWAYS(m[1][0] == 42) ASSERT_ALWAYS(m[1][1] == 51) ASSERT_ALWAYS(m[1][2] == 66)
-    }
-
     // test left_multiply(matrix2)
     {
         r4::matrix2<int> m1{
@@ -156,7 +140,7 @@ int main(int argc, char** argv){
             {6, 7, 8}
         };
 
-        m.left_multiply(m1);
+        m.left_mul(m1);
 
         ASSERT_ALWAYS(m[0][0] == 15) ASSERT_ALWAYS(m[0][1] == 18) ASSERT_ALWAYS(m[0][2] == 24)
         ASSERT_ALWAYS(m[1][0] == 42) ASSERT_ALWAYS(m[1][1] == 51) ASSERT_ALWAYS(m[1][2] == 66)

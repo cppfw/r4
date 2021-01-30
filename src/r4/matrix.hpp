@@ -150,24 +150,41 @@ public:
 	 * @brief Transform vector by matrix.
 	 * Multiply vector V by this matrix M from the right (M * V).
 	 * i.e. transform vector with this transformation matrix.
-	 * @param vec - vector to transform.
+	 * @param vec - vector to transform. Must have same number of components, as number of columns in this matrix.
 	 * @return Transformed vector.
 	 */
-	vector<T, R> operator*(const vector<T, C>& vec)const noexcept{
-		vector<T, R> r;
-		for(size_t i = 0; i != R; ++i){
-			r[i] = this->row(i) * vec;
+	template <size_t S, typename E = T>
+	vector<T, R> operator*(const vector<std::enable_if_t<S == C || (R == 2 && C == 3 && S == 2), E>, S>& vec)const noexcept{
+		if constexpr (S == C){
+			vector<T, R> r;
+			for(size_t i = 0; i != R; ++i){
+				r[i] = this->row(i) * vec;
+			}
+			return r;
+		}else{
+			static_assert(R == 2 && C == 3, "2x3 matrix expected");
+			static_assert(S == 2, "2d vector expected");
+			return vector<T, 2>{
+					this->row(0) * vec + this->row(0)[2],
+					this->row(1) * vec + this->row(1)[2]
+				};
 		}
-		return r;
 	}
 
 	/**
 	 * @brief Multiply by matrix from the right.
 	 * Calculate result of this matrix M multiplied by another matrix K from the right (M * K).
+	 * Matrices M and K must be matched. Let's say this matrix has R rows and C columns.
+	 * Then the matrix K must have C rows and, let's say, CC columns.
+	 * And the result matrix of the multiplication will be with R rows and CC rows.
+	 * The matrix multiplication operator is also defined for 2x3 matrices. In this case, before the operation,
+	 * both matrices are implicitly converted to 3x3 matrices with last added row to be (0, 0, 1), so that the matrices are square
+	 * and, thus, are matched.
 	 * @param m - matrix to multiply by (matrix K).
-     * @return New matrix as a result of matrices product.
+     * @return New matrix of size RxCC as a result of matrices product.
      */
-	template <size_t CC> matrix<T, R, CC> operator*(const matrix<T, C, CC>& m)const noexcept{
+	template <size_t CC>
+	matrix<T, R, CC> operator*(const matrix<T, C, CC>& m)const noexcept{
 		matrix<T, R, CC> ret;
 		for(size_t rd = 0; rd != ret.size(); ++rd){
 			auto& row_d = ret[rd];
@@ -182,13 +199,33 @@ public:
 		return ret;
 	}
 
+	// Define operaotr*(matrix) for 2x3 matrices. See description of operator*(matrix) for square matrices for info.
+	template <typename E = matrix>
+	std::enable_if_t<R == 2 && C == 3, E> operator*(const matrix& matr)const noexcept{
+		return matrix{
+				vector<T, 3>{
+						this->row(0)[0] * matr[0][0] + this->row(0)[1] * matr[1][0],
+						this->row(0)[0] * matr[0][1] + this->row(0)[1] * matr[1][1],
+						this->row(0)[0] * matr[0][2] + this->row(0)[1] * matr[1][2] + this->row(0)[2]
+					},
+				vector<T, 3>{
+						this->row(1)[0] * matr[0][0] + this->row(1)[1] * matr[1][0],
+						this->row(1)[0] * matr[0][1] + this->row(1)[1] * matr[1][1],
+						this->row(1)[0] * matr[0][2] + this->row(1)[1] * matr[1][2] + this->row(1)[2]
+					},
+			};
+	}
+
 	/**
 	 * @brief Multiply by matrix from the right.
-	 * Defined only for square matrices.
+	 * Defined only for square matrices and for 2x3 matrices. Im case of 2x3 matrices, those are
+	 * implicitly converted to square matrix before the opration by adding (0, 0, 1) row as a third row, and
+	 * after assignment, the third row is discarded again.
 	 * Multiply this matrix M by another matrix K from the right (M  = M * K).
      * @return reference to this matrix object.
      */
-	template <typename E = matrix> std::enable_if_t<R == C, E&> operator*=(const matrix& matr)noexcept{
+	template <typename E = matrix>
+	std::enable_if_t<R == C || (R == 2 && C == 3), E&> operator*=(const matrix& matr)noexcept{
 		return this->operator=(this->operator*(matr));
 	}
 
@@ -232,12 +269,13 @@ public:
 	/**
 	 * @brief Multiply by matrix from the left.
 	 * Multiply this matrix M by another matrix K from the left (M  = K * M).
-	 * Defined only for square matrices.
+	 * Defined only for square matrices and 2x3 matrices. For details about 2x3 matrices see
+	 * description of operator*(matrix).
 	 * @param matr - matrix to multiply by.
 	 * @return reference to this matrix object.
 	 */
 	template <typename E = matrix>
-	std::enable_if_t<R == C, E&> left_mul(const matrix& matr)noexcept{
+	std::enable_if_t<R == C || (R == 2 && C == 3), E&> left_mul(const matrix& matr)noexcept{
 		return this->operator=(matr.operator*(*this));
 	}
 
@@ -477,13 +515,40 @@ public:
 	 * Rotation is done around (0, 0, 1) axis by given number of radians.
 	 * Positive direction of rotation is determined by a right-hand rule, i.e. from X-axis to Y-axis.
 	 * Defined only for 2x3, 3x3 and 4x4 matrices.
-	 * @param rot - the angle of rotation in radians.
+	 * @param a - the angle of rotation in radians.
 	 * @return reference to this matrix object.
 	 */
 	template <typename E = T>
-	matrix& rotate(std::enable_if_t<(R == 2 && C == 3) || (R == C && (R == 3 || R == 4)), E> rot)noexcept{
-		// TODO: write for 2x3 matrix
-		return this->rotate(vector<T, 3>(0, 0, rot));
+	matrix& rotate(std::enable_if_t<(R == 2 && C == 3) || (R == C && (R == 3 || R == 4)), E> a)noexcept{
+		if constexpr (R == C){
+			// square matrix
+			return this->rotate(vector<T, 3>(0, 0, a));
+		}else{
+			static_assert(R == 2 && C == 3, "2x3 matrix expected");
+
+			// multiply this matrix from the right by the rotation matrix:
+			//               / cos(a) -sin(a) 0 \
+			// this = this * \ sin(a)  cos(a) 0 /
+
+			using std::cos;
+			using std::sin;
+			T sina = sin(a);
+			T cosa = cos(a);
+
+			T m00 = this->row(0)[0] * cosa + this->row(0)[1] * sina;
+			T m10 = this->row(1)[0] * cosa + this->row(1)[1] * sina;
+			sina = -sina;
+			T m01 = this->row(0)[0] * sina + this->row(0)[1] * cosa;
+			T m11 = this->row(1)[0] * sina + this->row(1)[1] * cosa;
+
+			this->row(0)[0] = m00;
+			this->row(1)[0] = m10;
+
+			this->row(0)[1] = m01;
+			this->row(1)[1] = m11;
+
+			return *this;
+		}
 	}
 
 	/**
@@ -585,11 +650,13 @@ public:
 	 * @brief Calculate right inverse of the matrix.
 	 * The resulting inverse matrix T^-1 is to multiply this matrix from the right to get identity matrix.
 	 *     T * T^-1 = I
-	 * Defined only for square matrices and 2x3 matrix.
+	 * Defined only for square matrices and 2x3 matrix. The 2x3 matrix, before the inversion, is converted to
+	 * 3x3 matrix by adding (0, 0, 1) as a last row, then inverted as square matrix, then the last row of the
+	 * inversion resulting matrix is discarded.
 	 * @return right inverse matrix of this matrix.
 	 */
 	template <typename E = T>
-	matrix<std::enable_if_t<R == C || (R == 2 && C == 3), E>, R, R> inv()const noexcept{
+	matrix<std::enable_if_t<R == C || (R == 2 && C == 3), E>, R, C> inv()const noexcept{
 		if constexpr (R == C){
 			if constexpr (R == 1){
 				return T(1) / this->row(0)[0];
@@ -628,6 +695,15 @@ public:
 				m[1]
 			};
 		}
+	}
+
+	/**
+	 * @brief Invert this matrix.
+	 * @return reference to this matrix.
+	 */
+	matrix& invert()noexcept{
+		this->operator=(this->inv());
+		return *this;
 	}
 
 	/**
