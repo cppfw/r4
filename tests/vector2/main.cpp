@@ -43,7 +43,7 @@ int main(int argc, char** argv){
 	{
 		r4::vector3<int> v3{3, 4, 5};
 
-		r4::vector2<int> v2{0};
+		r4::vector2<int> v2(0);
 
 		v2 = v3;
 
