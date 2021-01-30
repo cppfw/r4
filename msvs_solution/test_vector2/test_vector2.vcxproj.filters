@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tests\vector2\main.cpp">
+    <ClCompile Include="..\..\tests\vector2\*.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\vector2\*.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
