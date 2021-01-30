@@ -29,7 +29,7 @@ public:
 	 * @param v - parameter pack with initializing rows.
 	 */
 	template <typename... A> constexpr explicit matrix(A... v)noexcept :
-			base_type{{v...}}
+			base_type{v...}
 	{}
 
 private:

@@ -157,7 +157,7 @@ public:
 	 * @param v - parameter pack with initializing values.
 	 */
 	template <typename... A> constexpr explicit vector(A... v)noexcept :
-			base_type{{T(v)...}}
+			base_type{T(v)...}
 	{}
 
 private:
@@ -313,7 +313,7 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	template <typename... A> vector& set(A... a)noexcept{
-		this->base_type::operator=(base_type{a...});
+		this->base_type::operator=(base_type{T(a)...});
 		return *this;
 	}
 
