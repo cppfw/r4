@@ -28,7 +28,7 @@ public:
 	 * Initializes matrix rows to given values.
 	 * @param v - parameter pack with initializing rows.
 	 */
-	template <typename... A> constexpr matrix(A... v)noexcept :
+	template <typename... A> constexpr explicit matrix(A... v)noexcept :
 			base_type{{v...}}
 	{}
 

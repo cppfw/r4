@@ -156,8 +156,23 @@ public:
 	 * Initializes vector components to given values.
 	 * @param v - parameter pack with initializing values.
 	 */
-	template <typename... A> constexpr vector(A... v)noexcept :
+	template <typename... A> constexpr explicit vector(A... v)noexcept :
 			base_type{{T(v)...}}
+	{}
+
+private:
+	template <size_t... I>
+	constexpr vector(std::initializer_list<T> vals, std::index_sequence<I...>)noexcept :
+			base_type{ *std::next(vals.begin(), I)... }
+	{}
+public:
+	/**
+	 * @brief Construct initialized vector.
+	 * Creates a vector and initializes its components by the given values.
+	 * @param rows - initializer list of numbers to set as components of the vector.
+	 */
+	constexpr vector(std::initializer_list<T> vals)noexcept :
+			vector(vals, std::make_index_sequence<S>())
 	{}
 
 	/**
@@ -843,7 +858,7 @@ static_assert(sizeof(vector<double, 4>) == sizeof(double) * 4, "size mismatch");
 
 }
 
-#include "matrix4.hpp"
+#include "matrix.hpp"
 
 namespace r4{
 

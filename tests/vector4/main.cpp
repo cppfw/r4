@@ -1,6 +1,6 @@
 #include <utki/debug.hpp>
 
-#include "../../src/r4/vector4.hpp"
+#include "../../src/r4/vector.hpp"
 
 int main(int argc, char** argv){
 
@@ -16,7 +16,7 @@ int main(int argc, char** argv){
 
 	// test constructor(n)
 	{
-		r4::vector4<int> v{3};
+		r4::vector4<int> v(3);
 
 		ASSERT_ALWAYS(v[0] == 3)
 		ASSERT_ALWAYS(v[1] == v[0])
@@ -26,7 +26,7 @@ int main(int argc, char** argv){
 
 	// test constructor(n, w)
 	{
-		r4::vector4<int> v{3, 5};
+		r4::vector4<int> v(3, 5);
 
 		ASSERT_ALWAYS(v[0] == 3)
 		ASSERT_ALWAYS(v[1] == v[0])

@@ -1,6 +1,6 @@
 #include <utki/debug.hpp>
 
-#include "../../src/r4/vector2.hpp"
+#include "../../src/r4/vector.hpp"
 
 int main(int argc, char** argv){
 	// test constructor(x, y)
@@ -13,7 +13,7 @@ int main(int argc, char** argv){
 
 	// test constructor(xy)
 	{
-		r4::vector2<int> v{3};
+		r4::vector2<int> v(3);
 
 		ASSERT_ALWAYS(v[0] == 3)
 		ASSERT_ALWAYS(v[1] == 3)
@@ -506,6 +506,21 @@ int main(int argc, char** argv){
 
 		ASSERT_ALWAYS(r[0] == 4)
 		ASSERT_ALWAYS(r[1] == 3)
+	}
+
+	// test that vector::vector(A... a) constructor does is not used to convert shared_ptr to vector.
+	{
+		struct base{};
+		struct derived : base{};
+
+		struct ts{
+			void func(const r4::vector2<float>& v){}
+			void func(std::shared_ptr<const base> p){}
+		} s;
+
+		auto p = std::make_shared<const derived>();
+
+		s.func(p);
 	}
 
     return 0;

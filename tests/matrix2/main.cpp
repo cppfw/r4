@@ -1,7 +1,7 @@
 #include <utki/debug.hpp>
 #include <utki/math.hpp>
 
-#include "../../src/r4/matrix2.hpp"
+#include "../../src/r4/matrix.hpp"
 
 #include <sstream>
 

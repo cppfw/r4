@@ -1,7 +1,7 @@
 #include <utki/debug.hpp>
 
-#include "../../src/r4/vector3.hpp"
-#include "../../src/r4/vector2.hpp"
+#include "../../src/r4/vector.hpp"
+#include "../../src/r4/vector.hpp"
 
 int main(int argc, char** argv){
 	// test constructor(x, y, z)
@@ -15,7 +15,7 @@ int main(int argc, char** argv){
 
 	// test constructor(n)
 	{
-		r4::vector3<int> v{4};
+		r4::vector3<int> v(4);
 
 		ASSERT_ALWAYS(v[0] == 4)
 		ASSERT_ALWAYS(v[1] == v[0])

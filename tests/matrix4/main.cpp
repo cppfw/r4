@@ -1,6 +1,6 @@
 #include <utki/debug.hpp>
 
-#include "../../src/r4/matrix4.hpp"
+#include "../../src/r4/matrix.hpp"
 
 #include <sstream>
 
