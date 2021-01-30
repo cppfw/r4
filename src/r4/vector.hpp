@@ -253,7 +253,7 @@ public:
 	template <typename TT> vector<TT, S> to()const noexcept{
 		vector<TT, S> ret;
 		for(size_t i = 0; i != S; ++i){
-			ret[i] = T(this->operator[](i));
+			ret[i] = TT(this->operator[](i));
 		}
 		return ret;
 	}
