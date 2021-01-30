@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tests\vector2\main.cpp" />
+    <ClCompile Include="..\..\tests\vector2\*.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
