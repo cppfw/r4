@@ -9,8 +9,8 @@
 
 namespace r4{
 
-template <class T> class vector3;
-template <class T> class matrix4;
+template <class T, size_t S> class vector;
+template <class T, size_t R, size_t C> class matrix;
 
 /**
  * @brief quaternion template class.
@@ -93,7 +93,7 @@ public:
 	 * rotation in radians.
 	 * @param rot - vector which defines the rotation.
 	 */
-	constexpr quaternion(const vector3<T>& rot)noexcept;
+	constexpr quaternion(const vector<T, 3>& rot)noexcept;
 
 	/**
 	 * @brief Default constructor.
@@ -349,7 +349,7 @@ public:
      * @param angle - rotation angle.
      * @return Reference to this quaternion object.
      */
-	quaternion& set_rotation(const vector3<T>& axis, T angle)noexcept;
+	quaternion& set_rotation(const vector<T, 3>& axis, T angle)noexcept;
 
 	/**
 	 * @brief Initialize rotation.
@@ -360,7 +360,7 @@ public:
      * @param rot - rotation vector.
      * @return Reference to this quaternion object.
      */
-	quaternion& set_rotation(const vector3<T>& rot)noexcept;
+	quaternion& set_rotation(const vector<T, 3>& rot)noexcept;
 
 	/**
 	 * @brief Convert this quaternion to 4x4 matrix.
@@ -368,7 +368,8 @@ public:
 	 * to a rotation matrix.
      * @return Rotation matrix.
      */
-	matrix4<T> to_matrix4()const noexcept;
+	template <size_t S>
+	matrix<std::enable_if_t<S == 3 || S == 4, T>, S, S> to_matrix()const noexcept;
 
 	/**
 	 * @brief Spherical linear interpolation.
@@ -432,23 +433,22 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const quaternion<T>& quat){
-		s << "(" << quat.x() << ", " << quat.y() << ", " << quat.z() << ", " << quat.w() << ")";
+		s << "(" << quat.x() << " " << quat.y() << " " << quat.z() << " " << quat.w() << ")";
 		return s;
 	}
 };
 
 }
 
-#include "vector3.hpp"
-#include "matrix4.hpp"
+#include "matrix.hpp"
 
 namespace r4{
 
-template <class T> constexpr quaternion<T>::quaternion(const vector3<T>& rot)noexcept{
+template <class T> constexpr quaternion<T>::quaternion(const vector<T, 3>& rot)noexcept{
 	this->set_rotation(rot);
 }
 
-template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector3<T>& rot)noexcept{
+template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>& rot)noexcept{
 	T mag = rot.norm();
 	if(mag != 0){
 		this->set_rotation(rot.x() / mag, rot.y() / mag, rot.z() / mag, mag);
@@ -458,12 +458,14 @@ template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector3<T>& 
 	return *this;
 }
 
-template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector3<T>& axis, T angle)noexcept{
+template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>& axis, T angle)noexcept{
 	return this->set_rotation(axis.x(), axis.y(), axis.z(), angle);
 }
 
-template <class T> matrix4<T> quaternion<T>::to_matrix4()const noexcept{
-	return matrix4<T>(*this);
+template <class T>
+template <size_t S>
+matrix<std::enable_if_t<S == 3 || S == 4, T>, S, S> quaternion<T>::to_matrix()const noexcept{
+	return matrix<T, S, S>(*this);
 }
 
 static_assert(sizeof(quaternion<float>) == sizeof(float) * 4, "size mismatch");

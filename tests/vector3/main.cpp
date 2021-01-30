@@ -1,6 +1,7 @@
 #include <utki/debug.hpp>
 
 #include "../../src/r4/vector3.hpp"
+#include "../../src/r4/vector2.hpp"
 
 int main(int argc, char** argv){
 	// test constructor(x, y, z)

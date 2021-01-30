@@ -15,14 +15,16 @@ int main(int argc, char** argv){
 
 		ss << m;
 
-		auto cmp = "\n\t/1 0 0\\\n\t\\0 1 0/";
+		auto cmp =
+				"|1 0 0" "\n"
+				"|0 1 0" "\n";
 
 		// TRACE_ALWAYS(<< "m = " << ss.str() << std::endl)
 		// TRACE_ALWAYS(<< "cmp = " << cmp << std::endl)
 
 		auto str = ss.str();
 
-        ASSERT_INFO_ALWAYS(str == cmp, "m = " << str << "\ncmp = " << cmp)
+        ASSERT_INFO_ALWAYS(str == cmp, "m =\n" << str << "\ncmp =\n" << cmp)
         // v.negate();
 
         // ASSERT_ALWAYS(!v.is_negative())
@@ -86,8 +88,12 @@ int main(int argc, char** argv){
 
         m.transpose();
 
-        ASSERT_ALWAYS(m[0][0] == 1) ASSERT_ALWAYS(m[0][1] == 4) ASSERT_ALWAYS(m[0][2] == 0)
-        ASSERT_ALWAYS(m[1][0] == 2) ASSERT_ALWAYS(m[1][1] == 5) ASSERT_ALWAYS(m[1][2] == 0)
+        ASSERT_ALWAYS(m[0][0] == 1)
+		ASSERT_ALWAYS(m[0][1] == 4)
+		ASSERT_ALWAYS(m[0][2] == 0)
+        ASSERT_ALWAYS(m[1][0] == 2)
+		ASSERT_ALWAYS(m[1][1] == 5)
+		ASSERT_ALWAYS(m[1][2] == 0)
     }
 
     // test operator*(matrix2)
@@ -126,24 +132,6 @@ int main(int argc, char** argv){
         ASSERT_ALWAYS(m[1][0] == 42) ASSERT_ALWAYS(m[1][1] == 51) ASSERT_ALWAYS(m[1][2] == 66)
     }
 
-    // test right_multiply(matrix2)
-    {
-        r4::matrix2<int> m{
-            {1, 2, 3},
-            {4, 5, 6}
-        };
-
-        r4::matrix2<int> m1{
-            {3, 4, 5},
-            {6, 7, 8}
-        };
-
-        m.right_multiply(m1);
-
-        ASSERT_ALWAYS(m[0][0] == 15) ASSERT_ALWAYS(m[0][1] == 18) ASSERT_ALWAYS(m[0][2] == 24)
-        ASSERT_ALWAYS(m[1][0] == 42) ASSERT_ALWAYS(m[1][1] == 51) ASSERT_ALWAYS(m[1][2] == 66)
-    }
-
     // test left_multiply(matrix2)
     {
         r4::matrix2<int> m1{
@@ -156,7 +144,7 @@ int main(int argc, char** argv){
             {6, 7, 8}
         };
 
-        m.left_multiply(m1);
+        m.left_mul(m1);
 
         ASSERT_ALWAYS(m[0][0] == 15) ASSERT_ALWAYS(m[0][1] == 18) ASSERT_ALWAYS(m[0][2] == 24)
         ASSERT_ALWAYS(m[1][0] == 42) ASSERT_ALWAYS(m[1][1] == 51) ASSERT_ALWAYS(m[1][2] == 66)
@@ -249,7 +237,7 @@ int main(int argc, char** argv){
 
         float a = utki::pi<float>() / 6;
 
-        decltype(m) res{m};
+        decltype(m) res(m);
         res.rotate(a);
 
         using std::sin;

@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-#include "vector2.hpp"
+#include "vector.hpp"
 
 // Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
 #ifdef min

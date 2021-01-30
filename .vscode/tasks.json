@@ -24,7 +24,7 @@
 		{
             "label": "test_clang++_debug",
             "type": "shell",
-            "command": "make test CXX=clang++ autojobs=true debug=true",
+            "command": "make test CXX=clang++ autojobs=true config=dbg",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -33,7 +33,7 @@
         {
             "label": "test_g++_debug",
             "type": "shell",
-            "command": "make test CXX=g++ autojobs=true debug=true",
+            "command": "make test CXX=g++ autojobs=true config=dbg",
             "problemMatcher": [
                 "$gcc"
             ],
