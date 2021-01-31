@@ -158,13 +158,17 @@ public:
 	 */
 	template <typename... A> constexpr explicit vector(A... v)noexcept :
 			base_type{T(v)...}
-	{}
+	{
+		static_assert(sizeof...(v) == S, "number of constructor arguments is not equal to vector size");
+	}
 
 private:
 	template <size_t... I>
 	constexpr vector(std::initializer_list<T> vals, std::index_sequence<I...>)noexcept :
 			base_type{ *std::next(vals.begin(), I)... }
-	{}
+	{
+		// static_assert(vals.size() == S, "initializer list size is not equal to this vector size");
+	}
 public:
 	/**
 	 * @brief Construct initialized vector.

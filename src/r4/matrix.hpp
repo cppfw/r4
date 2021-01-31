@@ -26,11 +26,13 @@ public:
 	/**
 	 * @brief Constructor.
 	 * Initializes matrix rows to given values.
-	 * @param v - parameter pack with initializing rows.
+	 * @param rows - parameter pack with initializing rows.
 	 */
-	template <typename... A> constexpr explicit matrix(A... v)noexcept :
-			base_type{v...}
-	{}
+	template <typename... A> constexpr explicit matrix(A... rows)noexcept :
+			base_type{rows...}
+	{
+		static_assert(sizeof...(rows) == R, "number of constructor arguments is not equal to number of rows in this matrix");
+	}
 
 private:
 	template <size_t... I>
