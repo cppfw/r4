@@ -192,7 +192,7 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const rectangle<T>& rect){
-		s << "[" << rect.p << rect.d << "]";
+		s << "(" << rect.p << ")(" << rect.d << ")";
 		return s;
 	}
 };
