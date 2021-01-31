@@ -8,7 +8,7 @@
 			"name": "(gdb) Launch",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/tests/vector4/out/dbg/tests",
+			"program": "${workspaceFolder}/tests/vector3/out/dbg/tests",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",

@@ -22,14 +22,6 @@ void test_vector3(){
 		ASSERT_ALWAYS(v[2] == v[1])
 	}
 
-	// test constructor(x, y)
-	{
-		r4::vector3<int> a{3, 5};
-
-		ASSERT_ALWAYS(a[0] == 3)
-		ASSERT_INFO_ALWAYS(a[1] == 5, "a = " << a)
-	}
-
 	// test constructor(vector2, z)
 	{
 		r4::vector2<int> v2{3, 4};

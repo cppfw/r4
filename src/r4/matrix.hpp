@@ -46,7 +46,15 @@ public:
 	 * @param rows - initializer list of vectors to set as rows of the matrix.
 	 */
 	constexpr matrix(std::initializer_list<vector<T, C>> rows)noexcept :
-			matrix(rows, std::make_index_sequence<R>())
+			matrix(
+					[&rows](){
+						if(rows.size() == R) return rows;
+						std::cerr << "wrong number of elements in initializer list of matrix(std::initializer_list), expected "
+								<< R << ", got " << rows.size() << std::endl;
+						std::abort();
+					}(),
+					std::make_index_sequence<R>()
+				)
 	{}
 
 	/**

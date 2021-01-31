@@ -166,17 +166,23 @@ private:
 	template <size_t... I>
 	constexpr vector(std::initializer_list<T> vals, std::index_sequence<I...>)noexcept :
 			base_type{ *std::next(vals.begin(), I)... }
-	{
-		// static_assert(vals.size() == S, "initializer list size is not equal to this vector size");
-	}
+	{}
 public:
 	/**
 	 * @brief Construct initialized vector.
 	 * Creates a vector and initializes its components by the given values.
 	 * @param vals - initializer list of numbers to set as components of the vector.
 	 */
-	constexpr vector(std::initializer_list<T> vals)noexcept :
-			vector(vals, std::make_index_sequence<S>())
+	constexpr vector(std::initializer_list<T> vals) :
+			vector(
+					[&vals](){
+						if(vals.size() == S) return vals;
+						std::cerr << "wrong number of elements in initializer list of vector(std::initializer_list), expected "
+								<< S << ", got " << vals.size() << std::endl;
+						std::abort();
+					}(),
+					std::make_index_sequence<S>()
+				)
 	{}
 
 	/**
