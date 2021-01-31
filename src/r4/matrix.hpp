@@ -28,7 +28,8 @@ public:
 	 * Initializes matrix rows to given values.
 	 * @param rows - parameter pack with initializing rows.
 	 */
-	template <typename... A> constexpr explicit matrix(A... rows)noexcept :
+	template <typename... A, std::enable_if_t<sizeof...(A) == R, bool> = true>
+	constexpr explicit matrix(A... rows)noexcept :
 			base_type{rows...}
 	{
 		static_assert(sizeof...(rows) == R, "number of constructor arguments is not equal to number of rows in this matrix");

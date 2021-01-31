@@ -156,7 +156,8 @@ public:
 	 * Initializes vector components to given values.
 	 * @param v - parameter pack with initializing values.
 	 */
-	template <typename... A> constexpr explicit vector(A... v)noexcept :
+	template <typename... A, std::enable_if_t<sizeof...(A) == S, bool> = true>
+	constexpr explicit vector(A... v)noexcept :
 			base_type{T(v)...}
 	{
 		static_assert(sizeof...(v) == S, "number of constructor arguments is not equal to vector size");
