@@ -1,3 +1,9 @@
+libr4 (1.0.49) unstable; urgency=medium
+
+  * rectangle stream output operator improved
+
+ -- Ivan Gagis <igagis@gmail.com>  Sun, 31 Jan 2021 18:59:10 +0200
+
 libr4 (1.0.48) unstable; urgency=medium
 
   * disable varargs constructors for non-matching arguments number
