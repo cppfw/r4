@@ -137,8 +137,8 @@ public:
 	/**
 	 * @brief Get matrix row.
 	 * @param r - row number to get.
-     * @return reference to vector representing the row of this matrix.
-     */
+	 * @return reference to vector representing the row of this matrix.
+	 */
 	const vector<T, C>& row(size_t r)const noexcept{
 		ASSERT(r < this->size())
 		return this->operator[](r);
@@ -197,8 +197,8 @@ public:
 	 * both matrices are implicitly converted to 3x3 matrices with last added row to be (0, 0, 1), so that the matrices are square
 	 * and, thus, are matched.
 	 * @param m - matrix to multiply by (matrix K).
-     * @return New matrix of size RxCC as a result of matrices product.
-     */
+	 * @return New matrix of size RxCC as a result of matrices product.
+	 */
 	template <size_t CC>
 	matrix<T, R, CC> operator*(const matrix<T, C, CC>& m)const noexcept{
 		matrix<T, R, CC> ret;
@@ -238,8 +238,8 @@ public:
 	 * implicitly converted to square matrix before the opration by adding (0, 0, 1) row as a third row, and
 	 * after assignment, the third row is discarded again.
 	 * Multiply this matrix M by another matrix K from the right (M  = M * K).
-     * @return reference to this matrix object.
-     */
+	 * @return reference to this matrix object.
+	 */
 	template <typename E = matrix>
 	std::enable_if_t<R == C || (R == 2 && C == 3), E&> operator*=(const matrix& matr)noexcept{
 		return this->operator=(this->operator*(matr));
@@ -331,12 +331,12 @@ public:
 	 */
 	template <typename E = T>
 	matrix& set_frustum(
-			 std::enable_if_t<R == C && R == 4, E> left,
-			 T right,
-			 T bottom,
-			 T top,
-			 T near_val,
-			 T far_val
+			std::enable_if_t<R == C && R == 4, E> left,
+			T right,
+			T bottom,
+			T top,
+			T near_val,
+			T far_val
 		)noexcept
 	{
 		T w = right - left;
@@ -534,7 +534,7 @@ public:
 			auto& e = this->row(r)[C - 1];
 			using std::min;
 			for(size_t s = 0; s != min(S, C - 1); ++s){
-			 	e += this->row(r)[s] * t[s];
+				e += this->row(r)[s] * t[s];
 			}
 		}
 		return *this;
