@@ -373,6 +373,34 @@ public:
 	}
 
 	/**
+	 * @brief Multiply current matrix by frustum matrix.
+	 * Multiplies this matrix M by frustum matrix S from the right (M = M * S).
+	 * Parameters are identical to glFrustum() function from OpenGL.
+	 * Defined only for 4x4 matrices.
+	 * @param left - left vertical clipping plane.
+	 * @param right - right vertical clipping plane.
+	 * @param bottom - bottom horizontal clipping plane.
+	 * @param top - top horizontal clipping plane.
+	 * @param near_val - distance to near depth clipping plane. Must be positive.
+	 * @param far_val - distance to the far clipping plane. Must be positive.
+	 * @return reference to this matrix instance.
+	 */
+	template <typename E = T>
+	matrix frustum(
+			std::enable_if_t<R == C && R == 4, E> left,
+			T right,
+			T bottom,
+			T top,
+			T near_val,
+			T far_val
+		)noexcept
+	{
+		matrix f;
+		f.set_frustum(left, right, bottom, top, near_val, far_val);
+		return this->operator*=(f);
+	}
+
+	/**
 	 * @brief Multiply current matrix by scale matrix.
 	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
 	 * Defined only for 1x1, 2x2, 2x3, 3x3, 4x4 matrices.

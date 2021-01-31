@@ -296,7 +296,7 @@ void test_matrix4(){
 				"|0 1333 0 0" "\n"
 				"|0 0 -1040 -4081" "\n"
 				"|0 0 -1000 0" "\n";
-		ASSERT_INFO_ALWAYS(str == cmp, "str = " << str)
+		ASSERT_INFO_ALWAYS(str == cmp, "str =\n" << str)
 	}
 
 	// test set(quaternion)
