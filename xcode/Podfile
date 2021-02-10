@@ -5,5 +5,5 @@ project 'r4/r4.xcodeproj'
 platform :ios, '8.0'
 
 target "r4" do
-	pod 'utki', '>= 1.1.30'
+	pod 'utki', '>= 1.1.111'
 end
