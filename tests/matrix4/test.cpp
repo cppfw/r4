@@ -154,6 +154,28 @@ void test_matrix4(){
 		ASSERT_INFO_ALWAYS(str == cmp, "str = " << str)
 	}
 
+	// test tpos()
+	{
+		r4::matrix4<int> matrix{
+		 	{1, 2, 3, 4},
+			{5, 6, 7, 8},
+			{9, 10, 11, 12},
+			{13, 14, 15, 16}
+		};
+
+		auto m = matrix.tpos();
+
+		std::stringstream ss;
+		ss << m;
+		auto str = ss.str();
+		auto cmp =
+				"|1 5 9 13" "\n"
+				"|2 6 10 14" "\n"
+				"|3 7 11 15" "\n"
+				"|4 8 12 16" "\n";
+		ASSERT_INFO_ALWAYS(str == cmp, "str = " << str)
+	}
+
 	// test operator*=(matrix4)
 	{
 		r4::matrix4<int> r{

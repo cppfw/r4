@@ -599,7 +599,8 @@ public:
 	 */
 	matrix& transpose()noexcept{
 		using std::swap;
-		for(size_t r = 1; r != this->size(); ++r){
+		using std::min;
+		for(size_t r = 1; r != min(R, C); ++r){
 			for(size_t c = 0; c != r; ++c){
 				swap(this->row(r)[c], this->row(c)[r]);
 			}
@@ -620,6 +621,45 @@ public:
 		}
 
 		return *this;
+	}
+
+	/**
+	 * @brief Make transposed matrix.
+	 * @return a new matrix which is a transpose of this matrix.
+	 */
+	matrix tpos()const noexcept{
+		matrix ret;
+
+		using std::min;
+
+		for(size_t r = 1; r != min(C, R); ++r){
+			for(size_t c = 0; c != r; ++c){
+				ret[r][c] = this->row(c)[r];
+				ret[c][r] = this->row(r)[c];
+			}
+		}
+
+		// copy diagonal elements
+		for(size_t i = 0; i != min(C, R); ++i){
+			ret[i][i] = this->row(i)[i];
+		}
+
+		// in case the matrix is not square, then zero out the "non-square" parts
+		if constexpr (C > R){
+			for(size_t r = 0; r != R; ++r){
+				auto& cur_row = ret[r];
+				for(size_t c = R; c != C; ++c){
+					cur_row[c] = T(0);
+				}
+			}
+		}else{
+			static_assert(R >= C, "");
+			for(size_t r = C; r != R; ++r){
+				ret[r].set(T(0));
+			}
+		}
+
+		return ret;
 	}
 
 	/**
