@@ -1,3 +1,9 @@
+libr4 (1.0.52) unstable; urgency=medium
+
+  * matrix::tpos()
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 15 Feb 2021 00:56:46 +0200
+
 libr4 (1.0.51) unstable; urgency=medium
 
   * update dependency versions
