@@ -146,7 +146,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tests\matrix3\*.cpp" />
+    <ClCompile Include="..\..\tests\matrix3\main.cpp" />
+    <ClCompile Include="..\..\tests\matrix3\test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

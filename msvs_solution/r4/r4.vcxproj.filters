@@ -18,25 +18,19 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\kolme\Matrix3.hpp">
+    <ClInclude Include="..\..\src\r4\matrix.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kolme\Matrix4.hpp">
+    <ClInclude Include="..\..\src\r4\quaternion.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kolme\Quaternion.hpp">
+    <ClInclude Include="..\..\src\r4\rectangle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kolme\Rectangle.hpp">
+    <ClInclude Include="..\..\src\r4\segment2.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kolme\Vector2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kolme\Vector3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kolme\vector4.hpp">
+    <ClInclude Include="..\..\src\r4\vector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

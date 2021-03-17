@@ -18,10 +18,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tests\vector4\*.cpp">
+    <ClCompile Include="..\..\tests\vector4\main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tests\vector4\*.cpp">
+    <ClCompile Include="..\..\tests\vector4\test.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
