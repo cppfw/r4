@@ -6,7 +6,7 @@ this_srcs := $(call prorab-src-dir, .)
 
 $(eval $(call prorab-config, ../../config))
 
-this_ldlibs += -lm
+this_ldlibs += -lm -lutki
 
 this_no_install := true
 
