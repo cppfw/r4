@@ -418,7 +418,7 @@ void test_matrix3(){
 
 		auto i = m * m.inv();
 
-		const float epsilon = 1e-6;
+		const float epsilon = 1e-6f;
 
 		auto diff = decltype(m)().set_identity() - i;
 

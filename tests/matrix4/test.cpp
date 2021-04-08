@@ -790,7 +790,7 @@ void test_matrix4(){
 
 		// TRACE(<< "i =\n" << i << std::endl)
 
-		const float epsilon = 1e-6;
+		const float epsilon = 1e-6f;
 
 		// TRACE(<< "inv =\n" << inv << std::endl)
 		// TRACE(<< "identity =\n" << decltype(m)().set_identity() << std::endl)
