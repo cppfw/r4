@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main(int argc, const char** argv){
-	r4::matrix4 m;
+	r4::matrix4<float> m;
 
 	m.set_identity();
 
