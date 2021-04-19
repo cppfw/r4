@@ -90,10 +90,10 @@ public:
 	 */
 	template <typename E = T> matrix& set(const quaternion<std::enable_if_t<R == C && (R == 3 || R == 4), E>>& quat)noexcept{
 		// Quaternion to matrix conversion:
-		//     /  1-(2y^2+2z^2)   2xy-2zw         2xz+2yw         0   \
+		//     |  1-(2y^2+2z^2)   2xy-2zw         2xz+2yw         0   |
 		// M = |  2xy+2zw         1-(2x^2+2z^2)   2yz-2xw         0   |
 		//     |  2xz-2yw         2zy+2xw         1-(2x^2+2y^2)   0   |
-		//     \  0               0               0               1   /
+		//     |  0               0               0               1   |
 
 		// First column
 		this->row(0)[0] = T(1) - T(2) * (utki::pow2(quat.y()) + utki::pow2(quat.z()));
@@ -570,8 +570,8 @@ public:
 			static_assert(R == 2 && C == 3, "2x3 matrix expected");
 
 			// multiply this matrix from the right by the rotation matrix:
-			//               / cos(a) -sin(a) 0 \
-			// this = this * \ sin(a)  cos(a) 0 /
+			//               | cos(a) -sin(a) 0 |
+			// this = this * | sin(a)  cos(a) 0 |
 
 			using std::cos;
 			using std::sin;
