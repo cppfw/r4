@@ -45,5 +45,5 @@ class R4Conan(ConanFile):
 		self.copy("*.a", dst="lib", src=self.name +     "/src/out/rel", keep_path=False)
 
 	def package_info(self):
-# TODO: uncomment in case r4 starts providing binary lib
-#		self.cpp_info.libs = [self.name]
+		# TODO: uncomment in case r4 starts providing binary lib
+		#self.cpp_info.libs = [self.name]
