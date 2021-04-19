@@ -1,4 +1,8 @@
 include prorab.mk
+include prorab-test.mk
+include myci.mk
+
+$(eval $(call myci-try-include, $(CONANBUILDINFO_DIR)conanbuildinfo.mak))
 
 this_name := tests
 
@@ -8,8 +12,14 @@ $(eval $(call prorab-config, ../../config))
 
 this_ldlibs += -lm -lutki
 
+this_cxxflags += $(addprefix -I,$(CONAN_INCLUDE_DIRS))
+this_ldflags += $(addprefix -L,$(CONAN_LIB_DIRS))
+
 this_no_install := true
 
 $(eval $(prorab-build-app))
 
-include $(d)../test_target.mk
+this_test_cmd := $(prorab_this_name)
+this_test_deps := $(prorab_this_name)
+this_test_ld_path := ../../src/out/$(c) $(CONAN_LIB_DIRS)
+$(eval $(prorab-test))
