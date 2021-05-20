@@ -749,6 +749,18 @@ public:
 	}
 
 	/**
+	 * @brief Check if all vector components are not zero.
+	 * @return true if all vector components are not zero.
+	 * @return false otherwise.
+	 */
+	bool is_not_zero()const noexcept{
+		for(auto& c : *this){
+			if(c == 0) return false;
+		}
+		return true;
+	}
+
+	/**
 	 * @brief Check if all vector components are positive or zero.
 	 * @return true if all vector components are positive or zero.
 	 * @return false otherwise.
