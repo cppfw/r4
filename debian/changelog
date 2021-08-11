@@ -1,3 +1,9 @@
+libr4 (1.0.58) unstable; urgency=medium
+
+  * use latest make in homebrew formulae
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 11 Aug 2021 15:00:20 +0300
+
 libr4 (1.0.57) unstable; urgency=medium
 
   * deploy to own repo
