@@ -1,3 +1,9 @@
+libr4 (1.0.59) unstable; urgency=medium
+
+  * msvs: build for v141 tools
+
+ -- Ivan Gagis <igagis@gmail.com>  Sun, 15 Aug 2021 14:26:39 +0300
+
 libr4 (1.0.58) unstable; urgency=medium
 
   * use latest make in homebrew formulae
