@@ -1,3 +1,9 @@
+libr4 (1.0.60) unstable; urgency=medium
+
+  * build for debian bullseye
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 30 Aug 2021 00:19:40 +0300
+
 libr4 (1.0.59) unstable; urgency=medium
 
   * msvs: build for v141 tools
