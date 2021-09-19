@@ -13,6 +13,10 @@
       <Configuration>v141_Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="v141_Release|x64">
+      <Configuration>v141_Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="v142_Debug_MD|Win32">
       <Configuration>v142_Debug_MD</Configuration>
       <Platform>Win32</Platform>
