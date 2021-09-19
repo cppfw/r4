@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(name test_app)
 
-file(GLOB_RECURSE srcs "../../tests/*/test.cpp")
+file(GLOB_RECURSE srcs "../../tests/unit/src/*.cpp")
 
 include (${ANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK})
 

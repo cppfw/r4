@@ -20,40 +20,39 @@ Get-ChildItem "." -Filter *.in | Foreach-Object{
 
 "%VS142COMNTOOLS%\VsMSBuildCmd.bat"
 
-# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Debug /p:Platform=x86 /v:minimal /nologo
-# If(!$?){exit 1}
-# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Release /p:Platform=x86 /v:minimal /nologo
-# If(!$?){exit 1}
-# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Debug /p:Platform=x64 /v:minimal /nologo
-# If(!$?){exit 1}
-# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Release /p:Platform=x64 /v:minimal /nologo
-# If(!$?){exit 1}
+# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Debug /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Release /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Debug /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
+# msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v140_Release /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
 
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Debug /p:Platform=x86 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Release /p:Platform=x86 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Debug /p:Platform=x64 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Release /p:Platform=x64 /v:minimal /nologo
-If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Debug /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Release /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Debug /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v141_Release /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
 
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MD /p:Platform=x86 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MD /p:Platform=x86 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MD /p:Platform=x64 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MD /p:Platform=x64 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MT /p:Platform=x86 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MT /p:Platform=x86 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MT /p:Platform=x64 /v:minimal /nologo
-If(!$?){exit 1}
-msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MT /p:Platform=x64 /v:minimal /nologo
-If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MD /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MD /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MD /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MD /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MT /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MT /p:Platform=x86 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Debug_MT /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
+msbuild ../msvs_solution/msvs_solution.sln /t:Rebuild /p:Configuration=v142_Release_MT /p:Platform=x64 /v:minimal /nologo; If(!$?){exit 1}
+
+Write-Host "running tests..."
+../msvs_solution/v141_Debug/unit_tests.exe          --jobs=2 --junit-out=junit_x86_v141_debug.xml; If(!$?){exit 1}
+../msvs_solution/v141_Release/unit_tests.exe        --jobs=2 --junit-out=junit_x86_v141_release.xml; If(!$?){exit 1}
+../msvs_solution/x64/v141_Debug/unit_tests.exe      --jobs=2 --junit-out=junit_x64_v141_debug.xml; If(!$?){exit 1}
+../msvs_solution/x64/v141_Release/unit_tests.exe    --jobs=2 --junit-out=junit_x64_v141_release.xml; If(!$?){exit 1}
+
+../msvs_solution/v142_Debug_MD/unit_tests.exe       --jobs=2 --junit-out=junit_x86_v142_debug_md.xml; If(!$?){exit 1}
+../msvs_solution/v142_Debug_MT/unit_tests.exe       --jobs=2 --junit-out=junit_x86_v142_debug_mt.xml; If(!$?){exit 1}
+../msvs_solution/v142_Release_MD/unit_tests.exe     --jobs=2 --junit-out=junit_x86_v142_release_md.xml; If(!$?){exit 1}
+../msvs_solution/v142_Release_MT/unit_tests.exe     --jobs=2 --junit-out=junit_x86_v142_release_mt.xml; If(!$?){exit 1}
+../msvs_solution/x64/v142_Debug_MD/unit_tests.exe   --jobs=2 --junit-out=junit_x64_v142_debug_md.xml; If(!$?){exit 1}
+../msvs_solution/x64/v142_Debug_MT/unit_tests.exe   --jobs=2 --junit-out=junit_x64_v142_debug_mt.xml; If(!$?){exit 1}
+../msvs_solution/x64/v142_Release_MD/unit_tests.exe --jobs=2 --junit-out=junit_x64_v142_release_md.xml; If(!$?){exit 1}
+../msvs_solution/x64/v142_Release_MT/unit_tests.exe --jobs=2 --junit-out=junit_x64_v142_release_mt.xml; If(!$?){exit 1}
 
 Write-NuGetPackage nuget.autopkg
 If(!$?){exit 1}
