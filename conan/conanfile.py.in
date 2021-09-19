@@ -11,7 +11,7 @@ class R4Conan(ConanFile):
 	settings = "os", "compiler", "build_type", "arch"
 	options = {"shared": [True, False], "fPIC": [True, False]}
 	default_options = {"shared": False, "fPIC": True}
-	requires = "utki/[>=0.0.0]@cppfw/main"
+	requires = "utki/[>=0.0.0]@cppfw/main", "tst/[>=0.0.0]@cppfw/main"
 	generators = "make"
 	scm = {"type": "git", "url": "auto", "revision": "auto"}
 
