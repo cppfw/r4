@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(name test_app)
 
-file(GLOB_RECURSE srcs "../../tests/unit/src/*.cpp")
+# file(GLOB_RECURSE srcs "../../tests/unit/src/*.cpp")
 
 include (${ANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK})
 
@@ -30,7 +30,7 @@ add_library(
     )
 
 include_directories(
-        ../../src/morda/
+        ../../src/
     )
 
 target_link_libraries(
