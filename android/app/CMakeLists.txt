@@ -10,30 +10,30 @@ cmake_minimum_required(VERSION 3.4.1)
 # and CMake builds them for you. When you build your app, Gradle
 # automatically packages shared libraries with your APK.
 
-set(name test_app)
+#set(name test_app)
 
 # file(GLOB_RECURSE srcs "../../tests/unit/src/*.cpp")
 
-include (${ANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK})
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-
-add_library(
-        # Specifies the name of the library.
-        ${name}
-
-        # Sets the library as a shared library.
-        SHARED
-
-        # Provides a relative path to your source file(s).
-        ${srcs}
-    )
-
-include_directories(
-        ../../src/
-    )
-
-target_link_libraries(
-        ${name}
-        android log ${ANDROID_GRADLE_NATIVE_MODULES}
-    )
+#include (${ANDROID_GRADLE_NATIVE_BUNDLE_PLUGIN_MK})
+#
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+#
+#add_library(
+#        # Specifies the name of the library.
+#        ${name}
+#
+#        # Sets the library as a shared library.
+#        SHARED
+#
+#        # Provides a relative path to your source file(s).
+#        ${srcs}
+#    )
+#
+#include_directories(
+#        ../../src/
+#    )
+#
+#target_link_libraries(
+#        ${name}
+#        android log ${ANDROID_GRADLE_NATIVE_MODULES}
+#    )

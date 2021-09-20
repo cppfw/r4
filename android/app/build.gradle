@@ -2,23 +2,23 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.ydq.android.gradle.native-aar.import' // must go after android gradle plugin
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "io.github.cppfw.r4_tests"
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 29
+//        versionCode 1
+//        versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        externalNativeBuild {
-            cmake {
-                targets "test_app"
-
-                arguments "-DANDROID_STL=c++_shared", "-DANDROID_TOOLCHAIN=clang"
-            }
-        }
+//        externalNativeBuild {
+//            cmake {
+//                targets "test_app"
+//
+//                arguments "-DANDROID_STL=c++_shared", "-DANDROID_TOOLCHAIN=clang"
+//            }
+//        }
     }
 
     buildTypes {
@@ -42,6 +42,7 @@ android {
 repositories {
     maven {
         url 'http://gagis.hopto.org/nexus/repository/android/'
+        allowInsecureProtocol = true
     }
 }
 dependencies {
