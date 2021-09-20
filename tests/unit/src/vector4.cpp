@@ -273,6 +273,54 @@ tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(r[3], 60, SL);
     });
 
+    suite.add<std::pair<r4::vector4<int>, r4::vector4<int>>>(
+        "operator_equals_equals_vector4_true",
+        {
+            {{3, 4, 5, 6}, {3, 4, 5, 6}},
+            {{0, 0, 0, 0}, {0, 0, 0, 0}},
+            {{-3, 4, -5, 6}, {-3, 4, -5, 6}},
+        },
+        [](const auto& p){
+            tst::check(p.first == p.second, SL);
+        }
+    );
+
+    suite.add<std::pair<r4::vector4<int>, r4::vector4<int>>>(
+        "operator_equals_equals_vector4_false",
+        {
+            {{3, 4, 5, 6}, {3, 4, 6, 6}},
+            {{0, 0, 0, 0}, {0, 0, 1, 0}},
+            {{-3, 4, -5, 6}, {-3, -4, -5, 6}},
+        },
+        [](const auto& p){
+            tst::check(!(p.first == p.second), SL);
+        }
+    );
+
+    suite.add<std::pair<r4::vector4<int>, r4::vector4<int>>>(
+        "operator_not_equals_vector4_false",
+        {
+            {{3, 4, 5, 6}, {3, 4, 5, 6}},
+            {{0, 0, 0, 0}, {0, 0, 0, 0}},
+            {{-3, 4, -5, 6}, {-3, 4, -5, 6}},
+        },
+        [](const auto& p){
+            tst::check(!(p.first != p.second), SL);
+        }
+    );
+
+    suite.add<std::pair<r4::vector4<int>, r4::vector4<int>>>(
+        "operator_not_equals_vector4_true",
+        {
+            {{3, 4, 5, 6}, {3, 4, 6, 6}},
+            {{0, 0, 0, 0}, {0, 0, 1, 0}},
+            {{-3, 4, -5, 6}, {-3, -4, -5, 6}},
+        },
+        [](const auto& p){
+            tst::check(p.first != p.second, SL);
+        }
+    );
+
     suite.add("comp_mul_vector4", []{
         r4::vector4<int> a{3, 4, 5, 6};
 		r4::vector4<int> b{6, 7, 8, 9};
