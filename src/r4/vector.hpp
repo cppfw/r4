@@ -204,7 +204,9 @@ public:
 	constexpr vector(std::initializer_list<T> vals) :
 			vector(
 					[&vals](){
-						if(vals.size() == S) return vals;
+						if(vals.size() == S){
+							return vals;
+						}
 						std::cerr << "wrong number of elements in initializer list of vector(std::initializer_list), expected "
 								<< S << ", got " << vals.size() << std::endl;
 						std::abort();
