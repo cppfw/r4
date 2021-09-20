@@ -770,7 +770,9 @@ public:
 	 */
 	bool is_zero()const noexcept{
 		for(auto& c : *this){
-			if(c != 0) return false;
+			if(c != 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -782,7 +784,9 @@ public:
 	 */
 	bool is_not_zero()const noexcept{
 		for(auto& c : *this){
-			if(c == 0) return false;
+			if(c == 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -794,7 +798,9 @@ public:
 	 */
 	bool is_positive_or_zero()const noexcept{
 		for(auto& c : *this){
-			if(c < 0) return false;
+			if(c < 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -806,7 +812,9 @@ public:
 	 */
 	bool is_positive()const noexcept{
 		for(auto& c : *this){
-			if(c <= 0) return false;
+			if(c <= 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -818,7 +826,9 @@ public:
 	 */
 	bool is_negative()const noexcept{
 		for(auto& c : *this){
-			if(c >= 0) return false;
+			if(c >= 0){
+				return false;
+			}
 		}
 		return true;
 	}
