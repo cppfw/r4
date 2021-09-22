@@ -654,7 +654,7 @@ public:
 	 * @brief Make transposed matrix.
 	 * @return a new matrix which is a transpose of this matrix.
 	 */
-	matrix tpos()const noexcept{
+	matrix tpose()const noexcept{
 		matrix ret;
 
 		using std::min;

@@ -204,7 +204,9 @@ public:
 	constexpr vector(std::initializer_list<T> vals) :
 			vector(
 					[&vals](){
-						if(vals.size() == S) return vals;
+						if(vals.size() == S){
+							return vals;
+						}
 						std::cerr << "wrong number of elements in initializer list of vector(std::initializer_list), expected "
 								<< S << ", got " << vals.size() << std::endl;
 						std::abort();
@@ -770,7 +772,9 @@ public:
 	 */
 	bool is_zero()const noexcept{
 		for(auto& c : *this){
-			if(c != 0) return false;
+			if(c != 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -782,7 +786,9 @@ public:
 	 */
 	bool is_not_zero()const noexcept{
 		for(auto& c : *this){
-			if(c == 0) return false;
+			if(c == 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -794,7 +800,9 @@ public:
 	 */
 	bool is_positive_or_zero()const noexcept{
 		for(auto& c : *this){
-			if(c < 0) return false;
+			if(c < 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -806,7 +814,9 @@ public:
 	 */
 	bool is_positive()const noexcept{
 		for(auto& c : *this){
-			if(c <= 0) return false;
+			if(c <= 0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -818,7 +828,9 @@ public:
 	 */
 	bool is_negative()const noexcept{
 		for(auto& c : *this){
-			if(c >= 0) return false;
+			if(c >= 0){
+				return false;
+			}
 		}
 		return true;
 	}
