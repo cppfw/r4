@@ -146,7 +146,7 @@ tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("tpose", []{
+    suite.add("tposed", []{
         r4::matrix4<int> matrix{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -154,7 +154,7 @@ tst::set set("matrix4", [](tst::suite& suite){
 			{13, 14, 15, 16}
 		};
 
-		auto m = matrix.tpose();
+		auto m = matrix.tposed();
 
 		std::stringstream ss;
 		ss << m;
