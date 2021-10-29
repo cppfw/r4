@@ -6,7 +6,7 @@
         {
             "label": "test_clang++",
             "type": "shell",
-            "command": "make test CXX=clang++ autojobs=true",
+            "command": "make test CXX=clang++",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -15,7 +15,7 @@
         {
             "label": "test_g++",
             "type": "shell",
-            "command": "make test CXX=g++ autojobs=true",
+            "command": "make test CXX=g++",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -24,7 +24,7 @@
 		{
             "label": "test_clang++_debug",
             "type": "shell",
-            "command": "make test CXX=clang++ autojobs=true config=dbg",
+            "command": "make test CXX=clang++ config=dbg",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -33,7 +33,7 @@
         {
             "label": "test_g++_debug",
             "type": "shell",
-            "command": "make test CXX=g++ autojobs=true config=dbg",
+            "command": "make test CXX=g++ config=dbg",
             "problemMatcher": [
                 "$gcc"
             ],
