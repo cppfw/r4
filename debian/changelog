@@ -1,3 +1,9 @@
+libr4 (1.0.61) unstable; urgency=medium
+
+  * ios: static framework
+
+ -- Ivan Gagis <igagis@gmail.com>  Sat, 30 Oct 2021 14:00:25 +0300
+
 libr4 (1.0.60) unstable; urgency=medium
 
   * build for debian bullseye
