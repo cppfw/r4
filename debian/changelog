@@ -1,3 +1,9 @@
+libr4 (1.0.63) unstable; urgency=medium
+
+  * build for raspbian buster
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 08 Nov 2021 17:57:53 +0200
+
 libr4 (1.0.62) unstable; urgency=medium
 
   * build for ios 9.0
