@@ -156,9 +156,9 @@ public:
 	/**
 	 * @brief Add quaternion and assign.
 	 * Adds specified quaternion to this quaternion.
-     * @param q - quaternion to add to this quaternion.
-     * @return Reference to this quaternion object.
-     */
+	 * @param q - quaternion to add to this quaternion.
+	 * @return Reference to this quaternion object.
+	 */
 	quaternion& operator+=(const quaternion& q)noexcept{
 		this->x() += q.x();
 		this->y() += q.y();
@@ -170,9 +170,9 @@ public:
 	/**
 	 * @brief Addition of quaternions.
 	 * Calculates sum of this quaternion and another specified quaternion.
-     * @param q - quaternion to add.
-     * @return A quaternion object representing sum of quaternions.
-     */
+	 * @param q - quaternion to add.
+	 * @return A quaternion object representing sum of quaternions.
+	 */
 	quaternion operator+(const quaternion& q)const noexcept{
 		return (quaternion(*this) += q);
 	}
@@ -350,12 +350,12 @@ public:
 	 * @brief Initialize rotation.
 	 * Initializes this quaternion to a unit quaternion defining a rotation.
 	 * A rotation is given by normalized axis vector and angle. Direction of rotation is determined by right-hand rule.
-     * @param axisX - X component of rotation axis.
+	 * @param axisX - X component of rotation axis.
 	 * @param axisY - Y component of rotation axis.
 	 * @param axisZ - Z component of rotation axis.
-     * @param angle - rotation angle.
-     * @return Reference to this quaternion object.
-     */
+	 * @param angle - rotation angle.
+	 * @return Reference to this quaternion object.
+	 */
 	quaternion& set_rotation(T axisX, T axisY, T axisZ, T angle)noexcept{
 		using std::sin;
 		using std::cos;
@@ -371,10 +371,10 @@ public:
 	 * @brief Initialize rotation.
 	 * Initializes this quaternion to a unit quaternion defining a rotation.
 	 * A rotation is given by normalized axis vector and angle. Direction of rotation is determined by right-hand rule.
-     * @param axis - rotation axis, a normalized vector.
-     * @param angle - rotation angle.
-     * @return Reference to this quaternion object.
-     */
+	 * @param axis - rotation axis, a normalized vector.
+	 * @param angle - rotation angle.
+	 * @return Reference to this quaternion object.
+	 */
 	quaternion& set_rotation(const vector<T, 3>& axis, T angle)noexcept;
 
 	/**
@@ -383,17 +383,17 @@ public:
 	 * A rotation is given by rotation vector, where the norm of the vector
 	 * is a rotation angle in radians and vector direction defines the rotation axis.
 	 * Direction of rotation is determined by right-hand rule.
-     * @param rot - rotation vector.
-     * @return Reference to this quaternion object.
-     */
+	 * @param rot - rotation vector.
+	 * @return Reference to this quaternion object.
+	 */
 	quaternion& set_rotation(const vector<T, 3>& rot)noexcept;
 
 	/**
 	 * @brief Convert this quaternion to 4x4 matrix.
 	 * Assuming that this quaternion is a unit quaternion, converts this quaternion
 	 * to a rotation matrix.
-     * @return Rotation matrix.
-     */
+	 * @return Rotation matrix.
+	 */
 	template <size_t S>
 	matrix<std::enable_if_t<S == 3 || S == 4, T>, S, S> to_matrix()const noexcept;
 
@@ -405,10 +405,10 @@ public:
 	 * SLERP(q1, q2, t) = q1 * sin((1 - t) * alpha) / sin(alpha) + q2 * sin(t * alpha) / sin(alpha),
 	 * where cos(alpha) = (q1, q2) (dot product of unit quaternions q1 and q2).
 	 * quaternions q1 and q2 are assumed to be unit quaternions and the resulting quaternion is also a unit quaternion.
-     * @param quat - quaternion to interpolate to.
-     * @param t - interpolation parameter, value from [0 : 1].
-     * @return Resulting quaternion of SLERP(this, quat, t).
-     */
+	 * @param quat - quaternion to interpolate to.
+	 * @param t - interpolation parameter, value from [0 : 1].
+	 * @return Resulting quaternion of SLERP(this, quat, t).
+	 */
 	quaternion slerp(const quaternion& quat, T t)const noexcept{
 		// Since quaternions are normalized the cosine of the angle alpha
 		// between quaternions is equal to their dot product.
