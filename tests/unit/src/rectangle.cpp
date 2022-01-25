@@ -3,6 +3,9 @@
 
 #include "../../../src/r4/rectangle.hpp"
 
+// declare templates to instantiate all template methods to include all methods to gcov coverage
+template class r4::rectangle<int>;
+
 namespace{
 tst::set set("rectangle", [](tst::suite& suite){
     suite.add("constructor_x_y_w_h", []{

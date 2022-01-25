@@ -3,6 +3,9 @@
 
 #include "../../../src/r4/quaternion.hpp"
 
+// declare templates to instantiate all template methods to include all methods to gcov coverage
+template class r4::quaternion<int>;
+
 namespace{
 tst::set set("quaternion", [](tst::suite& suite){
     suite.add("constructor_x_y_z_w", []{

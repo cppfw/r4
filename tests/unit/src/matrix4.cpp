@@ -5,6 +5,9 @@
 
 using namespace std::string_literals;
 
+// declare templates to instantiate all template methods to include all methods to gcov coverage
+template class r4::matrix<int, 4, 4>;
+
 namespace{
 tst::set set("matrix4", [](tst::suite& suite){
     suite.add("constructor_4x_vector4", []{
