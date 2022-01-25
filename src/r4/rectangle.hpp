@@ -208,8 +208,8 @@ public:
 	 * Convert this rectangle2 to a rectangle2 whose component type is different from T.
 	 * Components are converted using constructor of target type passing the source
 	 * component as argument of the target type constructor.
-     * @return converted vector2.
-     */
+	 * @return converted vector2.
+	 */
 	template <class TS> rectangle<TS> to()const noexcept{
 		return rectangle<TS>{
 				this->p.template to<TS>(),
