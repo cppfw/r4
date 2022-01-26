@@ -3,6 +3,9 @@
 
 #include "../../../src/r4/vector.hpp"
 
+// declare templates to instantiate all template methods to include all methods to gcov coverage
+template class r4::vector<int, 3>;
+
 namespace{
 tst::set set("vector3", [](tst::suite& suite){
     suite.add("constructor_x_y_z", []{
