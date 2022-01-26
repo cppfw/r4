@@ -31,6 +31,13 @@ tst::set set("vector2", [](tst::suite& suite){
 		tst::check_eq(v2[1], 4, SL);
     });
 
+	suite.add("constructor_number", [](){
+		r4::vector2<int> v(13);
+
+		tst::check_eq(v[0], 13, SL);
+		tst::check_eq(v[1], v[0], SL);
+	});
+
     suite.add("to", [](){
         r4::vector2<float> vf{4.4f, 5.5f};
 
