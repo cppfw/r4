@@ -118,6 +118,15 @@ tst::set set("vector2", [](tst::suite& suite){
 		tst::check_eq(r[0], -2, SL);
 		tst::check_eq(r[1], -3, SL);
     });
+	
+    suite.add("operator_minus_number", [](){
+        r4::vector2<int> v2{1, 2};
+
+		auto r = v2 - 5;
+
+		tst::check_eq(r[0], -4, SL);
+		tst::check_eq(r[1], -3, SL);
+    });	
 
     suite.add("operator_minus", []{
         auto r = -r4::vector2<int>{1, 2};
