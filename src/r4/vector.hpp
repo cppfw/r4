@@ -406,6 +406,29 @@ public:
 	}
 
 	/**
+	 * @brief Add and assign.
+	 * Adds this vector and given number.
+	 * @param number - number to use for addition.
+	 * @return Reference to this vector object.
+	 */
+	vector& operator+=(T number)noexcept{
+		for(size_t i = 0; i != S; ++i){
+			this->operator[](i) += number;
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Add vector.
+	 * Adds this vector and given number.
+	 * @param number - number to use for addition.
+	 * @return Vector resulting from vector and number addition.
+	 */
+	vector operator+(T number) noexcept{
+		return (vector(*this) += number);
+	}	
+
+	/**
 	 * @brief Subtract and assign.
 	 * Subtracts given vector from this vector and assigns result back to this vector.
 	 * @param vec - vector to subtract.
@@ -441,6 +464,29 @@ public:
 	vector operator-(const vector& vec)const noexcept{
 		return (vector(*this) -= vec);
 	}
+	
+	/**
+	 * @brief Subtract and assign.
+	 * Subtracts given number from this vector and assigns result back to this vector.
+	 * @param number - number to subtract.
+	 * @return Reference to this vector object.
+	 */
+	vector& operator-=(T number)noexcept{
+		for(size_t i = 0; i != S; ++i){
+			this->operator[](i) -= number;
+		}
+		return *this;
+	}
+
+	/**
+	 * @brief Subtract vector.
+	 * Subtracts given number from this vector.
+	 * @param number - number to subtract.
+	 * @return Vector resulting from number subtraction.
+	 */
+	vector operator-(T number)noexcept{
+		return (vector(*this) -= number);
+	}	
 
 	/**
 	 * @brief Unary minus.

@@ -129,6 +129,16 @@ tst::set set("vector3", [](tst::suite& suite){
 		tst::check_eq(r[1], 10, SL);
 		tst::check_eq(r[2], 12, SL);
     });
+	
+    suite.add("operator_plus_number", [](){
+        r4::vector3<int> v3{3, 4, 5};
+
+		auto r = v3 + 5;
+
+		tst::check_eq(r[0], 8, SL);
+		tst::check_eq(r[1], 9, SL);
+		tst::check_eq(r[2], 10, SL);		
+    });	
 
     suite.add("operator_minus_equals_vector3", []{
         r4::vector3<int> b{5, 6, 7};
@@ -151,6 +161,16 @@ tst::set set("vector3", [](tst::suite& suite){
 		tst::check_eq(r[1], -3, SL);
 		tst::check_eq(r[2], -4, SL);
     });
+	
+    suite.add("operator_minus_number", [](){
+        r4::vector3<int> v3{1, 2, 3};
+
+		auto r = v3 - 5;
+
+		tst::check_eq(r[0], -4, SL);
+		tst::check_eq(r[1], -3, SL);
+		tst::check_eq(r[2], -2, SL);		
+    });		
 
     suite.add("operator_minus", []{
         r4::vector3<int> v{3, 4, 5};
