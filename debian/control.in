@@ -2,7 +2,13 @@ Source: libr4
 Section: libs
 Priority: extra
 Maintainer: Ivan Gagis <igagis@gmail.com>
-Build-Depends: debhelper (>= 9), prorab, prorab-extra, myci, doxygen,
+Build-Depends:
+		debhelper (>= 9),
+		prorab,
+		prorab-extra,
+		myci,
+		doxygen,
+		clang-tidy,
 		libutki-dev,
 		libtst-dev
 Build-Depends-Indep: doxygen
