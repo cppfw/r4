@@ -552,18 +552,6 @@ public:
 		}
 		return *this;
 	}
-
-	/**
-	 * @brief Divide by scalar.
-	 * Divide this vector by scalar.
-	 * @param num - scalar to divide by.
-	 * @return Vector resulting from division of this vector by scalars.
-	 */
-	vector operator/(T num)noexcept{
-		ASSERT_INFO(num != 0, "vector::operator/(): division by 0")
-		return (vector(*this) /= num);
-	}
-
 	/**
 	 * @brief Dot product.
 	 * @param vec -vector to multiply by.
