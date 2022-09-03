@@ -41,7 +41,12 @@ template <class T, size_t R, size_t C> class matrix;
 /**
  * @brief quaternion template class.
  */
-template <typename T> class quaternion : public std::array<T, 4>{
+template <typename T> class quaternion :
+	// it's ok to inherit std::array<T> because T cannot be polymorphic, this is checked by static_assert
+	public std::array<T, 4>
+{
+	static_assert(!std::is_polymorphic<T>::value, "Template type parameter must not be a polymorphic type");
+
 	typedef std::array<T, 4> base_type;
 public:
 	/**

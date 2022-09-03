@@ -42,7 +42,12 @@ SOFTWARE.
 
 namespace r4{
 
-template <class T, size_t S> class vector : public std::array<T, S>{
+template <class T, size_t S> class vector :
+	// it's ok to inherit std::array<T> because T cannot be polymorphic, this is checked by static_assert
+	public std::array<T, S>
+{
+	static_assert(!std::is_polymorphic<T>::value, "Template type parameter must not be a polymorphic type");
+
 	static_assert(S > 0, "vector size template parameter S must be above zero");
 
 	typedef std::array<T, S> base_type;
