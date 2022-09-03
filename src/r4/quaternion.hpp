@@ -443,8 +443,8 @@ public:
 			using std::sin;
 
 			// Get the angle alpha between the 2 quaternions, and then store the sin(alpha)
-			T alpha = acos(cosalpha);
-			T sinalpha = sin(alpha);
+			T alpha = T(acos(cosalpha));
+			T sinalpha = T(sin(alpha));
 
 			// Calculate the scales for q1 and q2, according to the angle and it's sine value
 			sc1 = sin((1 - t) * alpha) / sinalpha;
