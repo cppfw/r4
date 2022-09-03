@@ -338,7 +338,7 @@ public:
 	 */
 	T norm()const noexcept{
 		using std::sqrt;
-		return sqrt(this->norm_pow2());
+		return T(sqrt(this->norm_pow2()));
 	}
 
 	/**
@@ -364,8 +364,8 @@ public:
 	quaternion& set_rotation(T axisX, T axisY, T axisZ, T angle)noexcept{
 		using std::sin;
 		using std::cos;
-		T sina2 = sin(angle / 2);
-		this->w() = cos(angle / 2);
+		T sina2 = T(sin(angle / 2));
+		this->w() = T(cos(angle / 2));
 		this->x() = axisX * sina2;
 		this->y() = axisY * sina2;
 		this->z() = axisZ * sina2;
@@ -452,8 +452,8 @@ public:
 			T sinalpha = T(sin(alpha));
 
 			// Calculate the scales for q1 and q2, according to the angle and it's sine value
-			sc1 = sin((1 - t) * alpha) / sinalpha;
-			sc2 = sin(t * alpha) / sinalpha;
+			sc1 = T(sin((1 - t) * alpha)) / sinalpha;
+			sc2 = T(sin(t * alpha)) / sinalpha;
 		}else{
 			sc1 = (1 - t);
 			sc2 = t;

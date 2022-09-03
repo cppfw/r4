@@ -696,7 +696,7 @@ public:
 	 * @return Vector norm.
 	 */
 	T norm()const noexcept{
-		return sqrt(this->norm_pow2());
+		return T(sqrt(this->norm_pow2()));
 	}
 
 	/**
@@ -766,7 +766,7 @@ public:
 		using std::round;
 		vector ret;
 		for(size_t i = 0; i != S; ++i){
-			ret[i] = round(v[i]);
+			ret[i] = T(round(v[i]));
 		}
 		return ret;
 	}
@@ -780,7 +780,7 @@ public:
 		using std::ceil;
 		vector ret;
 		for(size_t i = 0; i != S; ++i){
-			ret[i] = ceil(v[i]);
+			ret[i] = T(ceil(v[i]));
 		}
 		return ret;
 	}
@@ -794,7 +794,7 @@ public:
 		using std::floor;
 		vector ret;
 		for(size_t i = 0; i != S; ++i){
-			ret[i] = floor(v[i]);
+			ret[i] = T(floor(v[i]));
 		}
 		return ret;
 	}
