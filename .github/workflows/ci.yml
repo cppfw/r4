@@ -19,6 +19,7 @@ jobs:
 ##### coverage #####
   coverage:
     permissions:
+      actions: write
       pull-requests: write
     runs-on: ubuntu-latest
     container: debian:bullseye
