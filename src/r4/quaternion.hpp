@@ -41,7 +41,12 @@ template <class T, size_t R, size_t C> class matrix;
 /**
  * @brief quaternion template class.
  */
-template <typename T> class quaternion : public std::array<T, 4>{
+template <typename T> class quaternion :
+	// it's ok to inherit std::array<T> because T cannot be polymorphic, this is checked by static_assert
+	public std::array<T, 4>
+{
+	static_assert(!std::is_polymorphic<T>::value, "Template type parameter must not be a polymorphic type");
+
 	typedef std::array<T, 4> base_type;
 public:
 	/**
@@ -333,7 +338,7 @@ public:
 	 */
 	T norm()const noexcept{
 		using std::sqrt;
-		return sqrt(this->norm_pow2());
+		return T(sqrt(this->norm_pow2()));
 	}
 
 	/**
@@ -359,8 +364,8 @@ public:
 	quaternion& set_rotation(T axisX, T axisY, T axisZ, T angle)noexcept{
 		using std::sin;
 		using std::cos;
-		T sina2 = sin(angle / 2);
-		this->w() = cos(angle / 2);
+		T sina2 = T(sin(angle / 2));
+		this->w() = T(cos(angle / 2));
 		this->x() = axisX * sina2;
 		this->y() = axisY * sina2;
 		this->z() = axisZ * sina2;
@@ -443,12 +448,12 @@ public:
 			using std::sin;
 
 			// Get the angle alpha between the 2 quaternions, and then store the sin(alpha)
-			T alpha = acos(cosalpha);
-			T sinalpha = sin(alpha);
+			T alpha = T(acos(cosalpha));
+			T sinalpha = T(sin(alpha));
 
 			// Calculate the scales for q1 and q2, according to the angle and it's sine value
-			sc1 = sin((1 - t) * alpha) / sinalpha;
-			sc2 = sin(t * alpha) / sinalpha;
+			sc1 = T(sin((1 - t) * alpha)) / sinalpha;
+			sc2 = T(sin(t * alpha)) / sinalpha;
 		}else{
 			sc1 = (1 - t);
 			sc2 = t;

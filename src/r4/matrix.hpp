@@ -38,8 +38,14 @@ SOFTWARE.
 
 namespace r4{
 
-template <class T, size_t R, size_t C> class matrix : public std::array<vector<T, C>, R>{
+template <class T, size_t R, size_t C> class matrix :
+	// it's ok to inherit std::array<vector<T, C>> because vector<T, C> cannot be polymorphic, this is checked by static_assert
+	public std::array<vector<T, C>, R>
+{
+	static_assert(!std::is_polymorphic<vector<T, C>>::value, "Template type parameter must not be a polymorphic type");
+
 	static_assert(R >= 1, "matrix cannot have 0 rows");
+
 	typedef std::array<vector<T, C>, R> base_type;
 public:
 	/**

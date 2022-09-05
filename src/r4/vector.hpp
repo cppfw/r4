@@ -42,7 +42,12 @@ SOFTWARE.
 
 namespace r4{
 
-template <class T, size_t S> class vector : public std::array<T, S>{
+template <class T, size_t S> class vector :
+	// it's ok to inherit std::array<T> because T cannot be polymorphic, this is checked by static_assert
+	public std::array<T, S>
+{
+	static_assert(!std::is_polymorphic<T>::value, "Template type parameter must not be a polymorphic type");
+
 	static_assert(S > 0, "vector size template parameter S must be above zero");
 
 	typedef std::array<T, S> base_type;
@@ -661,7 +666,7 @@ public:
 	 * @return Vector norm.
 	 */
 	T norm()const noexcept{
-		return sqrt(this->norm_pow2());
+		return T(sqrt(this->norm_pow2()));
 	}
 
 	/**
@@ -731,7 +736,7 @@ public:
 		using std::round;
 		vector ret;
 		for(size_t i = 0; i != S; ++i){
-			ret[i] = round(v[i]);
+			ret[i] = T(round(v[i]));
 		}
 		return ret;
 	}
@@ -745,7 +750,7 @@ public:
 		using std::ceil;
 		vector ret;
 		for(size_t i = 0; i != S; ++i){
-			ret[i] = ceil(v[i]);
+			ret[i] = T(ceil(v[i]));
 		}
 		return ret;
 	}
@@ -759,7 +764,7 @@ public:
 		using std::floor;
 		vector ret;
 		for(size_t i = 0; i != S; ++i){
-			ret[i] = floor(v[i]);
+			ret[i] = T(floor(v[i]));
 		}
 		return ret;
 	}
