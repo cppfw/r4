@@ -644,7 +644,7 @@ public:
 	 */
 	vector& negate()noexcept{
 		for(auto& c : *this){
-			if constexpr (std::is_signed<T>::value){
+			if constexpr (std::is_signed_v<T>){
 				c = -c;
 			}else{
 				c = ~c + T(1);
