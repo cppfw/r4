@@ -57,6 +57,9 @@ jobs:
         run: lcov --extract lcov_all.info "$(pwd)/src/*" -o lcov.info
       - name: generate cobertura report
         run: lcov_cobertura lcov.info --output cobertura.xml
+
+      # comment out steps which add annotations because PRs from forked repos don't have permissions to add annotations and will fail the workflow
+
       # - name: generate coverage summary in markdown format
       #   uses: irongut/CodeCoverageSummary@v1.2.0
       #   with:
@@ -78,6 +81,7 @@ jobs:
       #     conclusion: ${{ job.status }}
       #     output: "{\"summary\":\"code coverage brief report\"}"
       #     output_text_description_file: code-coverage-results.md
+
       - name: upload coverage data to codecov.io
         uses: codecov/codecov-action@v2
         if: always() # even if previous steps fail, this one needs to be run
