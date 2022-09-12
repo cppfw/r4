@@ -440,23 +440,7 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	template <size_t SS> vector& operator-=(const vector<T, SS>& vec)noexcept{
-		if constexpr (SS >= S){
-			for(size_t i = 0; i != S; ++i){
-				this->operator[](i) -= vec[i];
-			}
-		}else if constexpr (S < 4 || SS >= 4){
-			static_assert(SS < S, "");
-			for(size_t i = 0; i != SS; ++i){
-				this->operator[](i) -= vec[i];
-			}
-		}else{
-			static_assert(SS < 4, "");
-			static_assert(S >= 4, "");
-			for(size_t i = 0; i != SS; ++i){
-				this->operator[](i) -= vec[i];
-			}
-			this->operator[](3) -= T(1);
-		}
+		(*this) += -vec;
 		return *this;
 	}
 
@@ -477,9 +461,7 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector& operator-=(T number)noexcept{
-		for(size_t i = 0; i != S; ++i){
-			this->operator[](i) -= number;
-		}
+		(*this) += -number;
 		return *this;
 	}
 
@@ -557,18 +539,6 @@ public:
 		}
 		return *this;
 	}
-
-	/**
-	 * @brief Divide by scalar.
-	 * Divide this vector by scalar.
-	 * @param num - scalar to divide by.
-	 * @return Vector resulting from division of this vector by scalars.
-	 */
-	vector operator/(T num)noexcept{
-		ASSERT_INFO(num != 0, "vector::operator/(): division by 0")
-		return (vector(*this) /= num);
-	}
-
 	/**
 	 * @brief Dot product.
 	 * @param vec -vector to multiply by.
@@ -674,7 +644,11 @@ public:
 	 */
 	vector& negate()noexcept{
 		for(auto& c : *this){
-			c = -c;
+			if constexpr (std::is_signed_v<T>){
+				c = -c;
+			}else{
+				c = ~c + T(1);
+			}
 		}
 		return *this;
 	}
