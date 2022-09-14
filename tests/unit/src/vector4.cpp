@@ -75,7 +75,7 @@ tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(v4[0], 7, SL);
         tst::check_eq(v4[1], 8, SL);
 		tst::check_eq(v4[2], 9, SL);
-		tst::check_eq(v4[3], 1, SL);
+		tst::check_eq(v4[3], 0, SL);
     });
 
     suite.add("operator_equals_vector2", []{
@@ -87,7 +87,7 @@ tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(v4[0], 7, SL);
         tst::check_eq(v4[1], 8, SL);
 		tst::check_eq(v4[2], 0, SL);
-		tst::check_eq(v4[3], 1, SL);
+		tst::check_eq(v4[3], 0, SL);
     });
 
     suite.add("operator_equals_number", []{
@@ -132,7 +132,7 @@ tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(v4[0], 10, SL);
         tst::check_eq(v4[1], 12, SL);
 		tst::check_eq(v4[2], 5, SL);
-		tst::check_eq(v4[3], 7, SL);
+		tst::check_eq(v4[3], 6, SL);
     });
 
     suite.add("operator_plus_equals_vector3", []{
@@ -144,7 +144,7 @@ tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(v4[0], 10, SL);
         tst::check_eq(v4[1], 12, SL);
 		tst::check_eq(v4[2], 14, SL);
-		tst::check_eq(v4[3], 7, SL);
+		tst::check_eq(v4[3], 6, SL);
     });
 
     suite.add("operator_plus_equals_vector4", []{

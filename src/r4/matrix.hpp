@@ -120,7 +120,8 @@ public:
 	 * @param quat - unit quaternion defining the rotation.
 	 * @return Reference to this matrix object.
 	 */
-	template <typename E = T> matrix& set(const quaternion<std::enable_if_t<R == C && (R == 3 || R == 4), E>>& quat)noexcept{
+	template <typename E = T>
+	matrix& set(const quaternion<std::enable_if_t<R == C && (R == 3 || R == 4), E>>& quat)noexcept{
 		// Quaternion to matrix conversion:
 		//     |  1-(2y^2+2z^2)   2xy-2zw         2xz+2yw         0   |
 		// M = |  2xy+2zw         1-(2x^2+2z^2)   2yz-2xw         0   |
@@ -205,11 +206,28 @@ public:
 		return r;
 	}
 
+	// TODO: add doxygen comment
+	// Transform 2d or 3d vector by matrix.
+	// Defined only for 4x4 matrix.
+	template <size_t S, typename E = T>
+	vector<std::enable_if_t<R == 4 && C == 4 && (S == 2 || S == 3), E>, 4>
+	operator*(const vector<T, S>& vec)const noexcept
+	{
+		static_assert(R == 4 && C == 4, "4x4 matrix expected");
+		return vector<T, 4>{
+			this->row(0) * vec + this->row(0)[3],
+			this->row(1) * vec + this->row(1)[3],
+			this->row(2) * vec + this->row(2)[3],
+			this->row(3) * vec + this->row(3)[3],
+		};
+	}
+
+	// TODO: add doxygen comment
 	template <size_t S, typename E = T>
 	vector<std::enable_if_t<
 			(R == 2 && C == 3 && S == 2),
 			E
-		>, S> operator*(const vector<T, S>& vec)const noexcept
+		>, 2> operator*(const vector<T, S>& vec)const noexcept
 	{
 		static_assert(R == 2 && C == 3, "2x3 matrix expected");
 		static_assert(S == 2, "2d vector expected");

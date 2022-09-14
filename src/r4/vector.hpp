@@ -258,7 +258,8 @@ public:
 	/**
 	 * @brief Constructor.
 	 * Initializes components to a given values.
-	 * @param vec - 4d vector to use for initialization of first two vector components.
+	 * In case the given vector has lower dimension than this one the rest of the components will be initialized to 0.
+	 * @param vec - vector to use for initialization of vector components.
 	 */
 	template <size_t SS> constexpr vector(const vector<T, SS>& vec)noexcept{
 		this->operator=(vec);
@@ -272,7 +273,7 @@ public:
 	 * @param z - value to use for initialization of 3rd vector component.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	template <typename E = T> constexpr vector(const vector<T, 2>& vec, std::enable_if_t<S == 4, E> z = 0, T w = 1)noexcept :
+	template <typename E = T> constexpr vector(const vector<T, 2>& vec, std::enable_if_t<S == 4, E> z = 0, T w = 0)noexcept :
 			vector(vec.x(), vec.y(), z, w)
 	{}
 
@@ -280,10 +281,10 @@ public:
 	 * @brief Constructor.
 	 * Defined only for 4 component vector.
 	 * Initializes components to a given values.
-	 * @param vec - 23 vector to use for initialization of first three vector components.
+	 * @param vec - 3d vector to use for initialization of first three vector components.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	template <typename E = T> constexpr vector(const vector<T, 3>& vec, std::enable_if_t<S == 4, E> w = 1)noexcept :
+	template <typename E = T> constexpr vector(const vector<T, 3>& vec, std::enable_if_t<S == 4, E> w = 0)noexcept :
 			vector(vec.x(), vec.y(), vec.z(), w)
 	{}
 
@@ -313,26 +314,12 @@ public:
 			for(size_t i = 0; i != S; ++i){
 				this->operator[](i) = vec[i];
 			}
-		}else if constexpr (S < 4 || SS >= 4){
-			static_assert(SS < S, "");
-			size_t i = 0;
-			for(; i != SS; ++i){
-				this->operator[](i) = vec[i];
-			}
-			for(; i != S; ++i){
-				this->operator[](i) = T(0);
-			}
 		}else{
-			static_assert(SS < 4, "");
-			static_assert(S >= 4, "");
+			static_assert(SS <= S, "");
 			size_t i = 0;
 			for(; i != SS; ++i){
 				this->operator[](i) = vec[i];
 			}
-			for(; i != 4; ++i){
-				this->operator[](i) = T(0);
-			}
-			this->operator[](3) = T(1);
 			for(; i != S; ++i){
 				this->operator[](i) = T(0);
 			}
@@ -384,18 +371,11 @@ public:
 			for(size_t i = 0; i != S; ++i){
 				this->operator[](i) += vec[i];
 			}
-		}else if constexpr (S < 4 || SS >= 4){
-			static_assert(SS < S, "");
-			for(size_t i = 0; i != SS; ++i){
-				this->operator[](i) += vec[i];
-			}
 		}else{
-			static_assert(SS < 4, "");
-			static_assert(S >= 4, "");
+			static_assert(SS <= S, "");
 			for(size_t i = 0; i != SS; ++i){
 				this->operator[](i) += vec[i];
 			}
-			this->operator[](3) += T(1);
 		}
 		return *this;
 	}
@@ -560,7 +540,8 @@ public:
 	 * @param vec - vector to multiply by.
 	 * @return Four-dimensional vector resulting from the cross product.
 	 */
-	template <typename E = vector> std::enable_if_t<S >= 3, E> operator%(const vector& vec)const noexcept{
+	template <typename E = vector> std::enable_if_t<S >= 3, E>
+	operator%(const vector& vec)const noexcept{
 		static_assert(S >= 3, "cross product makes no sense for vectors with less than 3 components");
 		if constexpr (S == 3){
 			return vector{
