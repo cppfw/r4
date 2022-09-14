@@ -777,9 +777,10 @@ public:
 	}
 
 	/**
-	 * @brief Calculate right inverse of the matrix.
-	 * The resulting inverse matrix T^-1 is to multiply this matrix from the right to get identity matrix.
+	 * @brief Calculate inverse of the matrix.
+	 * The resulting inverse matrix T^-1 is to multiply this matrix to get identity matrix.
 	 *     T * T^-1 = I
+	 *     T^-1 * T = I
 	 * Defined only for square matrices and 2x3 matrix. The 2x3 matrix, before the inversion, is converted to
 	 * 3x3 matrix by adding (0, 0, 1) as a last row, then inverted as square matrix, then the last row of the
 	 * inversion resulting matrix is discarded.
