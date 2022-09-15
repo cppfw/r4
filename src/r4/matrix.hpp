@@ -760,6 +760,7 @@ public:
 	/**
 	 * @brief Calculate matrix determinant.
 	 * Defined only for square matrices and 2x3 matrix.
+	 * For 2x3 matrix the determinant is calculated as if it was a 2x2 matrix without the 3rd column.
 	 * @return matrix determinant.
 	 */
 	template <typename E = T>
