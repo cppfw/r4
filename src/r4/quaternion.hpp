@@ -182,10 +182,8 @@ public:
 	 * @return Reference to this quaternion object.
 	 */
 	quaternion& operator+=(const quaternion& q)noexcept{
-		this->x() += q.x();
-		this->y() += q.y();
-		this->z() += q.z();
-		this->w() += q.w();
+		this->v += q.v;
+		this->s += q.s;
 		return *this;
 	}
 
@@ -206,10 +204,8 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& operator*=(T s)noexcept{
-		this->x() *= s;
-		this->y() *= s;
-		this->z() *= s;
-		this->w() *= s;
+		this->v *= s;
+		this->s *= s;
 		return *this;
 	}
 
@@ -239,10 +235,8 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& operator/=(T s)noexcept{
-		this->x() /= s;
-		this->y() /= s;
-		this->z() /= s;
-		this->w() /= s;
+		this->v /= s;
+		this->s /= s;
 		return *this;
 	}
 
@@ -263,10 +257,7 @@ public:
 	 * @return result of the dot product.
 	 */
 	T operator*(const quaternion& q)const noexcept{
-		return this->x() * q.x()
-				+ this->y() * q.y()
-				+ this->z() * q.z()
-				+ this->w() * q.w();
+		return this->v * q.v + this->s * q.s;
 	}
 
 	/**
@@ -278,20 +269,7 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& operator%=(const quaternion& q)noexcept{
-		T a = (this->w() + this->x()) * (q.w() + q.x());
-		T b = (this->z() - this->y()) * (q.y() - q.z());
-		T c = (this->x() - this->w()) * (q.y() + q.z());
-		T d = (this->y() + this->z()) * (q.x() - q.w());
-		T e = (this->x() + this->z()) * (q.x() + q.y());
-		T f = (this->x() - this->z()) * (q.x() - q.y());
-		T g = (this->w() + this->y()) * (q.w() - q.z());
-		T h = (this->w() - this->y()) * (q.w() + q.z());
-
-		this->x() = a - (e + f + g + h) / T(2);
-		this->y() = -c + (e - f + g - h) / T(2);
-		this->z() = -d + (e - f - g + h) / T(2);
-		this->w() = b + (-e - f + g + h) / T(2);
-		return *this;
+		return this->operator=(this->operator%(q));
 	}
 
 	/**
@@ -302,7 +280,10 @@ public:
 	 * @return resulting quaternion instance.
 	 */
 	quaternion operator%(const quaternion& q)const noexcept{
-		return (quaternion(*this) %= q);
+		return quaternion(
+			this->s * q.v + q.s * this->v + this->v % q.v,
+			this->s * q.s - this->v * q.v
+		);
 	}
 
 	/**
@@ -312,10 +293,8 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& set_identity()noexcept{
-		this->x() = T(0);
-		this->y() = T(0);
-		this->z() = T(0);
-		this->w() = T(1);
+		this->v.set(T(0));
+		this->s = T(1);
 		return *this;
 	}
 
@@ -325,7 +304,7 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& conjugate()noexcept{
-		return (*this = this->operator!());
+		return this->operator=(this->operator!());
 	}
 
 	/**
@@ -334,10 +313,8 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& negate()noexcept{
-		this->x() = -this->x();
-		this->y() = -this->y();
-		this->z() = -this->z();
-		this->w() = -this->w();
+		this->v.negate();
+		this->s = -this->s;
 		return *this;
 	}
 
@@ -379,14 +356,7 @@ public:
 	 * @return Reference to this quaternion object.
 	 */
 	quaternion& set_rotation(T axisX, T axisY, T axisZ, T angle)noexcept{
-		using std::sin;
-		using std::cos;
-		T sina2 = T(sin(angle / 2));
-		this->w() = T(cos(angle / 2));
-		this->x() = axisX * sina2;
-		this->y() = axisY * sina2;
-		this->z() = axisZ * sina2;
-		return *this;
+		return this->set_rotation(decltype(this->v)(axisX, axisY, axisZ), angle);
 	}
 
 	/**
@@ -499,7 +469,7 @@ template <class T> constexpr quaternion<T>::quaternion(const vector<T, 3>& rot)n
 template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>& rot)noexcept{
 	T mag = rot.norm();
 	if(mag != 0){
-		this->set_rotation(rot.x() / mag, rot.y() / mag, rot.z() / mag, mag);
+		this->set_rotation(rot / mag, mag);
 	}else{
 		this->set_identity();
 	}
@@ -507,7 +477,11 @@ template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>
 }
 
 template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>& axis, T angle)noexcept{
-	return this->set_rotation(axis.x(), axis.y(), axis.z(), angle);
+	using std::sin;
+	using std::cos;
+	this->s = T(cos(angle / 2));
+	this->v = axis * T(sin(angle / 2));
+	return *this;
 }
 
 template <class T>
