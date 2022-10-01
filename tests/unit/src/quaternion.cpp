@@ -264,11 +264,39 @@ tst::set set("quaternion", [](tst::suite& suite){
 		tst::check_eq(r.s, -416, SL);
     });
 
+	suite.add("inversion", []{
+		r4::quaternion<float> a{3, 4, 5, 6};
+
+		auto inverted = !a / a.norm_pow2();
+
+		tst::check_eq(a.inv(), inverted, SL);
+
+		{
+			auto b = a;
+			b.invert();
+			tst::check_eq(b, inverted, SL);
+		}
+	});
+
+	suite.add("operator_equals_equals", [](){
+		r4::quaternion<float> a{3, 4, 5, 6};
+		r4::quaternion<float> b{3, 4, 5, 6};
+
+		tst::check_eq(a, b, SL);
+
+		b.v.y() = 1;
+		tst::check(!(a == b), SL);
+	});
+
     suite.add_disabled("to_matrix4", []{
         // TODO: test to_matrix4()
     });
 
     suite.add_disabled("slerp_quaternion_t", []{
+		// auto slow_slerp = [](r4::quaternion<float> a, r4::quaternion<float> b, float t){
+		// 	// 
+		// };
+
         // TODO: test slerp(quaternion, t)
     });
 });

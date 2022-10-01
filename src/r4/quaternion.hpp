@@ -167,6 +167,17 @@ public:
 	}
 
 	/**
+	 * @brief Operator equals.
+	 * 
+	 * @param q - quaternion to compare to for equality.
+	 * @return true if all componentes of this quaternion are same as of given quaternion.
+	 * @return false otherwise.
+	 */
+	bool operator==(const quaternion& q)const noexcept{
+		return this->v == q.v && this->s == q.s;
+	}
+
+	/**
 	 * @brief Complex conjugate of this quaternion.
 	 * Note, complex conjugate of quaternion (x, y, z, w) is (-x, -y, -z, w).
 	 * @return quaternion instance which is a complex conjugate of this quaternion.
@@ -343,6 +354,24 @@ public:
 	 */
 	quaternion& normalize()noexcept{
 		return (*this) /= this->norm();
+	}
+
+	/**
+	 * @brief Inverse quaternion.
+	 * 
+	 * @return inverted quaternion.
+	 */
+	quaternion inv()const noexcept{
+		return this->operator!() / this->norm_pow2();
+	}
+
+	/**
+	 * @brief Invert this quaternion.
+	 * 
+	 * @return reference to this quaternion.
+	 */
+	quaternion& invert()noexcept{
+		return this->operator=(this->inv());
 	}
 
 	/**
