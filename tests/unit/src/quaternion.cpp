@@ -335,6 +335,22 @@ tst::set set("quaternion", [](tst::suite& suite){
 				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
 				r4::quaternion<float>().set_rotation(0, 1, 0, utki::pi<float>() / 2),
 				0.999f
+			},
+			// test two very close quaternions
+			{
+				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(1.01, 0, 0, utki::pi<float>() / 2),
+				0.001f
+			},
+			{
+				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(1.01, 0, 0, utki::pi<float>() / 2),
+				0.5f
+			},
+			{
+				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(1.01, 0, 0, utki::pi<float>() / 2),
+				0.999f
 			}
 		},
 		[](const auto& p){
@@ -372,7 +388,7 @@ tst::set set("quaternion", [](tst::suite& suite){
 			auto abs_v = abs(diff.v);
 			auto abs_s = abs(diff.s);
 
-			tst::check_lt(abs_s, eps, SL);
+			tst::check_lt(abs_s, eps, SL) << " slow_slerp_res = " << slow_slerp_res << ", slerp_res = " << slerp_res;
 			tst::check(abs_v.snap_to_zero(eps).is_zero(), SL) << "diff_v = " << diff.v;
     });
 });

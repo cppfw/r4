@@ -459,7 +459,7 @@ public:
 	quaternion slerp(const quaternion& quat, T t)const noexcept{
 		// Since quaternions are normalized the cosine of the angle alpha
 		// between quaternions is equal to their dot product.
-		T cosalpha = (*this) * quat;
+		T cos_alpha = (*this) * quat;
 
 		T sign;
 
@@ -467,10 +467,10 @@ public:
 		// is greater than 90 degrees. Then we negate second quaternion to make alpha
 		// to be less than 90 degrees. It is possible since normalized quaternions
 		// q and -q represent the same rotation.
-		if(cosalpha < T(0)){
+		if(cos_alpha < T(0)){
 			// Negate the second quaternion and the result of the dot product (i.e. cos(alpha))
 			sign = -1;
-			cosalpha = -cosalpha;
+			cos_alpha = -cos_alpha;
 		}else{
 			sign = 1;
 		}
@@ -485,17 +485,17 @@ public:
 		// interpolation between quaternions instead of SLERP!
 		// It is also used to avoid divide by zero since sin(0) is 0.
 		// We made threshold for cos(alpha) > 0.9f (if cos(alpha) == 1 then alpha is 0).
-		if(cosalpha > T(0.9f)){
+		if(cos_alpha > T(0.99f)){
 			using std::acos;
 			using std::sin;
 
 			// Get the angle alpha between the 2 quaternions, and then store the sin(alpha)
-			T alpha = T(acos(cosalpha));
-			T sinalpha = T(sin(alpha));
+			T alpha = T(acos(cos_alpha));
+			T sin_alpha = T(sin(alpha));
 
 			// Calculate the scales for q1 and q2, according to the angle and it's sine value
-			sc1 = T(sin((1 - t) * alpha)) / sinalpha;
-			sc2 = T(sin(t * alpha)) / sinalpha;
+			sc1 = T(sin((1 - t) * alpha)) / sin_alpha;
+			sc2 = T(sin(t * alpha)) / sin_alpha;
 		}else{
 			sc1 = (1 - t);
 			sc2 = t;
