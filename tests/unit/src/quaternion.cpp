@@ -314,7 +314,11 @@ tst::set set("quaternion", [](tst::suite& suite){
         // TODO: test to_matrix4()
     });
 
-    suite.add<std::tuple<r4::quaternion<float>, r4::quaternion<float>, float>>(
+    suite.add<std::tuple<
+		r4::quaternion<float>,
+		r4::quaternion<float>,
+		float
+	>>(
 		"slerp",
 		{
 			{
