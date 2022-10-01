@@ -118,6 +118,11 @@ public:
 		return this->s;
 	}
 
+	constexpr quaternion(const decltype(v)& vec, T scalar)noexcept :
+		v(vec),
+		s(scalar)
+	{}
+
 	/**
 	 * @brief Create quaternion with given components.
 	 * @param x - x component.
