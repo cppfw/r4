@@ -172,7 +172,7 @@ public:
 	 * @return quaternion instance which is a complex conjugate of this quaternion.
 	 */
 	quaternion operator!()const noexcept{
-		return quaternion(-this->x(), -this->y(), -this->z(), this->w());
+		return quaternion(-this->v, this->w());
 	}
 
 	/**
