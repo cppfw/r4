@@ -118,6 +118,11 @@ public:
 		return this->s;
 	}
 
+	/**
+	 * @brief Create quaternion with given vector and scalar parts.
+	 * @param vec - vector part of the quaternion.
+	 * @param scalar - scalar part of the quaternion.
+	 */
 	constexpr quaternion(const decltype(v)& vec, T scalar)noexcept :
 		v(vec),
 		s(scalar)
@@ -183,7 +188,16 @@ public:
 	 * @return quaternion instance which is a complex conjugate of this quaternion.
 	 */
 	quaternion operator!()const noexcept{
-		return quaternion(-this->v, this->w());
+		return quaternion(-this->v, this->s);
+	}
+
+	/**
+	 * @brief Negation of this quaternion.
+	 * 
+	 * @return negated quaternion.
+	 */
+	quaternion operator-()const noexcept{
+		return quaternion(-this->v, -this->s);
 	}
 
 	/**
@@ -201,11 +215,21 @@ public:
 	/**
 	 * @brief Addition of quaternions.
 	 * Calculates sum of this quaternion and another specified quaternion.
-	 * @param q - quaternion to add.
+	 * @param q - quaternion to add to this one.
 	 * @return A quaternion object representing sum of quaternions.
 	 */
 	quaternion operator+(const quaternion& q)const noexcept{
 		return (quaternion(*this) += q);
+	}
+
+	/**
+	 * @brief Subtraction of quaternions.
+	 * 
+	 * @param q - quaternion to subtract from this one.
+	 * @return result of subtraction of this quaternion and given quaternion.
+	 */
+	quaternion operator-(const quaternion& q)const noexcept{
+		return (*this) + (-q);
 	}
 
 	/**
@@ -358,6 +382,8 @@ public:
 
 	/**
 	 * @brief Inverse quaternion.
+	 * 
+	 * q^-1 = !q / q.norm_pow2()
 	 * 
 	 * @return inverted quaternion.
 	 */

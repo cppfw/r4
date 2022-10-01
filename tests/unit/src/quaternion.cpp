@@ -81,6 +81,28 @@ tst::set set("quaternion", [](tst::suite& suite){
 		tst::check_eq(r.s, 10, SL);
     });
 
+	suite.add("operator_minus", []{
+        r4::quaternion<int> a{3, 4, 5, 6};
+
+		auto r = -a;
+
+		tst::check_eq(r.v[0], -3, SL);
+		tst::check_eq(r.v[1], -4, SL);
+		tst::check_eq(r.v[2], -5, SL);
+		tst::check_eq(r.s, -6, SL);
+    });
+
+	suite.add("operator_minus_quaternion", []{
+        r4::quaternion<int> a{3, 4, 5, 6};
+
+		auto r = a - r4::quaternion<int>{1, 2, 3, 4};
+
+		tst::check_eq(r.v[0], 2, SL);
+		tst::check_eq(r.v[1], 2, SL);
+		tst::check_eq(r.v[2], 2, SL);
+		tst::check_eq(r.s, 2, SL);
+    });
+
     suite.add("operator_multiply_equals_number", []{
         r4::quaternion<int> a{3, 4, 5, 6};
 
@@ -292,12 +314,62 @@ tst::set set("quaternion", [](tst::suite& suite){
         // TODO: test to_matrix4()
     });
 
-    suite.add_disabled("slerp_quaternion_t", []{
-		// auto slow_slerp = [](r4::quaternion<float> a, r4::quaternion<float> b, float t){
-		// 	// 
-		// };
+    suite.add<std::tuple<r4::quaternion<float>, r4::quaternion<float>, float>>(
+		"slerp",
+		{
+			{
+				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(0, 1, 0, utki::pi<float>() / 2),
+				0.01f
+			},
+			{
+				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(0, 1, 0, utki::pi<float>() / 2),
+				0.5f
+			},
+			{
+				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(0, 1, 0, utki::pi<float>() / 2),
+				0.99f
+			}
+		},
+		[](const auto& p){
+			float eps = 0.11f; // TODO: lower the epsilon to something like 0.001
 
-        // TODO: test slerp(quaternion, t)
+			auto slow_slerp = [](r4::quaternion<float> a, r4::quaternion<float> b, float t){
+				tst::check_le(t, decltype(t)(1), SL);
+				tst::check_ge(t, decltype(t)(0), SL);
+
+				// Let slerp(0) = A and slerp(1) = B, then for slerp(t) calculation:
+				// c = (a^-1) % b
+				// angle = acos(c.s) * t
+				// slerp(t) = a % quaternion(c.v * sin(angle) / c.v.norm(), cos(angle))
+
+				auto c = a.inv() % b;
+
+				using std::acos;
+				auto angle = acos(c.s) * t;
+
+				using std::sin;
+				using std::cos;
+				return a % r4::quaternion(c.v * sin(angle) / c.v.norm(), cos(angle));
+			};
+
+			auto a = std::get<0>(p);
+			auto b = std::get<1>(p);
+			auto t = std::get<2>(p);
+
+			auto slow_slerp_res = slow_slerp(a, b, t);
+			auto slerp_res = a.slerp(b, t);
+
+			auto diff = slerp_res - slow_slerp_res;
+
+			using std::abs;
+			auto abs_v = abs(diff.v);
+			auto abs_s = abs(diff.s);
+
+			tst::check_lt(abs_s, eps, SL);
+			tst::check(abs_v.snap_to_zero(eps).is_zero(), SL) << "diff_v = " << diff.v;
     });
 });
 }
