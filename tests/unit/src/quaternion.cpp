@@ -320,7 +320,7 @@ tst::set set("quaternion", [](tst::suite& suite){
 			{
 				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
 				r4::quaternion<float>().set_rotation(0, 1, 0, utki::pi<float>() / 2),
-				0.01f
+				0.001f
 			},
 			{
 				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
@@ -330,7 +330,7 @@ tst::set set("quaternion", [](tst::suite& suite){
 			{
 				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
 				r4::quaternion<float>().set_rotation(0, 1, 0, utki::pi<float>() / 2),
-				0.99f
+				0.999f
 			}
 		},
 		[](const auto& p){
