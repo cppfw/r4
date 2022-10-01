@@ -161,11 +161,9 @@ public:
 	 */
 	template <typename TT> quaternion<TT> to()noexcept{
 		return quaternion<TT>{
-				TT(this->x()),
-				TT(this->y()),
-				TT(this->z()),
-				TT(this->w())
-			};
+			this->v.template to<TT>(),
+			TT(this->s)
+		};
 	}
 
 	/**
