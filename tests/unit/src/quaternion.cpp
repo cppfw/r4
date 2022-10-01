@@ -11,10 +11,10 @@ tst::set set("quaternion", [](tst::suite& suite){
     suite.add("constructor_x_y_z_w", []{
         r4::quaternion<int> a{3, 4, 5, 6};
 
-		tst::check_eq(a[0], 3, SL);
-		tst::check_eq(a[1], 4, SL);
-		tst::check_eq(a[2], 5, SL);
-		tst::check_eq(a[3], 6, SL);
+		tst::check_eq(a.v[0], 3, SL);
+		tst::check_eq(a.v[1], 4, SL);
+		tst::check_eq(a.v[2], 5, SL);
+		tst::check_eq(a.s, 6, SL);
     });
 
     suite.add("constructor_vector3", []{
@@ -22,21 +22,20 @@ tst::set set("quaternion", [](tst::suite& suite){
 		q *= 1000.0f;
 		auto r = q.to<int>();
 
-		tst::check_eq(r[0], -162, SL);
-		tst::check_eq(r[1], -217, SL);
-		tst::check_eq(r[2], -271, SL);
-		tst::check_eq(r[3], -923, SL);
+		tst::check_eq(r.v[0], -162, SL);
+		tst::check_eq(r.v[1], -217, SL);
+		tst::check_eq(r.v[2], -271, SL);
+		tst::check_eq(r.s, -923, SL);
     });
-
     suite.add("to", []{
         r4::quaternion<float> qf(1.1f, 2.2f, 3.3f, 4.4f);
         
         auto qi = qf.to<int>();
 
-        tst::check_eq(qi[0], 1, SL);
-        tst::check_eq(qi[1], 2, SL);
-		tst::check_eq(qi[2], 3, SL);
-		tst::check_eq(qi[3], 4, SL);
+        tst::check_eq(qi.v[0], 1, SL);
+        tst::check_eq(qi.v[1], 2, SL);
+		tst::check_eq(qi.v[2], 3, SL);
+		tst::check_eq(qi.s, 4, SL);
     });
 
     suite.add("operator_exclamation_mark", []{
@@ -44,10 +43,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = !a;
 
-		tst::check_eq(r[0], -3, SL);
-		tst::check_eq(r[1], -4, SL);
-		tst::check_eq(r[2], -5, SL);
-		tst::check_eq(r[3], 6, SL);
+		tst::check_eq(r.v[0], -3, SL);
+		tst::check_eq(r.v[1], -4, SL);
+		tst::check_eq(r.v[2], -5, SL);
+		tst::check_eq(r.s, 6, SL);
     });
 
     suite.add("operator_plus_equals_quaternion", []{
@@ -55,10 +54,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		a += r4::quaternion<int>{1, 2, 3, 4};
 
-		tst::check_eq(a[0], 4, SL);
-		tst::check_eq(a[1], 6, SL);
-		tst::check_eq(a[2], 8, SL);
-		tst::check_eq(a[3], 10, SL);
+		tst::check_eq(a.v[0], 4, SL);
+		tst::check_eq(a.v[1], 6, SL);
+		tst::check_eq(a.v[2], 8, SL);
+		tst::check_eq(a.s, 10, SL);
     });
 
     suite.add("operator_plus_quaternion", []{
@@ -66,10 +65,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = a + r4::quaternion<int>{1, 2, 3, 4};
 
-		tst::check_eq(r[0], 4, SL);
-		tst::check_eq(r[1], 6, SL);
-		tst::check_eq(r[2], 8, SL);
-		tst::check_eq(r[3], 10, SL);
+		tst::check_eq(r.v[0], 4, SL);
+		tst::check_eq(r.v[1], 6, SL);
+		tst::check_eq(r.v[2], 8, SL);
+		tst::check_eq(r.s, 10, SL);
     });
 
     suite.add("operator_multiply_equals_number", []{
@@ -77,10 +76,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		a *= 3;
 
-		tst::check_eq(a[0], 9, SL);
-		tst::check_eq(a[1], 12, SL);
-		tst::check_eq(a[2], 15, SL);
-		tst::check_eq(a[3], 18, SL);
+		tst::check_eq(a.v[0], 9, SL);
+		tst::check_eq(a.v[1], 12, SL);
+		tst::check_eq(a.v[2], 15, SL);
+		tst::check_eq(a.s, 18, SL);
     });
 
     suite.add("operator_multiply_number", []{
@@ -88,10 +87,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = a * 3;
 
-		tst::check_eq(r[0], 9, SL);
-		tst::check_eq(r[1], 12, SL);
-		tst::check_eq(r[2], 15, SL);
-		tst::check_eq(r[3], 18, SL);
+		tst::check_eq(r.v[0], 9, SL);
+		tst::check_eq(r.v[1], 12, SL);
+		tst::check_eq(r.v[2], 15, SL);
+		tst::check_eq(r.s, 18, SL);
     });
 
     suite.add("operator_multiply_number_quaternion", []{
@@ -99,10 +98,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = 3 * a;
 
-		tst::check_eq(r[0], 9, SL);
-		tst::check_eq(r[1], 12, SL);
-		tst::check_eq(r[2], 15, SL);
-		tst::check_eq(r[3], 18, SL);
+		tst::check_eq(r.v[0], 9, SL);
+		tst::check_eq(r.v[1], 12, SL);
+		tst::check_eq(r.v[2], 15, SL);
+		tst::check_eq(r.s, 18, SL);
     });
 
     suite.add("operator_divide_equals_number", []{
@@ -110,10 +109,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		a /= 3;
 
-		tst::check_eq(a[0], 3, SL);
-		tst::check_eq(a[1], 4, SL);
-		tst::check_eq(a[2], 5, SL);
-		tst::check_eq(a[3], 6, SL);
+		tst::check_eq(a.v[0], 3, SL);
+		tst::check_eq(a.v[1], 4, SL);
+		tst::check_eq(a.v[2], 5, SL);
+		tst::check_eq(a.s, 6, SL);
     });
 
     suite.add("operator_divide_number", []{
@@ -121,10 +120,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = a / 3;
 
-		tst::check_eq(r[0], 3, SL);
-		tst::check_eq(r[1], 4, SL);
-		tst::check_eq(r[2], 5, SL);
-		tst::check_eq(r[3], 6, SL);
+		tst::check_eq(r.v[0], 3, SL);
+		tst::check_eq(r.v[1], 4, SL);
+		tst::check_eq(r.v[2], 5, SL);
+		tst::check_eq(r.s, 6, SL);
     });
 
     suite.add("operator_multiply_quaternion", []{
@@ -142,10 +141,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		a %= b;
 
-		tst::check_eq(a[0], 20, SL);
-		tst::check_eq(a[1], 24, SL);
-		tst::check_eq(a[2], 40, SL);
-		tst::check_eq(a[3], -2, SL);
+		tst::check_eq(a.v[0], 20, SL);
+		tst::check_eq(a.v[1], 24, SL);
+		tst::check_eq(a.v[2], 40, SL);
+		tst::check_eq(a.s, -2, SL);
     });
 
     suite.add("operator_percent_quaternion", []{
@@ -154,10 +153,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = a % b;
 
-		tst::check_eq(r[0], 20, SL);
-		tst::check_eq(r[1], 24, SL);
-		tst::check_eq(r[2], 40, SL);
-		tst::check_eq(r[3], -2, SL);
+		tst::check_eq(r.v[0], 20, SL);
+		tst::check_eq(r.v[1], 24, SL);
+		tst::check_eq(r.v[2], 40, SL);
+		tst::check_eq(r.s, -2, SL);
     });
 
     suite.add("set_identity", []{
@@ -165,10 +164,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		a.set_identity();
 
-		tst::check_eq(a[0], 0, SL);
-		tst::check_eq(a[1], 0, SL);
-		tst::check_eq(a[2], 0, SL);
-		tst::check_eq(a[3], 1, SL);
+		tst::check_eq(a.v[0], 0, SL);
+		tst::check_eq(a.v[1], 0, SL);
+		tst::check_eq(a.v[2], 0, SL);
+		tst::check_eq(a.s, 1, SL);
     });
 
     suite.add("conjugate", []{
@@ -176,10 +175,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		a.conjugate();
 
-		tst::check_eq(a[0], -3, SL);
-		tst::check_eq(a[1], -4, SL);
-		tst::check_eq(a[2], -5, SL);
-		tst::check_eq(a[3], 6, SL);
+		tst::check_eq(a.v[0], -3, SL);
+		tst::check_eq(a.v[1], -4, SL);
+		tst::check_eq(a.v[2], -5, SL);
+		tst::check_eq(a.s, 6, SL);
     });
 
     suite.add("negate", []{
@@ -187,10 +186,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		a.negate();
 
-		tst::check_eq(a[0], -3, SL);
-		tst::check_eq(a[1], -4, SL);
-		tst::check_eq(a[2], -5, SL);
-		tst::check_eq(a[3], -6, SL);
+		tst::check_eq(a.v[0], -3, SL);
+		tst::check_eq(a.v[1], -4, SL);
+		tst::check_eq(a.v[2], -5, SL);
+		tst::check_eq(a.s, -6, SL);
     });
 
     suite.add("norm_pow2", []{
@@ -219,10 +218,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = a.to<int>();
 
-		tst::check_eq(r[0], 323, SL);
-		tst::check_eq(r[1], 431, SL);
-		tst::check_eq(r[2], 539, SL);
-		tst::check_eq(r[3], 646, SL);
+		tst::check_eq(r.v[0], 323, SL);
+		tst::check_eq(r.v[1], 431, SL);
+		tst::check_eq(r.v[2], 539, SL);
+		tst::check_eq(r.s, 646, SL);
     });
 
     suite.add("set_rotation_x_y_z_a", []{
@@ -234,10 +233,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = a.to<int>();
 
-		tst::check_eq(r[0], 909, SL);
-		tst::check_eq(r[1], 1818, SL);
-		tst::check_eq(r[2], 2727, SL);
-		tst::check_eq(r[3], -416, SL);
+		tst::check_eq(r.v[0], 909, SL);
+		tst::check_eq(r.v[1], 1818, SL);
+		tst::check_eq(r.v[2], 2727, SL);
+		tst::check_eq(r.s, -416, SL);
     });
 
     suite.add("set_rotation_vector3_angle", []{
@@ -249,10 +248,10 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 		auto r = a.to<int>();
 
-		tst::check_eq(r[0], 909, SL);
-		tst::check_eq(r[1], 1818, SL);
-		tst::check_eq(r[2], 2727, SL);
-		tst::check_eq(r[3], -416, SL);
+		tst::check_eq(r.v[0], 909, SL);
+		tst::check_eq(r.v[1], 1818, SL);
+		tst::check_eq(r.v[2], 2727, SL);
+		tst::check_eq(r.s, -416, SL);
     });
 
     suite.add_disabled("to_matrix4", []{

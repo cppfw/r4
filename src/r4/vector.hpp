@@ -30,8 +30,6 @@ SOFTWARE.
 
 #include <utki/math.hpp>
 
-#include "quaternion.hpp"
-
 // Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
 #ifdef min
 #	undef min
@@ -41,6 +39,8 @@ SOFTWARE.
 #endif
 
 namespace r4{
+
+template <class T> class quaternion;
 
 template <class T, size_t S> class vector :
 	// it's ok to inherit std::array<T> because T cannot be polymorphic, this is checked by static_assert
@@ -922,7 +922,7 @@ static_assert(sizeof(vector<double, 4>) == sizeof(double) * 4, "size mismatch");
 
 }
 
-#include "matrix.hpp"
+#include "quaternion.hpp"
 
 namespace r4{
 

@@ -723,6 +723,9 @@ public:
 	matrix<std::enable_if_t<(R >= 2 && C >= 2), E>, R - 1, C - 1> remove(size_t row, size_t col)const noexcept{
 		matrix<T, R - 1, C - 1> ret;
 
+		ASSERT(row < R)
+		ASSERT(col < C)
+
 		for(size_t dr = 0; dr != row; ++dr){
 			for(size_t dc = 0; dc != col; ++dc){
 				ret[dr][dc] = this->row(dr)[dc];

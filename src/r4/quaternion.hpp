@@ -33,76 +33,89 @@ SOFTWARE.
 
 #include <utki/debug.hpp>
 
+#include "vector.hpp"
+
 namespace r4{
 
-template <class T, size_t S> class vector;
 template <class T, size_t R, size_t C> class matrix;
 
 /**
  * @brief quaternion template class.
  */
-template <typename T> class quaternion :
-	// it's ok to inherit std::array<T> because T cannot be polymorphic, this is checked by static_assert
-	public std::array<T, 4>
-{
-	static_assert(!std::is_polymorphic<T>::value, "Template type parameter must not be a polymorphic type");
-
-	typedef std::array<T, 4> base_type;
+template <typename T> class quaternion{
 public:
 	/**
+	 * @brief Vector component of the quaternion.
+	 */
+	r4::vector<T, 3> v;
+
+	/**
+	 * @brief Scalar component of the quaternion.
+	 */
+	T s;
+
+	/**
 	 * @brief x component.
+	 * Synonym of this->v.x().
 	 */
 	T& x()noexcept{
-		return this->operator[](0);
+		return this->v.x();
 	}
 
 	/**
 	 * @brief x component.
+	 * Synonym of this->v.x().
 	 */
 	const T& x()const noexcept{
-		return this->operator[](0);
+		return this->v.x();
 	}
 
 	/**
 	 * @brief y component.
+	 * Synonym of this->v.y().
 	 */
 	T& y()noexcept{
-		return this->operator[](1);
+		return this->v.y();
 	}
 
 	/**
 	 * @brief y component.
+	 * Synonym of this->v.y().
 	 */
 	const T& y()const noexcept{
-		return this->operator[](1);
+		return this->v.y();
 	}
 
 	/**
 	 * @brief z component.
+	 * Synonym of this->v.z().
 	 */
 	T& z()noexcept{
-		return this->operator[](2);
+		return this->v.z();
 	}
 
 	/**
 	 * @brief z component.
+	 * Synonym of this->v.z().
 	 */
 	const T& z()const noexcept{
-		return this->operator[](2);
+		return this->v.z();
 	}
 
 	/**
 	 * @brief w component.
+	 * Synonym of this->v.w().
 	 */
 	T& w()noexcept{
-		return this->operator[](3);
+		return this->s;
 	}
 
 	/**
 	 * @brief w component.
+	 * Synonym of this->v.w().
 	 */
 	const T& w()const noexcept{
-		return this->operator[](3);
+		return this->s;
 	}
 
 	/**
@@ -113,7 +126,8 @@ public:
 	 * @param w - w component.
 	 */
 	constexpr quaternion(T x, T y, T z, T w)noexcept :
-			base_type{x, y, z, w}
+		v(x, y, z),
+		s(w)
 	{}
 
 	/**
