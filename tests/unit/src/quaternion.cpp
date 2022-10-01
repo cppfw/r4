@@ -385,11 +385,9 @@ tst::set set("quaternion", [](tst::suite& suite){
 			auto diff = slerp_res - slow_slerp_res;
 
 			using std::abs;
-			auto abs_v = abs(diff.v);
-			auto abs_s = abs(diff.s);
 
-			tst::check_lt(abs_s, eps, SL) << " slow_slerp_res = " << slow_slerp_res << ", slerp_res = " << slerp_res;
-			tst::check(abs_v.snap_to_zero(eps).is_zero(), SL) << "diff_v = " << diff.v;
+			tst::check_lt(abs(diff.s), eps, SL) << " slow_slerp_res = " << slow_slerp_res << ", slerp_res = " << slerp_res;
+			tst::check(diff.v.snap_to_zero(eps).is_zero(), SL) << "diff_v = " << diff.v;
     });
 });
 }
