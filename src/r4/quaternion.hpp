@@ -229,7 +229,7 @@ public:
 	 * @return result of subtraction of this quaternion and given quaternion.
 	 */
 	quaternion operator-(const quaternion& q)const noexcept{
-		return (*this) + (-q);
+		return this->operator+(-q);
 	}
 
 	/**
