@@ -538,11 +538,10 @@ public:
 	 * product between two 3d vectors formed from first 3 components of initial 4d vectors.
 	 * The forth component is a simple multiplication of 4th components of initial vectors.
 	 * @param vec - vector to multiply by.
-	 * @return Four-dimensional vector resulting from the cross product.
+	 * @return Cross product of this vector by given vector.
 	 */
-	template <typename E = vector> std::enable_if_t<S >= 3, E>
-	operator%(const vector& vec)const noexcept{
-		static_assert(S >= 3, "cross product makes no sense for vectors with less than 3 components");
+	template <typename E = vector> std::enable_if_t<S == 3 || S == 4, E>
+	cross(const vector& vec)const noexcept{
 		if constexpr (S == 3){
 			return vector{
 					this->y() * vec.z() - this->z() * vec.y(),
@@ -550,6 +549,7 @@ public:
 					this->x() * vec.y() - this->y() * vec.x()
 				};
 		}else{
+			static_assert(S == 4, "cross product makes no sense for non 3d (4d) vectors");
 			return vector{
 				this->y() * vec.z() - this->z() * vec.y(),
 				this->z() * vec.x() - this->x() * vec.z(),
@@ -557,6 +557,19 @@ public:
 				this->w() * vec.w()
 			};
 		}
+	}
+
+	/**
+	 * @brief Cross product.
+	 * First three components of the resulting 4d vector is a result of cross
+	 * product between two 3d vectors formed from first 3 components of initial 4d vectors.
+	 * The forth component is a simple multiplication of 4th components of initial vectors.
+	 * @param vec - vector to multiply by.
+	 * @return Cross product of this vector by given vector.
+	 */
+	template <typename E = vector> std::enable_if_t<S >= 3, E>
+	operator%(const vector& vec)const noexcept{
+		return this->cross(vec);
 	}
 
 	/**

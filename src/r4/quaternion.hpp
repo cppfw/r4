@@ -118,7 +118,12 @@ public:
 		return this->s;
 	}
 
-	constexpr quaternion(const decltype(v)& vec, T scalar)noexcept :
+	/**
+	 * @brief Create quaternion with given vector and scalar parts.
+	 * @param vec - vector part of the quaternion.
+	 * @param scalar - scalar part of the quaternion.
+	 */
+	constexpr quaternion(const vector<T, 3>& vec, T scalar)noexcept :
 		v(vec),
 		s(scalar)
 	{}
@@ -183,7 +188,16 @@ public:
 	 * @return quaternion instance which is a complex conjugate of this quaternion.
 	 */
 	quaternion operator!()const noexcept{
-		return quaternion(-this->v, this->w());
+		return quaternion(-this->v, this->s);
+	}
+
+	/**
+	 * @brief Negation of this quaternion.
+	 * 
+	 * @return negated quaternion.
+	 */
+	quaternion operator-()const noexcept{
+		return quaternion(-this->v, -this->s);
 	}
 
 	/**
@@ -201,11 +215,21 @@ public:
 	/**
 	 * @brief Addition of quaternions.
 	 * Calculates sum of this quaternion and another specified quaternion.
-	 * @param q - quaternion to add.
+	 * @param q - quaternion to add to this one.
 	 * @return A quaternion object representing sum of quaternions.
 	 */
 	quaternion operator+(const quaternion& q)const noexcept{
 		return (quaternion(*this) += q);
+	}
+
+	/**
+	 * @brief Subtraction of quaternions.
+	 * 
+	 * @param q - quaternion to subtract from this one.
+	 * @return result of subtraction of this quaternion and given quaternion.
+	 */
+	quaternion operator-(const quaternion& q)const noexcept{
+		return this->operator+(-q);
 	}
 
 	/**
@@ -267,7 +291,7 @@ public:
 	 * x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2
 	 * @return result of the dot product.
 	 */
-	T operator*(const quaternion& q)const noexcept{
+	T dot(const quaternion& q)const noexcept{
 		return this->v * q.v + this->s * q.s;
 	}
 
@@ -279,8 +303,14 @@ public:
 	 * @param q - quaternion to multiply by.
 	 * @return reference to this quaternion instance.
 	 */
+	quaternion& operator*=(const quaternion& q)noexcept{
+		return this->operator=(this->operator*(q));
+	}
+
+	// TODO: remove deprecated stuff
 	quaternion& operator%=(const quaternion& q)noexcept{
-		return this->operator=(this->operator%(q));
+		LOG([](auto& o){o << "quaternion::operator%=() is DEPRECATED!, use quaternion::operator*=() instead!\n";});
+		return this->operator*=(q);
 	}
 
 	/**
@@ -290,11 +320,17 @@ public:
 	 * @param q - quaternion to multiply by.
 	 * @return resulting quaternion instance.
 	 */
-	quaternion operator%(const quaternion& q)const noexcept{
+	quaternion operator*(const quaternion& q)const noexcept{
 		return quaternion(
 			this->s * q.v + q.s * this->v + this->v % q.v,
 			this->s * q.s - this->v * q.v
 		);
+	}
+
+	// TODO: remove deprecated stuff
+	quaternion operator%(const quaternion& q)const noexcept{
+		LOG([](auto& o){o << "quaternion::operator%() is DEPRECATED!, use quaternion::operator*() instead!\n";});
+		return this->operator*(q);
 	}
 
 	/**
@@ -334,7 +370,7 @@ public:
 	 * @return power 2 of norm.
 	 */
 	T norm_pow2()const noexcept{
-		return (*this) * (*this);
+		return this->dot(*this);
 	}
 
 	/**
@@ -358,6 +394,8 @@ public:
 
 	/**
 	 * @brief Inverse quaternion.
+	 * 
+	 * q^-1 = !q / q.norm_pow2()
 	 * 
 	 * @return inverted quaternion.
 	 */
@@ -433,7 +471,7 @@ public:
 	quaternion slerp(const quaternion& quat, T t)const noexcept{
 		// Since quaternions are normalized the cosine of the angle alpha
 		// between quaternions is equal to their dot product.
-		T cosalpha = (*this) * quat;
+		T cos_alpha = this->dot(quat);
 
 		T sign;
 
@@ -441,35 +479,35 @@ public:
 		// is greater than 90 degrees. Then we negate second quaternion to make alpha
 		// to be less than 90 degrees. It is possible since normalized quaternions
 		// q and -q represent the same rotation.
-		if(cosalpha < T(0)){
+		if(cos_alpha < T(0)){
 			// Negate the second quaternion and the result of the dot product (i.e. cos(alpha))
 			sign = -1;
-			cosalpha = -cosalpha;
+			cos_alpha = -cos_alpha;
 		}else{
 			sign = 1;
 		}
 
-		// interpolation done by the following general formula:
+		// Interpolation done by the following general formula:
 		// RESULT = this * sc1(t) + quat * sc2(t).
 		// Where sc1, sc2 called interpolation scales.
-		T sc1, sc2; // Define variables for scales for interpolation
+		T sc1, sc2;
 
 		// Check if the angle alpha between the 2 quaternions is big enough
 		// to make SLERP. If alpha is small then we do a simple linear
 		// interpolation between quaternions instead of SLERP!
 		// It is also used to avoid divide by zero since sin(0) is 0.
-		// We made threshold for cos(alpha) > 0.9f (if cos(alpha) == 1 then alpha is 0).
-		if(cosalpha > T(0.9f)){
+		const T small_angle_cosine_threshold = T(0.99);
+		if(cos_alpha < small_angle_cosine_threshold){
 			using std::acos;
 			using std::sin;
 
 			// Get the angle alpha between the 2 quaternions, and then store the sin(alpha)
-			T alpha = T(acos(cosalpha));
-			T sinalpha = T(sin(alpha));
+			T alpha = T(acos(cos_alpha));
+			T sin_alpha = T(sin(alpha));
 
 			// Calculate the scales for q1 and q2, according to the angle and it's sine value
-			sc1 = T(sin((1 - t) * alpha)) / sinalpha;
-			sc2 = T(sin(t * alpha)) / sinalpha;
+			sc1 = T(sin((1 - t) * alpha)) / sin_alpha;
+			sc2 = T(sin(t * alpha)) / sin_alpha;
 		}else{
 			sc1 = (1 - t);
 			sc2 = t;
