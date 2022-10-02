@@ -123,7 +123,7 @@ public:
 	 * @param vec - vector part of the quaternion.
 	 * @param scalar - scalar part of the quaternion.
 	 */
-	constexpr quaternion(const decltype(v)& vec, T scalar)noexcept :
+	constexpr quaternion(const decltype(quaternion::v)& vec, T scalar)noexcept :
 		v(vec),
 		s(scalar)
 	{}
@@ -496,7 +496,7 @@ public:
 		// to make SLERP. If alpha is small then we do a simple linear
 		// interpolation between quaternions instead of SLERP!
 		// It is also used to avoid divide by zero since sin(0) is 0.
-		const T small_angle_cosine_threshold = 0.99;
+		const T small_angle_cosine_threshold = T(0.99);
 		if(cos_alpha < small_angle_cosine_threshold){
 			using std::acos;
 			using std::sin;

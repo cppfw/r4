@@ -4,7 +4,7 @@
 #include "../../../src/r4/quaternion.hpp"
 
 // declare templates to instantiate all template methods to include all methods to gcov coverage
-template class r4::quaternion<int>;
+template class r4::quaternion<float>;
 
 namespace{
 tst::set set("quaternion", [](tst::suite& suite){
@@ -339,17 +339,17 @@ tst::set set("quaternion", [](tst::suite& suite){
 			// test two very close quaternions
 			{
 				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
-				r4::quaternion<float>().set_rotation(1.01, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(1.01f, 0, 0, utki::pi<float>() / 2),
 				0.001f
 			},
 			{
 				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
-				r4::quaternion<float>().set_rotation(1.01, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(1.01f, 0, 0, utki::pi<float>() / 2),
 				0.5f
 			},
 			{
 				r4::quaternion<float>().set_rotation(1, 0, 0, utki::pi<float>() / 2),
-				r4::quaternion<float>().set_rotation(1.01, 0, 0, utki::pi<float>() / 2),
+				r4::quaternion<float>().set_rotation(1.01f, 0, 0, utki::pi<float>() / 2),
 				0.999f
 			}
 		},
