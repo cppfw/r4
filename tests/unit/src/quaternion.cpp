@@ -354,9 +354,9 @@ tst::set set("quaternion", [](tst::suite& suite){
 			}
 		},
 		[](const auto& p){
-			float eps = 0.01f;
+			const float cmp_eps = 0.01f;
 
-			auto slow_slerp = [eps](r4::quaternion<float> a, r4::quaternion<float> b, float t){
+			auto slow_slerp = [](r4::quaternion<float> a, r4::quaternion<float> b, float t){
 				tst::check_le(t, decltype(t)(1), SL);
 				tst::check_ge(t, decltype(t)(0), SL);
 
@@ -367,14 +367,15 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 				auto c = a.inv() * b;
 
-				auto n2 = c.v.norm_pow2();
+				auto norm_pow2 = c.v.norm_pow2();
 				// to avoid division by 0 for small 'n2' we use approximation
 				// for sine and cosine functions:
 				// sin(x) = x, cos(x) = 1 - x^2
-				if(n2 < eps){
+				const float eps = 0.001f;
+				if(norm_pow2 < eps){
 					return a * r4::quaternion<float>(
 						c.v * t,
-						1.0f - n2 * utki::pow2(t)
+						1.0f - norm_pow2 * utki::pow2(t)
 					);
 				}else{
 					using std::acos;
@@ -382,8 +383,9 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 					using std::sin;
 					using std::cos;
+					using std::sqrt;
 					return a * r4::quaternion(
-						c.v * sin(angle) / c.v.norm(),
+						c.v * sin(angle) / sqrt(norm_pow2),
 						cos(angle)
 					);
 				}
@@ -400,8 +402,8 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 			using std::abs;
 
-			tst::check_lt(abs(diff.s), eps, SL) << " slow_slerp_res = " << slow_slerp_res << ", slerp_res = " << slerp_res;
-			tst::check(diff.v.snap_to_zero(eps).is_zero(), SL) << "diff.v = " << diff.v;
+			tst::check_lt(abs(diff.s), cmp_eps, SL) << " slow_slerp_res = " << slow_slerp_res << ", slerp_res = " << slerp_res;
+			tst::check(diff.v.snap_to_zero(cmp_eps).is_zero(), SL) << "diff.v = " << diff.v;
     });
 });
 }
