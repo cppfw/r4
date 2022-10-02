@@ -123,7 +123,7 @@ public:
 	 * @param vec - vector part of the quaternion.
 	 * @param scalar - scalar part of the quaternion.
 	 */
-	constexpr quaternion(const decltype(quaternion::v)& vec, T scalar)noexcept :
+	constexpr quaternion(const vector<T, 3>& vec, T scalar)noexcept :
 		v(vec),
 		s(scalar)
 	{}
