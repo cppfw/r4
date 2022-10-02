@@ -291,7 +291,7 @@ public:
 	 * x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2
 	 * @return result of the dot product.
 	 */
-	T operator*(const quaternion& q)const noexcept{
+	T dot(const quaternion& q)const noexcept{
 		return this->v * q.v + this->s * q.s;
 	}
 
@@ -303,8 +303,14 @@ public:
 	 * @param q - quaternion to multiply by.
 	 * @return reference to this quaternion instance.
 	 */
+	quaternion& operator*=(const quaternion& q)noexcept{
+		return this->operator=(this->operator*(q));
+	}
+
+	// TODO: remove deprecated stuff
 	quaternion& operator%=(const quaternion& q)noexcept{
-		return this->operator=(this->operator%(q));
+		LOG([](auto& o){o << "quaternion::operator%=() is DEPRECATED!, use quaternion::operator*=() instead!\n";});
+		return this->operator*=(q);
 	}
 
 	/**
@@ -314,11 +320,17 @@ public:
 	 * @param q - quaternion to multiply by.
 	 * @return resulting quaternion instance.
 	 */
-	quaternion operator%(const quaternion& q)const noexcept{
+	quaternion operator*(const quaternion& q)const noexcept{
 		return quaternion(
 			this->s * q.v + q.s * this->v + this->v % q.v,
 			this->s * q.s - this->v * q.v
 		);
+	}
+
+	// TODO: remove deprecated stuff
+	quaternion operator%(const quaternion& q)const noexcept{
+		LOG([](auto& o){o << "quaternion::operator%() is DEPRECATED!, use quaternion::operator*() instead!\n";});
+		return this->operator*(q);
 	}
 
 	/**
@@ -358,7 +370,7 @@ public:
 	 * @return power 2 of norm.
 	 */
 	T norm_pow2()const noexcept{
-		return (*this) * (*this);
+		return this->dot(*this);
 	}
 
 	/**
@@ -459,7 +471,7 @@ public:
 	quaternion slerp(const quaternion& quat, T t)const noexcept{
 		// Since quaternions are normalized the cosine of the angle alpha
 		// between quaternions is equal to their dot product.
-		T cos_alpha = (*this) * quat;
+		T cos_alpha = this->dot(quat);
 
 		T sign;
 

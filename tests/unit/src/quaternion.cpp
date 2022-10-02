@@ -158,20 +158,20 @@ tst::set set("quaternion", [](tst::suite& suite){
 		tst::check_eq(r.s, 6, SL);
     });
 
-    suite.add("operator_multiply_quaternion", []{
+    suite.add("dot_product", []{
         r4::quaternion<int> a{3, 4, 5, 6};
 		r4::quaternion<int> b{1, 2, 3, 4};
 
-		auto r = a * b;
+		auto r = a.dot(b);
 
 		tst::check_eq(r, 3 * 1 + 4 * 2 + 5 * 3 + 6 * 4, SL);
     });
 
-    suite.add("operator_percent_equals_quaternion", []{
+    suite.add("operator_multiply_equals_quaternion", []{
         r4::quaternion<int> a{3, 4, 5, 6};
 		r4::quaternion<int> b{1, 2, 3, 4};
 
-		a %= b;
+		a *= b;
 
 		tst::check_eq(a.v[0], 20, SL);
 		tst::check_eq(a.v[1], 24, SL);
@@ -179,11 +179,11 @@ tst::set set("quaternion", [](tst::suite& suite){
 		tst::check_eq(a.s, -2, SL);
     });
 
-    suite.add("operator_percent_quaternion", []{
+    suite.add("operator_multiply_quaternion", []{
         r4::quaternion<int> a{3, 4, 5, 6};
 		r4::quaternion<int> b{1, 2, 3, 4};
 
-		auto r = a % b;
+		auto r = a * b;
 
 		tst::check_eq(r.v[0], 20, SL);
 		tst::check_eq(r.v[1], 24, SL);
@@ -365,14 +365,14 @@ tst::set set("quaternion", [](tst::suite& suite){
 				// angle = acos(c.s) * t
 				// slerp(t) = a % quaternion(c.v * sin(angle) / c.v.norm(), cos(angle))
 
-				auto c = a.inv() % b;
+				auto c = a.inv() * b;
 
 				using std::acos;
 				auto angle = acos(c.s) * t;
 
 				using std::sin;
 				using std::cos;
-				return a % r4::quaternion(c.v * sin(angle) / c.v.norm(), cos(angle));
+				return a * r4::quaternion(c.v * sin(angle) / c.v.norm(), cos(angle));
 			};
 
 			auto a = std::get<0>(p);
