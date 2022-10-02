@@ -354,9 +354,9 @@ tst::set set("quaternion", [](tst::suite& suite){
 			}
 		},
 		[](const auto& p){
-			float eps = 0.11f; // TODO: lower the epsilon to something like 0.001
+			float eps = 0.01f;
 
-			auto slow_slerp = [](r4::quaternion<float> a, r4::quaternion<float> b, float t){
+			auto slow_slerp = [eps](r4::quaternion<float> a, r4::quaternion<float> b, float t){
 				tst::check_le(t, decltype(t)(1), SL);
 				tst::check_ge(t, decltype(t)(0), SL);
 
@@ -367,12 +367,26 @@ tst::set set("quaternion", [](tst::suite& suite){
 
 				auto c = a.inv() * b;
 
-				using std::acos;
-				auto angle = acos(c.s) * t;
+				auto n2 = c.v.norm_pow2();
+				// to avoid division by 0 for small 'n2' we use approximation
+				// for sine and cosine functions:
+				// sin(x) = x, cos(x) = 1 - x^2
+				if(n2 < eps){
+					return a * r4::quaternion<float>(
+						c.v * t,
+						1.0f - n2 * utki::pow2(t)
+					);
+				}else{
+					using std::acos;
+					auto angle = acos(c.s) * t;
 
-				using std::sin;
-				using std::cos;
-				return a * r4::quaternion(c.v * sin(angle) / c.v.norm(), cos(angle));
+					using std::sin;
+					using std::cos;
+					return a * r4::quaternion(
+						c.v * sin(angle) / c.v.norm(),
+						cos(angle)
+					);
+				}
 			};
 
 			auto a = std::get<0>(p);

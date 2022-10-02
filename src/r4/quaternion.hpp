@@ -487,17 +487,17 @@ public:
 			sign = 1;
 		}
 
-		// interpolation done by the following general formula:
+		// Interpolation done by the following general formula:
 		// RESULT = this * sc1(t) + quat * sc2(t).
 		// Where sc1, sc2 called interpolation scales.
-		T sc1, sc2; // Define variables for scales for interpolation
+		T sc1, sc2;
 
 		// Check if the angle alpha between the 2 quaternions is big enough
 		// to make SLERP. If alpha is small then we do a simple linear
 		// interpolation between quaternions instead of SLERP!
 		// It is also used to avoid divide by zero since sin(0) is 0.
-		// We made threshold for cos(alpha) > 0.9f (if cos(alpha) == 1 then alpha is 0).
-		if(cos_alpha > T(0.99f)){
+		const T small_angle_cosine_threshold = 0.99;
+		if(cos_alpha < small_angle_cosine_threshold){
 			using std::acos;
 			using std::sin;
 
