@@ -375,7 +375,7 @@ tst::set set("quaternion", [](tst::suite& suite){
 				if(norm_pow2 < eps){
 					return a * r4::quaternion<float>(
 						c.v * t,
-						1.0f - norm_pow2 * utki::pow2(t)
+						1.0f - 0.5f * norm_pow2 * utki::pow2(t)
 					);
 				}else{
 					using std::acos;
