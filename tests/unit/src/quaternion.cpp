@@ -368,9 +368,9 @@ tst::set set("quaternion", [](tst::suite& suite){
 				auto c = a.inv() * b;
 
 				auto norm_pow2 = c.v.norm_pow2();
-				// to avoid division by 0 for small 'n2' we use approximation
+				// to avoid division by 0 for small 'n2' we use Taylor approximation
 				// for sine and cosine functions:
-				// sin(x) = x, cos(x) = 1 - x^2
+				// sin(x) = x, cos(x) = 1 - 0.5 * x^2
 				const float eps = 0.001f;
 				if(norm_pow2 < eps){
 					return a * r4::quaternion<float>(
