@@ -43,15 +43,15 @@ namespace r4{
 template <class T> class quaternion;
 
 template <class T, size_t S> class vector :
-	// it's ok to inherit std::array<T> because T cannot be polymorphic, this is checked by static_assert
+	// it's ok to inherit std::array<T> because r4::vector only defines methods
+	// and doesn't define new any member variables (checked by static_assert after the
+	// class declaration), so it is ok that std::array has non-virtual destructor
 	public std::array<T, S>
 {
-	static_assert(!std::is_polymorphic<T>::value, "Template type parameter must not be a polymorphic type");
-
 	static_assert(S > 0, "vector size template parameter S must be above zero");
-
-	typedef std::array<T, S> base_type;
 public:
+	typedef std::array<T, S> base_type;
+
 	/**
 	 * @brief First vector component.
 	 */
@@ -932,6 +932,8 @@ template <typename TT> using vector4 = vector<TT, 4>;
 
 static_assert(sizeof(vector<float, 4>) == sizeof(float) * 4, "size mismatch");
 static_assert(sizeof(vector<double, 4>) == sizeof(double) * 4, "size mismatch");
+
+static_assert(sizeof(vector4<int>) == sizeof(vector4<int>::base_type), "r4::vector must not define any member variables");
 
 }
 

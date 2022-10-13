@@ -39,15 +39,15 @@ SOFTWARE.
 namespace r4{
 
 template <class T, size_t R, size_t C> class matrix :
-	// it's ok to inherit std::array<vector<T, C>> because vector<T, C> cannot be polymorphic, this is checked by static_assert
+	// it's ok to inherit std::array<T> because r4::matrix only defines methods
+	// and doesn't define new any member variables (checked by static_assert after the
+	// class declaration), so it is ok that std::array has non-virtual destructor
 	public std::array<vector<T, C>, R>
 {
-	static_assert(!std::is_polymorphic<vector<T, C>>::value, "Template type parameter must not be a polymorphic type");
-
 	static_assert(R >= 1, "matrix cannot have 0 rows");
-
-	typedef std::array<vector<T, C>, R> base_type;
 public:
+	typedef std::array<vector<T, C>, R> base_type;
+
 	/**
 	 * @brief Default constructor.
 	 * NOTE: it does not initialize the matrix with any values.
@@ -894,5 +894,7 @@ public:
 template <class T> using matrix2 = matrix<T, 2, 3>;
 template <class T> using matrix3 = matrix<T, 3, 3>;
 template <class T> using matrix4 = matrix<T, 4, 4>;
+
+static_assert(sizeof(matrix4<int>) == sizeof(matrix4<int>::base_type), "r4::matrix must not define any member variables");
 
 }
