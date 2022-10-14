@@ -513,7 +513,7 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector& operator/=(T num)noexcept{
-		ASSERT_INFO(num != 0, "vector::operator/=(): division by 0")
+		ASSERT(num != 0, [&](auto&o){o << "vector::operator/=(): division by 0";})
 		for(auto& c : *this){
 			c /= num;
 		}
