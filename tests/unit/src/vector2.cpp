@@ -253,8 +253,8 @@ tst::set set("vector2", [](tst::suite& suite){
 
 		a.comp_divide(r4::vector2<int>{3, 5});
 
-		ASSERT_ALWAYS(a[0] == 2)
-		ASSERT_ALWAYS(a[1] == 3)
+		tst::check_eq(a[0], 2, SL);
+		tst::check_eq(a[1], 3, SL);
     });
 
     suite.add<std::pair<r4::vector2<int>, bool>>(
