@@ -1,3 +1,9 @@
+libr4 (1.0.66) unstable; urgency=medium
+
+  * disable msys builds
+
+ -- Ivan Gagis <igagis@gmail.com>  Sun, 16 Oct 2022 16:15:14 +0300
+
 libr4 (1.0.65) unstable; urgency=medium
 
   * test release
