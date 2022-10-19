@@ -1,3 +1,9 @@
+libr4 (1.0.67) unstable; urgency=medium
+
+  * use utki::assert()
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 19 Oct 2022 13:13:04 +0300
+
 libr4 (1.0.66) unstable; urgency=medium
 
   * disable msys builds
