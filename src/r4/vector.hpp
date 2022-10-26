@@ -39,6 +39,10 @@ SOFTWARE.
 #	undef max
 #endif
 
+#ifdef assert
+#	undef assert
+#endif
+
 namespace r4{
 
 template <class T> class quaternion;
