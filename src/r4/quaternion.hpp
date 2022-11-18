@@ -517,6 +517,11 @@ public:
 		return (*this) * sc1 + quat * (sc2 * sign);
 	}
 
+	vector3<T> rotation_delta(const vector3<T> &u) const{
+		// Assuming unit quaternion here
+		return (v%u*s + v*u*v - v.norm_pow2()*u)*2;
+	}
+
 	friend std::ostream& operator<<(std::ostream& s, const quaternion<T>& quat){
 		s << "(" << quat.x() << " " << quat.y() << " " << quat.z() << " " << quat.w() << ")";
 		return s;
