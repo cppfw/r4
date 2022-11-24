@@ -29,6 +29,7 @@ SOFTWARE.
 #include <array>
 
 #include <utki/math.hpp>
+#include <utki/debug.hpp>
 
 // Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
 #ifdef min
@@ -36,6 +37,10 @@ SOFTWARE.
 #endif
 #ifdef max
 #	undef max
+#endif
+
+#ifdef assert
+#	undef assert
 #endif
 
 namespace r4{
@@ -211,9 +216,15 @@ public:
 						if(vals.size() == S){
 							return vals;
 						}
-						std::cerr << "wrong number of elements in initializer list of vector(std::initializer_list), expected "
-								<< S << ", got " << vals.size() << std::endl;
-						std::abort();
+						utki::assert(
+							false,
+							[&](auto& o){
+								o << "wrong number of elements in initializer list of vector(std::initializer_list), expected "
+									<< S << ", got " << vals.size() << std::endl;
+							},
+							SL
+						);
+						return std::initializer_list<T>();
 					}(),
 					std::make_index_sequence<S>()
 				)
