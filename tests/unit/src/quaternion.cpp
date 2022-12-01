@@ -327,8 +327,50 @@ tst::set set("quaternion", [](tst::suite& suite){
 		tst::check_eq(r[2], 4672, SL);
     });
 
-    suite.add_disabled("to_matrix4", []{
-        // TODO: test to_matrix4()
+	suite.add("rot", []{
+        r4::vector3<float> v{2, 3, 4};
+
+		r4::quaternion<float> quat{r4::vector3<float>{1, 2, 3}};
+
+		auto a = quat.rot(v);
+		a *= 1000.0f;
+
+		auto r = a.to<int>();
+
+		tst::check_eq(r[0], 1107, SL);
+		tst::check_eq(r[1], 2437, SL);
+		tst::check_eq(r[2], 4672, SL);
+    });
+
+    suite.add("to_matrix3", []{
+		r4::vector3<float> v{2, 3, 4};
+
+		r4::quaternion<float> quat{r4::vector3<float>{1, 2, 3}};
+
+		auto a = quat.to_matrix<3>() * v;
+		a *= 1000.0f;
+
+		auto r = a.to<int>();
+
+		tst::check_eq(r[0], 1107, SL);
+		tst::check_eq(r[1], 2437, SL);
+		tst::check_eq(r[2], 4672, SL);
+    });
+
+	suite.add("to_matrix4", []{
+		r4::vector4<float> v{2, 3, 4, 1};
+
+		r4::quaternion<float> quat{r4::vector3<float>{1, 2, 3}};
+
+		auto a = quat.to_matrix<4>() * v;
+		a *= 1000.0f;
+
+		auto r = a.to<int>();
+
+		tst::check_eq(r[0], 1107, SL);
+		tst::check_eq(r[1], 2437, SL);
+		tst::check_eq(r[2], 4672, SL);
+		tst::check_eq(r[3], 1000, SL);
     });
 
     suite.add<std::tuple<
