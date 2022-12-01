@@ -310,6 +310,23 @@ tst::set set("quaternion", [](tst::suite& suite){
 		tst::check(!(a == b), SL);
 	});
 
+	suite.add("rotation_delta", []{
+        r4::vector3<float> v{2, 3, 4};
+
+		r4::quaternion<float> quat{r4::vector3<float>{1, 2, 3}};
+
+		auto delta = quat.rotation_delta(v);
+
+		auto a = v + delta;
+		a *= 1000.0f;
+
+		auto r = a.to<int>();
+
+		tst::check_eq(r[0], 1107, SL);
+		tst::check_eq(r[1], 2437, SL);
+		tst::check_eq(r[2], 4672, SL);
+    });
+
     suite.add_disabled("to_matrix4", []{
         // TODO: test to_matrix4()
     });

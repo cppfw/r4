@@ -517,9 +517,17 @@ public:
 		return (*this) * sc1 + quat * (sc2 * sign);
 	}
 
-	vector3<T> rotation_delta(const vector3<T> &u) const{
-		// Assuming unit quaternion here
-		return (v%u*s + v*u*v - v.norm_pow2()*u)*2;
+	/**
+	 * @brief Vector rotation delta.
+	 * If V is initial vector and K is rotated vector, then this
+	 * function returns D = K - V.
+	 * Add the delta D to initial vector V to get rotated vector K = V + D.
+	 * @param vec - vector to rotate.
+	 * @return delta vector between initial and rotated vectors.
+	 */
+	vector3<T> rotation_delta(const vector3<T> &vec) const{
+		// assuming unit quaternion here
+		return (this->v.cross(vec) * this->s + this->v * vec * this->v - this->v.norm_pow2() * vec) * 2;
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const quaternion<T>& quat){
