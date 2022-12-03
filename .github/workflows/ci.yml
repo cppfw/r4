@@ -36,7 +36,8 @@ jobs:
         run: |
           apt --quiet install --assume-yes devscripts equivs lcov python3-pip
 
-          pip3 install git+https://github.com/eriwen/lcov-to-cobertura-xml.git
+          # install gcovr >5.2
+          pip install git+https://github.com/gcovr/gcovr.git
       - name: git clone
         uses: myci-actions/checkout@master
       - name: prepare debian package
