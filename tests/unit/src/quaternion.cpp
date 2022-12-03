@@ -300,6 +300,23 @@ tst::set set("quaternion", [](tst::suite& suite){
 		}
 	});
 
+	suite.add("inversion_unit", []{
+		r4::quaternion<float> a{3, 4, 5, 6};
+
+		// make a unit quaternion
+		a.normalize();
+
+		auto inverted = !a;
+
+		tst::check_eq(a.inv_unit(), inverted, SL);
+
+		{
+			auto b = a;
+			b.invert_unit();
+			tst::check_eq(b, inverted, SL);
+		}
+	});
+
 	suite.add("operator_equals_equals", [](){
 		r4::quaternion<float> a{3, 4, 5, 6};
 		r4::quaternion<float> b{3, 4, 5, 6};

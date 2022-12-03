@@ -404,12 +404,34 @@ public:
 	}
 
 	/**
+	 * @brief Inverse unit quaternion.
+	 * 
+	 * Assuming that this is a unit quaternion:
+	 * q^-1 = !q
+	 * 
+	 * @return inverted unit quaternion.
+	 */
+	quaternion inv_unit()const noexcept{
+		return this->operator!();
+	}
+
+	/**
 	 * @brief Invert this quaternion.
 	 * 
 	 * @return reference to this quaternion.
 	 */
 	quaternion& invert()noexcept{
 		return this->operator=(this->inv());
+	}
+
+	/**
+	 * @brief Invert this unit quaternion.
+	 * Assumes that this is a unit quaternion.
+	 * 
+	 * @return reference to this quaternion.
+	 */
+	quaternion& invert_unit()noexcept{
+		return this->operator=(this->inv_unit());
 	}
 
 	/**
