@@ -404,12 +404,34 @@ public:
 	}
 
 	/**
+	 * @brief Inverse unit quaternion.
+	 * 
+	 * Assuming that this is a unit quaternion:
+	 * q^-1 = !q
+	 * 
+	 * @return inverted unit quaternion.
+	 */
+	quaternion inv_unit()const noexcept{
+		return this->operator!();
+	}
+
+	/**
 	 * @brief Invert this quaternion.
 	 * 
 	 * @return reference to this quaternion.
 	 */
 	quaternion& invert()noexcept{
 		return this->operator=(this->inv());
+	}
+
+	/**
+	 * @brief Invert this unit quaternion.
+	 * Assumes that this is a unit quaternion.
+	 * 
+	 * @return reference to this quaternion.
+	 */
+	quaternion& invert_unit()noexcept{
+		return this->operator=(this->inv_unit());
 	}
 
 	/**
@@ -515,6 +537,33 @@ public:
 
 		// Calculate the x, y, z and w values for the interpolated quaternion.
 		return (*this) * sc1 + quat * (sc2 * sign);
+	}
+
+	/**
+	 * @brief Vector rotation delta.
+	 * If this quaternion is a unit quaternion, V is initial vector and K is rotated vector,
+	 * then this function returns D = K - V.
+	 * Add the delta D to initial vector V to get rotated vector K = V + D.
+	 * The delta is naturally produced by formula for vector rotation using
+	 * quaternion multiplication, which doesn't need the additional K - V operation to
+	 * calculate the delta.
+	 * @param vec - vector to rotate.
+	 * @return delta vector between initial and rotated vectors.
+	 */
+	vector3<T> rotation_delta(const vector3<T>& vec)const{
+		// assuming unit quaternion here
+		return (this->v.cross(vec) * this->s + this->v * vec * this->v - this->v.norm_pow2() * vec) * 2;
+	}
+
+	/**
+	 * @brief Get rotated vector.
+	 * If this quaternion is a unit quaternion, then this function returns
+	 * rotated vector.
+	 * @param vec - vector to rotate.
+	 * @return a vector rotated by this unit quaternion.
+	 */
+	vector3<T> rot(const vector3<T>& vec)const{
+		return vec + this->rotation_delta(vec);
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const quaternion<T>& quat){

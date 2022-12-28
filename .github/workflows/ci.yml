@@ -36,7 +36,8 @@ jobs:
         run: |
           apt --quiet install --assume-yes devscripts equivs lcov python3-pip
 
-          pip3 install git+https://github.com/eriwen/lcov-to-cobertura-xml.git
+          # install gcovr >5.2
+          pip install git+https://github.com/gcovr/gcovr.git
       - name: git clone
         uses: myci-actions/checkout@master
       - name: prepare debian package
@@ -45,45 +46,15 @@ jobs:
         run: myci-deb-install-build-deps.sh
       - name: build
         run: make config=gcov
-      - name: create lcov baseline
-        run: lcov --no-external --capture --initial --directory . --output-file ./lcov_base.info
-      - name: test
-        run: make config=gcov test
-      - name: collect lcov coverage data
-        run: lcov --no-external --capture --directory . --output-file lcov_test.info
-      - name: combine lcov coverage data with baseline
-        run: lcov --add-tracefile lcov_base.info --add-tracefile lcov_test.info --output-file lcov_all.info
-      - name: filter coverage data
-        run: lcov --extract lcov_all.info "$(pwd)/src/*" -o lcov.info
-      - name: generate cobertura report
-        run: lcov_cobertura lcov.info --output cobertura.xml
-
-      # comment out steps which add annotations because PRs from forked repos don't have permissions to add annotations and will fail the workflow
-
-      # - name: generate coverage summary in markdown format
-      #   uses: irongut/CodeCoverageSummary@v1.2.0
-      #   with:
-      #     filename: cobertura.xml
-      #     badge: true
-      #     fail_below_min: true
-      #     format: markdown
-      #     hide_branch_rate: false
-      #     hide_complexity: false
-      #     indicators: true
-      #     output: both
-      #     thresholds: '80 95'
-      # - name: publish coverage summary to annotations
-      #   if: always() # even if previous steps fail, this one needs to be run
-      #   uses: LouisBrunner/checks-action@v1.2.0
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     name: coverage - report
-      #     conclusion: ${{ job.status }}
-      #     output: "{\"summary\":\"code coverage brief report\"}"
-      #     output_text_description_file: code-coverage-results.md
-
+      - name: generate coverage report
+        run: gcovr --exclude-throw-branches --filter src/ --cobertura > cobertura.xml
+      - name: upload coverage report to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: cobertura.xml
+          path: cobertura.xml
       - name: upload coverage data to codecov.io
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         if: always() # even if previous steps fail, this one needs to be run
         with:
           # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
