@@ -1,3 +1,9 @@
+libr4 (1.0.70) unstable; urgency=medium
+
+  * msvs: build v143 configs
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 28 Dec 2022 16:46:57 +0200
+
 libr4 (1.0.69) unstable; urgency=medium
 
   * undef assert macro
