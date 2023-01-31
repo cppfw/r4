@@ -2,6 +2,7 @@ name: ci
 on:
   push: {branches-ignore: [latest], tags: ['*']}
   pull_request:
+  workflow_dispatch:
 env:
   PACKAGE_NAME: ${{ github.event.repository.name }}
   PACKAGE_VERSION: ${{ github.sha }}
