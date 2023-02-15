@@ -37,7 +37,7 @@ SOFTWARE.
 
 namespace r4{
 
-template <class component_type, size_t R, size_t C> class matrix;
+template <class component_type, size_t num_rows, size_t num_columns> class matrix;
 
 /**
  * @brief quaternion template class.
@@ -164,10 +164,10 @@ public:
 	 * component as argument of the target type constructor.
 	 * @return converted quaternion.
 	 */
-	template <typename TT> quaternion<TT> to()noexcept{
-		return quaternion<TT>{
-			this->v.template to<TT>(),
-			TT(this->s)
+	template <typename another_component_type> quaternion<another_component_type> to()noexcept{
+		return quaternion<another_component_type>{
+			this->v.template to<another_component_type>(),
+			another_component_type(this->s)
 		};
 	}
 
