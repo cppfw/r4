@@ -45,139 +45,139 @@ SOFTWARE.
 
 namespace r4{
 
-template <class T_type> class quaternion;
+template <class component_type> class quaternion;
 
-template <class T_type, size_t dimension> class vector :
-	// it's ok to inherit std::array<T_type> because r4::vector only defines methods
+template <class component_type, size_t dimension> class vector :
+	// it's ok to inherit std::array<component_type> because r4::vector only defines methods
 	// and doesn't define new any member variables (checked by static_assert after the
 	// class declaration), so it is ok that std::array has non-virtual destructor
-	public std::array<T_type, dimension>
+	public std::array<component_type, dimension>
 {
 	static_assert(dimension > 0, "vector size template parameter dimension must be above zero");
 public:
-	using base_type = std::array<T_type, dimension>;
+	using base_type = std::array<component_type, dimension>;
 
 	/**
 	 * @brief First vector component.
 	 */
-	T_type& x()noexcept{
+	component_type& x()noexcept{
 		return this->operator[](0);
 	}
 
 	/**
 	 * @brief First vector component.
 	 */
-	const T_type& x()const noexcept{
+	const component_type& x()const noexcept{
 		return this->operator[](0);
 	}
 
 	/**
 	 * @brief First vector component.
 	 */
-	T_type& r()noexcept{
+	component_type& r()noexcept{
 		return this->operator[](0);
 	}
 
 	/**
 	 * @brief First vector component.
 	 */
-	const T_type& r()const noexcept{
+	const component_type& r()const noexcept{
 		return this->operator[](0);
 	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 1), E_type&> y()noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 1), enable_type&> y()noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 1), const E_type&> y()const noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 1), const enable_type&> y()const noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 1), E_type&> g()noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 1), enable_type&> g()noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Second vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 1), const E_type&> g()const noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 1), const enable_type&> g()const noexcept{
 		return this->operator[](1);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 2), E_type&> z()noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 2), enable_type&> z()noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 2), const E_type&> z()const noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 2), const enable_type&> z()const noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 2), E_type&> b()noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 2), enable_type&> b()noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Third vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 2), const E_type&> b()const noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 2), const enable_type&> b()const noexcept{
 		return this->operator[](2);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 3), E_type&> w()noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 3), enable_type&> w()noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 3), const E_type&> w()const noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 3), const enable_type&> w()const noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 3), E_type&> a()noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 3), enable_type&> a()noexcept{
 		return this->operator[](3);
 	}
 
 	/**
 	 * @brief Fourth vector component.
 	 */
-	template <typename E_type = T_type>
-	std::enable_if_t<(dimension > 3), const E_type&> a()const noexcept{
+	template <typename enable_type = component_type>
+	std::enable_if_t<(dimension > 3), const enable_type&> a()const noexcept{
 		return this->operator[](3);
 	}
 
@@ -192,16 +192,16 @@ public:
 	 * Initializes vector components to given values.
 	 * @param v - parameter pack with initializing values.
 	 */
-	template <typename... A_type, std::enable_if_t<sizeof...(A_type) == dimension, bool> = true>
-	constexpr explicit vector(A_type... v)noexcept :
-			base_type{T_type(v)...}
+	template <typename... arguments_type, std::enable_if_t<sizeof...(arguments_type) == dimension, bool> = true>
+	constexpr explicit vector(arguments_type... v)noexcept :
+			base_type{component_type(v)...}
 	{
 		static_assert(sizeof...(v) == dimension, "number of constructor arguments is not equal to vector size");
 	}
 
 private:
 	template <size_t... indices>
-	constexpr vector(std::initializer_list<T_type> vals, std::index_sequence<indices...>)noexcept :
+	constexpr vector(std::initializer_list<component_type> vals, std::index_sequence<indices...>)noexcept :
 			base_type{ *std::next(vals.begin(), indices)... }
 	{}
 public:
@@ -210,7 +210,7 @@ public:
 	 * Creates a vector and initializes its components by the given values.
 	 * @param vals - initializer list of numbers to set as components of the vector.
 	 */
-	constexpr vector(std::initializer_list<T_type> vals) :
+	constexpr vector(std::initializer_list<component_type> vals) :
 			vector(
 					[&vals](){
 						if(vals.size() == dimension){
@@ -224,7 +224,7 @@ public:
 							},
 							SL
 						);
-						return std::initializer_list<T_type>();
+						return std::initializer_list<component_type>();
 					}(),
 					std::make_index_sequence<dimension>()
 				)
@@ -235,7 +235,7 @@ public:
 	 * Initializes all vector components to a given value.
 	 * @param num - value to initialize all vector compone with.
 	 */
-	constexpr vector(T_type num)noexcept{
+	constexpr vector(component_type num)noexcept{
 		for(auto& c : *this){
 			c = num;
 		}
@@ -248,7 +248,7 @@ public:
 	 * @param num - value to use for initialization of first three vector components.
 	 * @param w - value to use for initialization of fourth vector component.
 	 */
-	template <typename E_type = T_type> constexpr vector(std::enable_if_t<dimension == 4, E_type> num, T_type w)noexcept{
+	template <typename enable_type = component_type> constexpr vector(std::enable_if_t<dimension == 4, enable_type> num, component_type w)noexcept{
 		for(size_t i = 0; i != dimension - 1; ++i){
 			this->operator[](i) = num;
 		}
@@ -262,7 +262,7 @@ public:
 	 * @param vec - 2d vector to use for initialization of first two vector components.
 	 * @param z - value to use for initialization of 3rd vector component.
 	 */
-	template <typename E_type = T_type> constexpr vector(const vector<T_type, 2>& vec, std::enable_if_t<dimension == 3, E_type> z = 0)noexcept :
+	template <typename enable_type = component_type> constexpr vector(const vector<component_type, 2>& vec, std::enable_if_t<dimension == 3, enable_type> z = 0)noexcept :
 			vector(vec.x(), vec.y(), z)
 	{}
 
@@ -272,7 +272,7 @@ public:
 	 * In case the given vector has lower dimension than this one the rest of the components will be initialized to 0.
 	 * @param vec - vector to use for initialization of vector components.
 	 */
-	template <size_t another_dimension> constexpr vector(const vector<T_type, another_dimension>& vec)noexcept{
+	template <size_t another_dimension> constexpr vector(const vector<component_type, another_dimension>& vec)noexcept{
 		this->operator=(vec);
 	}
 
@@ -284,7 +284,7 @@ public:
 	 * @param z - value to use for initialization of 3rd vector component.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	template <typename E_type = T_type> constexpr vector(const vector<T_type, 2>& vec, std::enable_if_t<dimension == 4, E_type> z = 0, T_type w = 0)noexcept :
+	template <typename enable_type = component_type> constexpr vector(const vector<component_type, 2>& vec, std::enable_if_t<dimension == 4, enable_type> z = 0, component_type w = 0)noexcept :
 			vector(vec.x(), vec.y(), z, w)
 	{}
 
@@ -295,21 +295,21 @@ public:
 	 * @param vec - 3d vector to use for initialization of first three vector components.
 	 * @param w - value to use for initialization of 4th vector component.
 	 */
-	template <typename E_type = T_type> constexpr vector(const vector<T_type, 3>& vec, std::enable_if_t<dimension == 4, E_type> w = 0)noexcept :
+	template <typename enable_type = component_type> constexpr vector(const vector<component_type, 3>& vec, std::enable_if_t<dimension == 4, enable_type> w = 0)noexcept :
 			vector(vec.x(), vec.y(), vec.z(), w)
 	{}
 
 	/**
 	 * @brief Convert to vector with different type of component.
-	 * Convert this vector to a vector whose component type is different from T_type.
+	 * Convert this vector to a vector whose component type is different from component_type.
 	 * Components are converted using constructor of target type passing the source
 	 * component as argument of the target type constructor.
 	 * @return converted vector.
 	 */
-	template <typename TT_type> vector<TT_type, dimension> to()const noexcept{
-		vector<TT_type, dimension> ret;
+	template <typename another_component_type> vector<another_component_type, dimension> to()const noexcept{
+		vector<another_component_type, dimension> ret;
 		for(size_t i = 0; i != dimension; ++i){
-			ret[i] = TT_type(this->operator[](i));
+			ret[i] = another_component_type(this->operator[](i));
 		}
 		return ret;
 	}
@@ -320,7 +320,7 @@ public:
 	 * @param vec - 2d vector to assign first two components from.
 	 * @return Reference to this vector object.
 	 */
-	template <size_t another_dimension> vector& operator=(const vector<T_type, another_dimension>& vec)noexcept{
+	template <size_t another_dimension> vector& operator=(const vector<component_type, another_dimension>& vec)noexcept{
 		if constexpr (another_dimension >= dimension){
 			for(size_t i = 0; i != dimension; ++i){
 				this->operator[](i) = vec[i];
@@ -332,7 +332,7 @@ public:
 				this->operator[](i) = vec[i];
 			}
 			for(; i != dimension; ++i){
-				this->operator[](i) = T_type(0);
+				this->operator[](i) = component_type(0);
 			}
 		}
 		return *this;
@@ -344,7 +344,7 @@ public:
 	 * @param num - number to use for assignment.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator=(T_type num)noexcept{
+	vector& operator=(component_type num)noexcept{
 		this->set(num);
 		return *this;
 	}
@@ -354,8 +354,8 @@ public:
 	 * @param a - parameter pack of values to set the vector to.
 	 * @return Reference to this vector object.
 	 */
-	template <typename... A_type> vector& set(A_type... a)noexcept{
-		this->base_type::operator=(base_type{T_type(a)...});
+	template <typename... arguments_type> vector& set(arguments_type... a)noexcept{
+		this->base_type::operator=(base_type{component_type(a)...});
 		return *this;
 	}
 
@@ -364,7 +364,7 @@ public:
 	 * @param val - value to set vector components to.
 	 * @return Reference to this vector object.
 	 */
-	vector& set(T_type val)noexcept{
+	vector& set(component_type val)noexcept{
 		for(auto& c : *this){
 			c = val;
 		}
@@ -377,7 +377,7 @@ public:
 	 * @param vec - vector to use for addition.
 	 * @return Reference to this vector object.
 	 */
-	template <size_t another_dimension> vector& operator+=(const vector<T_type, another_dimension>& vec)noexcept{
+	template <size_t another_dimension> vector& operator+=(const vector<component_type, another_dimension>& vec)noexcept{
 		if constexpr (another_dimension >= dimension){
 			for(size_t i = 0; i != dimension; ++i){
 				this->operator[](i) += vec[i];
@@ -407,7 +407,7 @@ public:
 	 * @param number - number to use for addition.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator+=(T_type number)noexcept{
+	vector& operator+=(component_type number)noexcept{
 		for(size_t i = 0; i != dimension; ++i){
 			this->operator[](i) += number;
 		}
@@ -420,7 +420,7 @@ public:
 	 * @param number - number to use for addition.
 	 * @return Vector resulting from vector and number addition.
 	 */
-	vector operator+(T_type number) noexcept{
+	vector operator+(component_type number) noexcept{
 		return (vector(*this) += number);
 	}	
 
@@ -430,7 +430,7 @@ public:
 	 * @param vec - vector to subtract.
 	 * @return Reference to this vector object.
 	 */
-	template <size_t another_dimension> vector& operator-=(const vector<T_type, another_dimension>& vec)noexcept{
+	template <size_t another_dimension> vector& operator-=(const vector<component_type, another_dimension>& vec)noexcept{
 		(*this) += -vec;
 		return *this;
 	}
@@ -451,7 +451,7 @@ public:
 	 * @param number - number to subtract.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator-=(T_type number)noexcept{
+	vector& operator-=(component_type number)noexcept{
 		(*this) += -number;
 		return *this;
 	}
@@ -462,7 +462,7 @@ public:
 	 * @param number - number to subtract.
 	 * @return Vector resulting from number subtraction.
 	 */
-	vector operator-(T_type number)noexcept{
+	vector operator-(component_type number)noexcept{
 		return (vector(*this) -= number);
 	}	
 
@@ -480,7 +480,7 @@ public:
 	 * @param num - scalar to multiply by.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator*=(T_type num)noexcept{
+	vector& operator*=(component_type num)noexcept{
 		for(auto& c : *this){
 			c *= num;
 		}
@@ -493,7 +493,7 @@ public:
 	 * @param num - scalar to multiply by.
 	 * @return Vector resulting from multiplication of this vector by scalar.
 	 */
-	vector operator*(T_type num)const noexcept{
+	vector operator*(component_type num)const noexcept{
 		return (vector(*this) *= num);
 	}
 
@@ -503,7 +503,7 @@ public:
 	 * @param num - scalar to divide by.
 	 * @return Vector resulting from division of this vector by scalar.
 	 */
-	vector operator/(T_type num)const noexcept{
+	vector operator/(component_type num)const noexcept{
 		return vector(*this) /= num;
 	}
 
@@ -513,7 +513,7 @@ public:
 	 * @param vec - vector to multiply by.
 	 * @return Vector resulting from multiplication of given scalar by given vector.
 	 */
-	friend vector operator*(T_type num, const vector& vec)noexcept{
+	friend vector operator*(component_type num, const vector& vec)noexcept{
 		return vec * num;
 	}
 
@@ -523,7 +523,7 @@ public:
 	 * @param num - scalar to divide by.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator/=(T_type num)noexcept{
+	vector& operator/=(component_type num)noexcept{
 		ASSERT(num != 0, [&](auto&o){o << "vector::operator/=(): division by 0";})
 		for(auto& c : *this){
 			c /= num;
@@ -535,8 +535,8 @@ public:
 	 * @param vec -vector to multiply by.
 	 * @return Dot product of this vector and given vector.
 	 */
-	T_type operator*(const vector& vec)const noexcept{
-		T_type res = 0;
+	component_type operator*(const vector& vec)const noexcept{
+		component_type res = 0;
 		for(size_t i = 0; i != dimension; ++i){
 			res += this->operator[](i) * vec[i];
 		}
@@ -551,7 +551,7 @@ public:
 	 * @param vec - vector to multiply by.
 	 * @return Cross product of this vector by given vector.
 	 */
-	template <typename E_type = vector> std::enable_if_t<dimension == 3 || dimension == 4, E_type>
+	template <typename enable_type = vector> std::enable_if_t<dimension == 3 || dimension == 4, enable_type>
 	cross(const vector& vec)const noexcept{
 		if constexpr (dimension == 3){
 			return vector{
@@ -578,7 +578,7 @@ public:
 	 * @param vec - vector to multiply by.
 	 * @return Cross product of this vector by given vector.
 	 */
-	template <typename E_type = vector> std::enable_if_t<dimension >= 3, E_type>
+	template <typename enable_type = vector> std::enable_if_t<dimension >= 3, enable_type>
 	operator%(const vector& vec)const noexcept{
 		return this->cross(vec);
 	}
@@ -649,10 +649,10 @@ public:
 	 */
 	vector& negate()noexcept{
 		for(auto& c : *this){
-			if constexpr (std::is_signed_v<T_type>){
+			if constexpr (std::is_signed_v<component_type>){
 				c = -c;
 			}else{
-				c = ~c + T_type(1);
+				c = ~c + component_type(1);
 			}
 		}
 		return *this;
@@ -662,8 +662,8 @@ public:
 	 * @brief Calculate power 2 of vector norm.
 	 * @return Power 2 of this vector norm.
 	 */
-	T_type norm_pow2()const noexcept{
-		T_type res = 0;
+	component_type norm_pow2()const noexcept{
+		component_type res = 0;
 		for(size_t i = 0; i != dimension; ++i){
 			res += utki::pow2(this->operator[](i));
 		}
@@ -674,8 +674,8 @@ public:
 	 * @brief Calculate vector norm.
 	 * @return Vector norm.
 	 */
-	T_type norm()const noexcept{
-		return T_type(sqrt(this->norm_pow2()));
+	component_type norm()const noexcept{
+		return component_type(sqrt(this->norm_pow2()));
 	}
 
 	/**
@@ -685,11 +685,11 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	vector& normalize()noexcept{
-		T_type mag = this->norm();
+		component_type mag = this->norm();
 		if(mag == 0){
 			this->x() = 1;
 			for(auto i = std::next(this->begin()); i != this->end(); ++i){
-				*i = T_type(0);
+				*i = component_type(0);
 			}
 			return *this;
 		}
@@ -713,12 +713,12 @@ public:
 	 * @param angle - angle of rotation in radians.
 	 * @return Reference to this vector object.
 	 */
-	template <typename E_type = T_type> vector& rotate(std::enable_if_t<dimension == 2, E_type> angle)noexcept{
+	template <typename enable_type = component_type> vector& rotate(std::enable_if_t<dimension == 2, enable_type> angle)noexcept{
 		using std::sin;
 		using std::cos;
-		T_type cosa = cos(angle);
-		T_type sina = sin(angle);
-		T_type tmp = this->x() * cosa - this->y() * sina;
+		component_type cosa = cos(angle);
+		component_type sina = sin(angle);
+		component_type tmp = this->x() * cosa - this->y() * sina;
 		this->y() = this->y() * cosa + this->x() * sina;
 		this->x() = tmp;
 		return *this;
@@ -732,7 +732,7 @@ public:
 	 * @param angle - angle of rotation in radians.
 	 * @return Vector resulting from rotation of this vector.
 	 */
-	template <typename E_type = T_type> vector rot(std::enable_if_t<dimension == 2, E_type> angle)const noexcept{
+	template <typename enable_type = component_type> vector rot(std::enable_if_t<dimension == 2, enable_type> angle)const noexcept{
 		return vector(*this).rotate(angle);
 	}
 
@@ -745,7 +745,7 @@ public:
 		using std::round;
 		vector ret;
 		for(size_t i = 0; i != dimension; ++i){
-			ret[i] = T_type(round(v[i]));
+			ret[i] = component_type(round(v[i]));
 		}
 		return ret;
 	}
@@ -759,7 +759,7 @@ public:
 		using std::ceil;
 		vector ret;
 		for(size_t i = 0; i != dimension; ++i){
-			ret[i] = T_type(ceil(v[i]));
+			ret[i] = component_type(ceil(v[i]));
 		}
 		return ret;
 	}
@@ -773,7 +773,7 @@ public:
 		using std::floor;
 		vector ret;
 		for(size_t i = 0; i != dimension; ++i){
-			ret[i] = T_type(floor(v[i]));
+			ret[i] = component_type(floor(v[i]));
 		}
 		return ret;
 	}
@@ -784,7 +784,7 @@ public:
 	 * @param threshold - the snapping threshold.
 	 * @return reference to this vector.
 	 */
-	vector& snap_to_zero(T_type threshold)noexcept{
+	vector& snap_to_zero(component_type threshold)noexcept{
 		for(auto& c : *this){
 			using std::abs;
 			if(abs(c) <= threshold){
@@ -895,7 +895,7 @@ public:
 	 * @param q - quaternion which defines the rotation.
 	 * @return Reference to this vector object.
 	 */
-	template <typename E_type = T_type> vector& rotate(const quaternion<std::enable_if_t<dimension == 3 || dimension == 4, E_type>>& q)noexcept;
+	template <typename enable_type = component_type> vector& rotate(const quaternion<std::enable_if_t<dimension == 3 || dimension == 4, enable_type>>& q)noexcept;
 
 	/**
 	 * @brief Get component-wise minimum of two vectors.
@@ -927,7 +927,7 @@ public:
 		return ret;
 	}
 
-	friend std::ostream& operator<<(std::ostream& s, const vector<T_type, dimension>& vec){
+	friend std::ostream& operator<<(std::ostream& s, const vector<component_type, dimension>& vec){
 		static_assert(dimension >= 1, "dimension cannot be 0");
 		s << vec.x();
 		for(auto i = std::next(vec.begin()); i != vec.end(); ++i){
@@ -937,9 +937,9 @@ public:
 	}
 };
 
-template <typename TT_type> using vector2 = vector<TT_type, 2>;
-template <typename TT_type> using vector3 = vector<TT_type, 3>;
-template <typename TT_type> using vector4 = vector<TT_type, 4>;
+template <typename component_type> using vector2 = vector<component_type, 2>;
+template <typename component_type> using vector3 = vector<component_type, 3>;
+template <typename component_type> using vector4 = vector<component_type, 4>;
 
 static_assert(sizeof(vector<float, 4>) == sizeof(float) * 4, "size mismatch");
 static_assert(sizeof(vector<double, 4>) == sizeof(double) * 4, "size mismatch");
@@ -952,9 +952,9 @@ static_assert(sizeof(vector4<int>) == sizeof(vector4<int>::base_type), "r4::vect
 
 namespace r4{
 
-template <class T_type, size_t dimension>
-template <typename E_type>
-vector<T_type, dimension>& vector<T_type, dimension>::rotate(const quaternion<std::enable_if_t<dimension == 3 || dimension == 4, E_type>>& q)noexcept{
+template <class component_type, size_t dimension>
+template <typename enable_type>
+vector<component_type, dimension>& vector<component_type, dimension>::rotate(const quaternion<std::enable_if_t<dimension == 3 || dimension == 4, enable_type>>& q)noexcept{
 	*this = q.rot(*this);
 	return *this;
 }
