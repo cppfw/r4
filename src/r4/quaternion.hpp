@@ -518,14 +518,14 @@ public:
 		// to make SLERP. If alpha is small then we do a simple linear
 		// interpolation between quaternions instead of SLERP!
 		// It is also used to avoid divide by zero since sin(0) is 0.
-		const component_type small_angle_cosine_threshold = component_type(0.99);
+		const auto small_angle_cosine_threshold = component_type(0.99);
 		if(cos_alpha < small_angle_cosine_threshold){
 			using std::acos;
 			using std::sin;
 
 			// Get the angle alpha between the 2 quaternions, and then store the sin(alpha)
-			component_type alpha = component_type(acos(cos_alpha));
-			component_type sin_alpha = component_type(sin(alpha));
+			auto alpha = component_type(acos(cos_alpha));
+			auto sin_alpha = component_type(sin(alpha));
 
 			// Calculate the scales for q1 and q2, according to the angle and it's sine value
 			sc1 = component_type(sin((1 - t) * alpha)) / sin_alpha;

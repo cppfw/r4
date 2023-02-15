@@ -43,23 +43,23 @@ namespace r4{
  * Line segment can also be thought of as an axis-aligned box which represents
  * line segment's bounding box.
  */
-template <class T> class segment2{
+template <class component_type> class segment2{
 public:
 	/**
 	 * @brief Begin point of the segment.
 	 */
-	vector2<T> p1;
+	vector2<component_type> p1;
 
 	/**
 	 * @brief End point of the segment.
 	 */
-	vector2<T> p2;
+	vector2<component_type> p2;
 
 	/**
 	 * @brief Get (x1, y2) point.
 	 * @return (x1, y2) point.
 	 */
-	vector2<T> x1_y2()const noexcept{
+	vector2<component_type> x1_y2()const noexcept{
 		return {
 				this->p1.x(),
 				this->p2.y()
@@ -70,7 +70,7 @@ public:
 	 * @brief Get (x2, y1) point.
 	 * @return (x2, y1) point.
 	 */
-	vector2<T> x2_y1()const noexcept{
+	vector2<component_type> x2_y1()const noexcept{
 		return {
 				this->p2.x(),
 				this->p1.y()
@@ -81,7 +81,7 @@ public:
 	 * @brief Get x2 - x1.
 	 * @return x2 - x1.
 	 */
-	T dx()const noexcept{
+	component_type dx()const noexcept{
 		return this->p2.x() - this->p1.x();
 	}
 
@@ -89,7 +89,7 @@ public:
 	 * @brief Get y2 - y1.
 	 * @return y2 - y1.
 	 */
-	T dy()const noexcept{
+	component_type dy()const noexcept{
 		return this->p2.y() - this->p1.y();
 	}
 
@@ -97,7 +97,7 @@ public:
 	 * @brief Get (dx, dy) vector.
 	 * @return (dx, dy) vector.
 	 */
-	vector2<T> dx_dy()const noexcept{
+	vector2<component_type> dx_dy()const noexcept{
 		return this->p2 - this->p1;
 	}
 
@@ -106,9 +106,9 @@ public:
 	 * @return dx if it spositive.
 	 * @return 0 otherwise.
 	 */
-	T width()const noexcept{
+	component_type width()const noexcept{
 		using std::max;
-		return max(T(0), this->dx());
+		return max(component_type(0), this->dx());
 	}
 
 	/**
@@ -116,16 +116,16 @@ public:
 	 * @return dy if it spositive.
 	 * @return 0 otherwise.
 	 */
-	T height()const noexcept{
+	component_type height()const noexcept{
 		using std::max;
-		return max(T(0), this->dy());
+		return max(component_type(0), this->dy());
 	}
 
 	/**
 	 * @brief Get dimensions of the segment's bounding box.
 	 * @return (width, height) vector.
 	 */
-	vector2<T> dims()const noexcept{
+	vector2<component_type> dims()const noexcept{
 		using std::max;
 		return {
 				this->width(),
