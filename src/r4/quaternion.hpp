@@ -37,28 +37,28 @@ SOFTWARE.
 
 namespace r4{
 
-template <class T, size_t R, size_t C> class matrix;
+template <class component_type, size_t R, size_t C> class matrix;
 
 /**
  * @brief quaternion template class.
  */
-template <typename T> class quaternion{
+template <typename component_type> class quaternion{
 public:
 	/**
 	 * @brief Vector component of the quaternion.
 	 */
-	r4::vector<T, 3> v;
+	r4::vector<component_type, 3> v;
 
 	/**
 	 * @brief Scalar component of the quaternion.
 	 */
-	T s;
+	component_type s;
 
 	/**
 	 * @brief x component.
 	 * Synonym of this->v.x().
 	 */
-	T& x()noexcept{
+	component_type& x()noexcept{
 		return this->v.x();
 	}
 
@@ -66,7 +66,7 @@ public:
 	 * @brief x component.
 	 * Synonym of this->v.x().
 	 */
-	const T& x()const noexcept{
+	const component_type& x()const noexcept{
 		return this->v.x();
 	}
 
@@ -74,7 +74,7 @@ public:
 	 * @brief y component.
 	 * Synonym of this->v.y().
 	 */
-	T& y()noexcept{
+	component_type& y()noexcept{
 		return this->v.y();
 	}
 
@@ -82,7 +82,7 @@ public:
 	 * @brief y component.
 	 * Synonym of this->v.y().
 	 */
-	const T& y()const noexcept{
+	const component_type& y()const noexcept{
 		return this->v.y();
 	}
 
@@ -90,7 +90,7 @@ public:
 	 * @brief z component.
 	 * Synonym of this->v.z().
 	 */
-	T& z()noexcept{
+	component_type& z()noexcept{
 		return this->v.z();
 	}
 
@@ -98,7 +98,7 @@ public:
 	 * @brief z component.
 	 * Synonym of this->v.z().
 	 */
-	const T& z()const noexcept{
+	const component_type& z()const noexcept{
 		return this->v.z();
 	}
 
@@ -106,7 +106,7 @@ public:
 	 * @brief w component.
 	 * Synonym of this->v.w().
 	 */
-	T& w()noexcept{
+	component_type& w()noexcept{
 		return this->s;
 	}
 
@@ -114,7 +114,7 @@ public:
 	 * @brief w component.
 	 * Synonym of this->v.w().
 	 */
-	const T& w()const noexcept{
+	const component_type& w()const noexcept{
 		return this->s;
 	}
 
@@ -123,7 +123,7 @@ public:
 	 * @param vec - vector part of the quaternion.
 	 * @param scalar - scalar part of the quaternion.
 	 */
-	constexpr quaternion(const vector<T, 3>& vec, T scalar)noexcept :
+	constexpr quaternion(const vector<component_type, 3>& vec, component_type scalar)noexcept :
 		v(vec),
 		s(scalar)
 	{}
@@ -135,7 +135,7 @@ public:
 	 * @param z - z component.
 	 * @param w - w component.
 	 */
-	constexpr quaternion(T x, T y, T z, T w)noexcept :
+	constexpr quaternion(component_type x, component_type y, component_type z, component_type w)noexcept :
 		v(x, y, z),
 		s(w)
 	{}
@@ -148,7 +148,7 @@ public:
 	 * rotation in radians.
 	 * @param rot - vector which defines the rotation.
 	 */
-	constexpr quaternion(const vector<T, 3>& rot)noexcept;
+	constexpr quaternion(const vector<component_type, 3>& rot)noexcept;
 
 	/**
 	 * @brief Default constructor.
@@ -159,7 +159,7 @@ public:
 
 	/**
 	 * @brief Convert to quaternion with different type of component.
-	 * Convert this quaternion to a quaternion whose component type is different from T.
+	 * Convert this quaternion to a quaternion whose component type is different from component_type.
 	 * Components are converted using constructor of target type passing the source
 	 * component as argument of the target type constructor.
 	 * @return converted quaternion.
@@ -238,7 +238,7 @@ public:
 	 * @param s - scalar value to multiply by.
 	 * @return reference to this quaternion instance.
 	 */
-	quaternion& operator*=(T s)noexcept{
+	quaternion& operator*=(component_type s)noexcept{
 		this->v *= s;
 		this->s *= s;
 		return *this;
@@ -249,7 +249,7 @@ public:
 	 * @param s - scalar value to multiply by.
 	 * @return resulting quaternion instance.
 	 */
-	quaternion operator*(T s)const noexcept{
+	quaternion operator*(component_type s)const noexcept{
 		return (quaternion(*this) *= s);
 	}
 
@@ -259,7 +259,7 @@ public:
 	 * @param quat - quaternion to multiply by.
 	 * @return quaternion resulting from multiplication of given scalar by given quaternion.
 	 */
-	friend quaternion operator*(T num, const quaternion& quat)noexcept{
+	friend quaternion operator*(component_type num, const quaternion& quat)noexcept{
 		return quat * num;
 	}
 
@@ -269,7 +269,7 @@ public:
 	 * @param s - scalar value to divide by.
 	 * @return reference to this quaternion instance.
 	 */
-	quaternion& operator/=(T s)noexcept{
+	quaternion& operator/=(component_type s)noexcept{
 		this->v /= s;
 		this->s /= s;
 		return *this;
@@ -280,7 +280,7 @@ public:
 	 * @param s - scalar value to divide by.
 	 * @return resulting quaternion instance.
 	 */
-	quaternion operator/(T s)const noexcept{
+	quaternion operator/(component_type s)const noexcept{
 		return (quaternion(*this) /= s);
 	}
 
@@ -291,7 +291,7 @@ public:
 	 * x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2
 	 * @return result of the dot product.
 	 */
-	T dot(const quaternion& q)const noexcept{
+	component_type dot(const quaternion& q)const noexcept{
 		return this->v * q.v + this->s * q.s;
 	}
 
@@ -340,8 +340,8 @@ public:
 	 * @return reference to this quaternion instance.
 	 */
 	quaternion& set_identity()noexcept{
-		this->v.set(T(0));
-		this->s = T(1);
+		this->v.set(component_type(0));
+		this->s = component_type(1);
 		return *this;
 	}
 
@@ -369,7 +369,7 @@ public:
 	 * @brief Calculate power 2 of quaternion norm.
 	 * @return power 2 of norm.
 	 */
-	T norm_pow2()const noexcept{
+	component_type norm_pow2()const noexcept{
 		return this->dot(*this);
 	}
 
@@ -377,9 +377,9 @@ public:
 	 * @brief Calculate quaternion norm.
 	 * @return quaternion norm.
 	 */
-	T norm()const noexcept{
+	component_type norm()const noexcept{
 		using std::sqrt;
-		return T(sqrt(this->norm_pow2()));
+		return component_type(sqrt(this->norm_pow2()));
 	}
 
 	/**
@@ -438,14 +438,14 @@ public:
 	 * @brief Initialize rotation.
 	 * Initializes this quaternion to a unit quaternion defining a rotation.
 	 * A rotation is given by normalized axis vector and angle. Direction of rotation is determined by right-hand rule.
-	 * @param axisX - X component of rotation axis.
-	 * @param axisY - Y component of rotation axis.
-	 * @param axisZ - Z component of rotation axis.
+	 * @param axis_x - X component of rotation axis.
+	 * @param axis_y - Y component of rotation axis.
+	 * @param axis_z - Z component of rotation axis.
 	 * @param angle - rotation angle.
 	 * @return Reference to this quaternion object.
 	 */
-	quaternion& set_rotation(T axisX, T axisY, T axisZ, T angle)noexcept{
-		return this->set_rotation(decltype(this->v)(axisX, axisY, axisZ), angle);
+	quaternion& set_rotation(component_type axis_x, component_type axis_y, component_type axis_z, component_type angle)noexcept{
+		return this->set_rotation(decltype(this->v)(axis_x, axis_y, axis_z), angle);
 	}
 
 	/**
@@ -456,7 +456,7 @@ public:
 	 * @param angle - rotation angle.
 	 * @return Reference to this quaternion object.
 	 */
-	quaternion& set_rotation(const vector<T, 3>& axis, T angle)noexcept;
+	quaternion& set_rotation(const vector<component_type, 3>& axis, component_type angle)noexcept;
 
 	/**
 	 * @brief Initialize rotation.
@@ -467,7 +467,7 @@ public:
 	 * @param rot - rotation vector.
 	 * @return Reference to this quaternion object.
 	 */
-	quaternion& set_rotation(const vector<T, 3>& rot)noexcept;
+	quaternion& set_rotation(const vector<component_type, 3>& rot)noexcept;
 
 	/**
 	 * @brief Convert this quaternion to 4x4 matrix.
@@ -475,8 +475,8 @@ public:
 	 * to a rotation matrix.
 	 * @return Rotation matrix.
 	 */
-	template <size_t S>
-	matrix<std::enable_if_t<S == 3 || S == 4, T>, S, S> to_matrix()const noexcept;
+	template <size_t dimension>
+	matrix<std::enable_if_t<dimension == 3 || dimension == 4, component_type>, dimension, dimension> to_matrix()const noexcept;
 
 	/**
 	 * @brief Spherical linear interpolation.
@@ -490,18 +490,18 @@ public:
 	 * @param t - interpolation parameter, value from [0 : 1].
 	 * @return Resulting quaternion of SLERP(this, quat, t).
 	 */
-	quaternion slerp(const quaternion& quat, T t)const noexcept{
+	quaternion slerp(const quaternion& quat, component_type t)const noexcept{
 		// Since quaternions are normalized the cosine of the angle alpha
 		// between quaternions is equal to their dot product.
-		T cos_alpha = this->dot(quat);
+		component_type cos_alpha = this->dot(quat);
 
-		T sign;
+		component_type sign;
 
 		// If the dot product is less than 0, the angle alpha between quaternions
 		// is greater than 90 degrees. Then we negate second quaternion to make alpha
 		// to be less than 90 degrees. It is possible since normalized quaternions
 		// q and -q represent the same rotation.
-		if(cos_alpha < T(0)){
+		if(cos_alpha < component_type(0)){
 			// Negate the second quaternion and the result of the dot product (i.e. cos(alpha))
 			sign = -1;
 			cos_alpha = -cos_alpha;
@@ -512,24 +512,24 @@ public:
 		// Interpolation done by the following general formula:
 		// RESULT = this * sc1(t) + quat * sc2(t).
 		// Where sc1, sc2 called interpolation scales.
-		T sc1, sc2;
+		component_type sc1, sc2;
 
 		// Check if the angle alpha between the 2 quaternions is big enough
 		// to make SLERP. If alpha is small then we do a simple linear
 		// interpolation between quaternions instead of SLERP!
 		// It is also used to avoid divide by zero since sin(0) is 0.
-		const T small_angle_cosine_threshold = T(0.99);
+		const component_type small_angle_cosine_threshold = component_type(0.99);
 		if(cos_alpha < small_angle_cosine_threshold){
 			using std::acos;
 			using std::sin;
 
 			// Get the angle alpha between the 2 quaternions, and then store the sin(alpha)
-			T alpha = T(acos(cos_alpha));
-			T sin_alpha = T(sin(alpha));
+			component_type alpha = component_type(acos(cos_alpha));
+			component_type sin_alpha = component_type(sin(alpha));
 
 			// Calculate the scales for q1 and q2, according to the angle and it's sine value
-			sc1 = T(sin((1 - t) * alpha)) / sin_alpha;
-			sc2 = T(sin(t * alpha)) / sin_alpha;
+			sc1 = component_type(sin((1 - t) * alpha)) / sin_alpha;
+			sc2 = component_type(sin(t * alpha)) / sin_alpha;
 		}else{
 			sc1 = (1 - t);
 			sc2 = t;
@@ -550,7 +550,7 @@ public:
 	 * @param vec - vector to rotate.
 	 * @return delta vector between initial and rotated vectors.
 	 */
-	vector3<T> rotation_delta(const vector3<T>& vec)const{
+	vector3<component_type> rotation_delta(const vector3<component_type>& vec)const{
 		// assuming unit quaternion here
 		return (this->v.cross(vec) * this->s + this->v * vec * this->v - this->v.norm_pow2() * vec) * 2;
 	}
@@ -562,11 +562,11 @@ public:
 	 * @param vec - vector to rotate.
 	 * @return a vector rotated by this unit quaternion.
 	 */
-	vector3<T> rot(const vector3<T>& vec)const{
+	vector3<component_type> rot(const vector3<component_type>& vec)const{
 		return vec + this->rotation_delta(vec);
 	}
 
-	friend std::ostream& operator<<(std::ostream& s, const quaternion<T>& quat){
+	friend std::ostream& operator<<(std::ostream& s, const quaternion<component_type>& quat){
 		s << "(" << quat.x() << " " << quat.y() << " " << quat.z() << " " << quat.w() << ")";
 		return s;
 	}
@@ -578,12 +578,12 @@ public:
 
 namespace r4{
 
-template <class T> constexpr quaternion<T>::quaternion(const vector<T, 3>& rot)noexcept{
+template <class component_type> constexpr quaternion<component_type>::quaternion(const vector<component_type, 3>& rot)noexcept{
 	this->set_rotation(rot);
 }
 
-template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>& rot)noexcept{
-	T mag = rot.norm();
+template <class component_type> quaternion<component_type>& quaternion<component_type>::set_rotation(const vector<component_type, 3>& rot)noexcept{
+	component_type mag = rot.norm();
 	if(mag != 0){
 		this->set_rotation(rot / mag, mag);
 	}else{
@@ -592,18 +592,18 @@ template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>
 	return *this;
 }
 
-template <class T> quaternion<T>& quaternion<T>::set_rotation(const vector<T, 3>& axis, T angle)noexcept{
+template <class component_type> quaternion<component_type>& quaternion<component_type>::set_rotation(const vector<component_type, 3>& axis, component_type angle)noexcept{
 	using std::sin;
 	using std::cos;
-	this->s = T(cos(angle / 2));
-	this->v = axis * T(sin(angle / 2));
+	this->s = component_type(cos(angle / 2));
+	this->v = axis * component_type(sin(angle / 2));
 	return *this;
 }
 
-template <class T>
-template <size_t S>
-matrix<std::enable_if_t<S == 3 || S == 4, T>, S, S> quaternion<T>::to_matrix()const noexcept{
-	return matrix<T, S, S>(*this);
+template <class component_type>
+template <size_t dimension>
+matrix<std::enable_if_t<dimension == 3 || dimension == 4, component_type>, dimension, dimension> quaternion<component_type>::to_matrix()const noexcept{
+	return matrix<component_type, dimension, dimension>(*this);
 }
 
 static_assert(sizeof(quaternion<float>) == sizeof(float) * 4, "size mismatch");
