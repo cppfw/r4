@@ -28,23 +28,25 @@ SOFTWARE.
 
 #include <array>
 
-#include "vector.hpp"
 #include "quaternion.hpp"
+#include "vector.hpp"
 
 // undefine possibly defined macro
 #ifdef minor
 #	undef minor
 #endif
 
-namespace r4{
+namespace r4 {
 
-template <class component_type, size_t num_rows, size_t num_columns> class matrix :
+template <class component_type, size_t num_rows, size_t num_columns>
+class matrix :
 	// it's ok to inherit std::array<component_type> because r4::matrix only defines methods
 	// and doesn't define new any member variables (checked by static_assert after the
 	// class declaration), so it is ok that std::array has non-virtual destructor
 	public std::array<vector<component_type, num_columns>, num_rows>
 {
 	static_assert(num_rows >= 1, "matrix cannot have 0 rows");
+
 public:
 	using base_type = std::array<vector<component_type, num_columns>, num_rows>;
 
@@ -61,33 +63,39 @@ public:
 	 * @param rows - parameter pack with initializing rows.
 	 */
 	template <typename... argument_type, std::enable_if_t<sizeof...(argument_type) == num_rows, bool> = true>
-	constexpr explicit matrix(argument_type... rows)noexcept :
-			base_type{rows...}
+	constexpr explicit matrix(argument_type... rows) noexcept :
+		base_type{rows...}
 	{
-		static_assert(sizeof...(rows) == num_rows, "number of constructor arguments is not equal to number of rows in this matrix");
+		static_assert(
+			sizeof...(rows) == num_rows,
+			"number of constructor arguments is not equal to number of rows in this matrix"
+		);
 	}
 
 private:
 	template <size_t... indices>
-	constexpr matrix(std::initializer_list<vector<component_type, num_columns>> rows, std::index_sequence<indices...>)noexcept :
-			base_type{ *std::next(rows.begin(), indices)... }
+	constexpr matrix(std::initializer_list<vector<component_type, num_columns>> rows, std::index_sequence<indices...>) noexcept
+		:
+		base_type{*std::next(rows.begin(), indices)...}
 	{}
+
 public:
 	/**
 	 * @brief Construct initialized matrix.
 	 * Creates a matrix and initializes its rows by the given values.
 	 * @param rows - initializer list of vectors to set as rows of the matrix.
 	 */
-	constexpr matrix(std::initializer_list<vector<component_type, num_columns>> rows)noexcept :
-			matrix(
-					[&rows](){
-						if(rows.size() == num_rows) return rows;
-						std::cerr << "wrong number of elements in initializer list of matrix(std::initializer_list), expected "
-								<< num_rows << ", got " << rows.size() << std::endl;
-						std::abort();
-					}(),
-					std::make_index_sequence<num_rows>()
-				)
+	constexpr matrix(std::initializer_list<vector<component_type, num_columns>> rows) noexcept :
+		matrix(
+			[&rows]() {
+				if (rows.size() == num_rows)
+					return rows;
+				std::cerr << "wrong number of elements in initializer list of matrix(std::initializer_list), expected "
+						  << num_rows << ", got " << rows.size() << std::endl;
+				std::abort();
+			}(),
+			std::make_index_sequence<num_rows>()
+		)
 	{}
 
 	/**
@@ -97,7 +105,11 @@ public:
 	 * @param quat - unit quaternion defining the rotation.
 	 */
 	template <typename enable_type = component_type>
-	constexpr matrix(const quaternion<std::enable_if_t<num_rows == num_columns && (num_rows == 3 || num_rows == 4), enable_type>>& quat)noexcept{
+	constexpr matrix(
+		const quaternion<std::enable_if_t<num_rows == num_columns && (num_rows == 3 || num_rows == 4), enable_type>>&
+			quat
+	) noexcept
+	{
 		this->set(quat);
 	}
 
@@ -105,9 +117,11 @@ public:
 	 * @brief Convert to different element type.
 	 * @return matrix with converted element type.
 	 */
-	template <typename another_component_type> matrix<another_component_type, num_rows, num_columns> to()noexcept{
+	template <typename another_component_type>
+	matrix<another_component_type, num_rows, num_columns> to() noexcept
+	{
 		matrix<another_component_type, num_rows, num_columns> ret;
-		for(size_t i = 0; i != num_rows; ++i){
+		for (size_t i = 0; i != num_rows; ++i) {
 			ret[i] = this->row(i).template to<another_component_type>();
 		}
 		return ret;
@@ -121,7 +135,11 @@ public:
 	 * @return Reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
-	matrix& set(const quaternion<std::enable_if_t<num_rows == num_columns && (num_rows == 3 || num_rows == 4), enable_type>>& quat)noexcept{
+	matrix& set(
+		const quaternion<std::enable_if_t<num_rows == num_columns && (num_rows == 3 || num_rows == 4), enable_type>>&
+			quat
+	) noexcept
+	{
 		// Quaternion to matrix conversion:
 		//     |  1-(2y^2+2z^2)   2xy-2zw         2xz+2yw         0   |
 		// M = |  2xy+2zw         1-(2x^2+2z^2)   2yz-2xw         0   |
@@ -132,22 +150,28 @@ public:
 		this->row(0)[0] = component_type(1) - component_type(2) * (utki::pow2(quat.y()) + utki::pow2(quat.z()));
 		this->row(1)[0] = component_type(2) * (quat.x() * quat.y() + quat.z() * quat.w());
 		this->row(2)[0] = component_type(2) * (quat.x() * quat.z() - quat.y() * quat.w());
-		if constexpr (num_rows == 4) this->row(3)[0] = component_type(0);
+		if constexpr (num_rows == 4) {
+			this->row(3)[0] = component_type(0);
+		}
 
 		// Second column
 		this->row(0)[1] = component_type(2) * (quat.x() * quat.y() - quat.z() * quat.w());
 		this->row(1)[1] = component_type(1) - component_type(2) * (utki::pow2(quat.x()) + utki::pow2(quat.z()));
 		this->row(2)[1] = component_type(2) * (quat.z() * quat.y() + quat.x() * quat.w());
-		if constexpr (num_rows == 4) this->row(3)[1] = component_type(0);
+		if constexpr (num_rows == 4) {
+			this->row(3)[1] = component_type(0);
+		}
 
 		// Third column
 		this->row(0)[2] = component_type(2) * (quat.x() * quat.z() + quat.y() * quat.w());
 		this->row(1)[2] = component_type(2) * (quat.y() * quat.z() - quat.x() * quat.w());
 		this->row(2)[2] = component_type(1) - component_type(2) * (utki::pow2(quat.x()) + utki::pow2(quat.y()));
-		if constexpr (num_rows == 4) this->row(3)[2] = component_type(0);
+		if constexpr (num_rows == 4) {
+			this->row(3)[2] = component_type(0);
+		}
 
 		// Fourth column
-		if constexpr (num_rows == 4){
+		if constexpr (num_rows == 4) {
 			this->row(0)[3] = component_type(0);
 			this->row(1)[3] = component_type(0);
 			this->row(2)[3] = component_type(0);
@@ -162,7 +186,8 @@ public:
 	 * @param r - row number to get.
 	 * @return reference to vector representing the row of this matrix.
 	 */
-	vector<component_type, num_columns>& row(size_t r)noexcept{
+	vector<component_type, num_columns>& row(size_t r) noexcept
+	{
 		ASSERT(r < this->size())
 		return this->operator[](r);
 	}
@@ -172,7 +197,8 @@ public:
 	 * @param r - row number to get.
 	 * @return reference to vector representing the row of this matrix.
 	 */
-	const vector<component_type, num_columns>& row(size_t r)const noexcept{
+	const vector<component_type, num_columns>& row(size_t r) const noexcept
+	{
 		ASSERT(r < this->size())
 		return this->operator[](r);
 	}
@@ -182,9 +208,10 @@ public:
 	 * @param m - matrix to subtract from this matrix.
 	 * @return resulting matrix of the subtraction.
 	 */
-	matrix operator-(const matrix& m)const noexcept{
+	matrix operator-(const matrix& m) const noexcept
+	{
 		matrix res;
-		for(size_t r = 0; r != num_rows; ++r){
+		for (size_t r = 0; r != num_rows; ++r) {
 			res[r] = this->row(r) - m[r];
 		}
 		return res;
@@ -197,10 +224,10 @@ public:
 	 * @param vec - vector to transform. Must have same number of components, as number of columns in this matrix.
 	 * @return Transformed vector.
 	 */
-	vector<component_type, num_rows> operator*(const vector<component_type, num_columns>& vec)const noexcept
+	vector<component_type, num_rows> operator*(const vector<component_type, num_columns>& vec) const noexcept
 	{
 		vector<component_type, num_rows> r;
-		for(size_t i = 0; i != num_rows; ++i){
+		for (size_t i = 0; i != num_rows; ++i) {
 			r[i] = this->row(i) * vec;
 		}
 		return r;
@@ -211,7 +238,7 @@ public:
 	// Defined only for 4x4 matrix.
 	template <size_t dimension, typename enable_type = component_type>
 	vector<std::enable_if_t<num_rows == 4 && num_columns == 4 && (dimension == 2 || dimension == 3), enable_type>, 4>
-	operator*(const vector<component_type, dimension>& vec)const noexcept
+	operator*(const vector<component_type, dimension>& vec) const noexcept
 	{
 		static_assert(num_rows == 4 && num_columns == 4, "4x4 matrix expected");
 		return vector<component_type, 4>{
@@ -224,17 +251,13 @@ public:
 
 	// TODO: add doxygen comment
 	template <size_t dimension, typename enable_type = component_type>
-	vector<std::enable_if_t<
-			(num_rows == 2 && num_columns == 3 && dimension == 2),
-			enable_type
-		>, 2> operator*(const vector<component_type, dimension>& vec)const noexcept
+	vector<std::enable_if_t<(num_rows == 2 && num_columns == 3 && dimension == 2), enable_type>, 2> operator*(
+		const vector<component_type, dimension>& vec
+	) const noexcept
 	{
 		static_assert(num_rows == 2 && num_columns == 3, "2x3 matrix expected");
 		static_assert(dimension == 2, "2d vector expected");
-		return vector<component_type, 2>{
-				this->row(0) * vec + this->row(0)[2],
-				this->row(1) * vec + this->row(1)[2]
-			};
+		return vector<component_type, 2>{this->row(0) * vec + this->row(0)[2], this->row(1) * vec + this->row(1)[2]};
 	}
 
 	/**
@@ -244,19 +267,22 @@ public:
 	 * Then the matrix K must have num_columns rows and, let's say, another_num_column columns.
 	 * And the result matrix of the multiplication will be with num_rows rows and another_num_column columns.
 	 * The matrix multiplication operator is also defined for 2x3 matrices. In this case, before the operation,
-	 * both matrices are implicitly converted to 3x3 matrices with last added row to be (0, 0, 1), so that the matrices are square
-	 * and, thus, are matched.
+	 * both matrices are implicitly converted to 3x3 matrices with last added row to be (0, 0, 1), so that the matrices
+	 * are square and, thus, are matched.
 	 * @param m - matrix to multiply by (matrix K).
 	 * @return New matrix of size RxCC as a result of matrices product.
 	 */
 	template <size_t another_num_column>
-	matrix<component_type, num_rows, another_num_column> operator*(const matrix<component_type, num_columns, another_num_column>& m)const noexcept{
+	matrix<component_type, num_rows, another_num_column> operator*(
+		const matrix<component_type, num_columns, another_num_column>& m
+	) const noexcept
+	{
 		matrix<component_type, num_rows, another_num_column> ret;
-		for(size_t rd = 0; rd != ret.size(); ++rd){
+		for (size_t rd = 0; rd != ret.size(); ++rd) {
 			auto& row_d = ret[rd];
-			for(size_t cd = 0; cd != row_d.size(); ++cd){
+			for (size_t cd = 0; cd != row_d.size(); ++cd) {
 				component_type v = 0;
-				for(size_t i = 0; i != num_columns; ++i){
+				for (size_t i = 0; i != num_columns; ++i) {
 					v += this->row(rd)[i] * m[i][cd];
 				}
 				ret[rd][cd] = v;
@@ -267,19 +293,18 @@ public:
 
 	// Define operaotr*(matrix) for 2x3 matrices. See description of operator*(matrix) for square matrices for info.
 	template <typename enable_type = matrix>
-	std::enable_if_t<num_rows == 2 && num_columns == 3, enable_type> operator*(const matrix& matr)const noexcept{
+	std::enable_if_t<num_rows == 2 && num_columns == 3, enable_type> operator*(const matrix& matr) const noexcept
+	{
 		return matrix{
-				vector<component_type, 3>{
-						this->row(0)[0] * matr[0][0] + this->row(0)[1] * matr[1][0],
-						this->row(0)[0] * matr[0][1] + this->row(0)[1] * matr[1][1],
-						this->row(0)[0] * matr[0][2] + this->row(0)[1] * matr[1][2] + this->row(0)[2]
-					},
-				vector<component_type, 3>{
-						this->row(1)[0] * matr[0][0] + this->row(1)[1] * matr[1][0],
-						this->row(1)[0] * matr[0][1] + this->row(1)[1] * matr[1][1],
-						this->row(1)[0] * matr[0][2] + this->row(1)[1] * matr[1][2] + this->row(1)[2]
-					},
-			};
+			vector<component_type, 3>{
+									  this->row(0)[0] * matr[0][0] + this->row(0)[1] * matr[1][0],
+									  this->row(0)[0] * matr[0][1] + this->row(0)[1] * matr[1][1],
+									  this->row(0)[0] * matr[0][2] + this->row(0)[1] * matr[1][2] + this->row(0)[2]},
+			vector<component_type, 3>{
+									  this->row(1)[0] * matr[0][0] + this->row(1)[1] * matr[1][0],
+									  this->row(1)[0] * matr[0][1] + this->row(1)[1] * matr[1][1],
+									  this->row(1)[0] * matr[0][2] + this->row(1)[1] * matr[1][2] + this->row(1)[2]},
+		};
 	}
 
 	/**
@@ -291,7 +316,10 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = matrix>
-	std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type&> operator*=(const matrix& matr)noexcept{
+	std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type&> operator*=(
+		const matrix& matr
+	) noexcept
+	{
 		return this->operator=(this->operator*(matr));
 	}
 
@@ -300,8 +328,9 @@ public:
 	 * @param n - scalar to multiply the matrix by.
 	 * @return reference to this matrix.
 	 */
-	matrix& operator*=(component_type n){
-		for(auto& r : *this){
+	matrix& operator*=(component_type n)
+	{
+		for (auto& r : *this) {
 			r *= n;
 		}
 		return *this;
@@ -312,8 +341,9 @@ public:
 	 * @param n - scalar to divide the matrix by.
 	 * @return reference to this matrix.
 	 */
-	matrix& operator/=(component_type n){
-		for(auto& r : *this){
+	matrix& operator/=(component_type n)
+	{
+		for (auto& r : *this) {
 			r /= n;
 		}
 		return *this;
@@ -324,9 +354,10 @@ public:
 	 * @param num - scalar to divide the matrix by.
 	 * @return divided matrix.
 	 */
-	matrix operator/(component_type num)const noexcept{
+	matrix operator/(component_type num) const noexcept
+	{
 		matrix res;
-		for(unsigned r = 0; r != num_rows; ++r){
+		for (unsigned r = 0; r != num_rows; ++r) {
 			res[r] = this->row(r) / num;
 		}
 		return res;
@@ -341,7 +372,10 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = matrix>
-	std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type&> left_mul(const matrix& matr)noexcept{
+	std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type&> left_mul(
+		const matrix& matr
+	) noexcept
+	{
 		return this->operator=(matr.operator*(*this));
 	}
 
@@ -349,18 +383,19 @@ public:
 	 * @brief Initialize this matrix with identity matrix.
 	 * Defined for both, square and non-square matrices.
 	 */
-	matrix& set_identity()noexcept{
+	matrix& set_identity() noexcept
+	{
 		using std::min;
-		for(size_t r = 1; r != num_rows; ++r){
-			for(size_t c = 0; c != min(r, num_columns); ++c){
+		for (size_t r = 1; r != num_rows; ++r) {
+			for (size_t c = 0; c != min(r, num_columns); ++c) {
 				this->row(r)[c] = component_type(0);
 			}
 		}
-		for(size_t i = 0; i != min(num_rows, num_columns); ++i){
+		for (size_t i = 0; i != min(num_rows, num_columns); ++i) {
 			this->row(i)[i] = component_type(1);
 		}
-		for(size_t r = 0; r != num_columns; ++r){
-			for(size_t c = r + 1; c != num_columns; ++c){
+		for (size_t r = 0; r != num_columns; ++r) {
+			for (size_t c = r + 1; c != num_columns; ++c) {
 				this->row(r)[c] = component_type(0);
 			}
 		}
@@ -381,13 +416,13 @@ public:
 	 */
 	template <typename enable_type = component_type>
 	matrix& set_frustum(
-			std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> left,
-			component_type right,
-			component_type bottom,
-			component_type top,
-			component_type near_val,
-			component_type far_val
-		)noexcept
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> left,
+		component_type right,
+		component_type bottom,
+		component_type top,
+		component_type near_val,
+		component_type far_val
+	) noexcept
 	{
 		component_type w = right - left;
 		ASSERT(w != 0)
@@ -437,13 +472,13 @@ public:
 	 */
 	template <typename enable_type = component_type>
 	matrix frustum(
-			std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> left,
-			component_type right,
-			component_type bottom,
-			component_type top,
-			component_type near_val,
-			component_type far_val
-		)noexcept
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> left,
+		component_type right,
+		component_type bottom,
+		component_type top,
+		component_type near_val,
+		component_type far_val
+	) noexcept
 	{
 		matrix f;
 		f.set_frustum(left, right, bottom, top, near_val, far_val);
@@ -459,15 +494,15 @@ public:
 	 */
 	template <typename enable_type = matrix>
 	std::enable_if_t<
-			(num_rows == num_columns && (1 <= num_rows && num_rows <= 4)) || (num_rows == 2 && num_columns == 3),
-			matrix&
-		>scale(component_type s)noexcept
+		(num_rows == num_columns && (1 <= num_rows && num_rows <= 4)) || (num_rows == 2 && num_columns == 3),
+		matrix&>
+	scale(component_type s) noexcept
 	{
 		using std::min;
 		size_t end_col = min(min(num_columns, num_rows), size_t(3)); // for 2x3 and 4x4 matrix do not scale last column
-		for(size_t r = 0; r != num_rows; ++r){
+		for (size_t r = 0; r != num_rows; ++r) {
 			auto& cur_row = this->row(r);
-			for(size_t c = 0; c != end_col; ++c){
+			for (size_t c = 0; c != end_col; ++c) {
 				cur_row[c] *= s;
 			}
 		}
@@ -481,12 +516,13 @@ public:
 	 * @param y - scaling factor in y direction.
 	 * @return reference to this matrix instance.
 	 */
-	matrix& scale(component_type x, component_type y)noexcept{
-		for(size_t r = 0; r != num_rows; ++r){
+	matrix& scale(component_type x, component_type y) noexcept
+	{
+		for (size_t r = 0; r != num_rows; ++r) {
 			this->row(r)[0] *= x;
 		}
-		if constexpr (num_columns >= 2){
-			for(size_t r = 0; r != num_rows; ++r){
+		if constexpr (num_columns >= 2) {
+			for (size_t r = 0; r != num_rows; ++r) {
 				this->row(r)[1] *= y;
 			}
 		}
@@ -501,13 +537,14 @@ public:
 	 * @param z - scaling factor in z direction.
 	 * @return reference to this matrix instance.
 	 */
-	matrix& scale(component_type x, component_type y, component_type z)noexcept{
+	matrix& scale(component_type x, component_type y, component_type z) noexcept
+	{
 		// update 0th and 1st columns
 		this->scale(x, y);
 
 		// update 2nd column
-		if constexpr (num_columns >= 3){
-			for(size_t r = 0; r != num_rows; ++r){
+		if constexpr (num_columns >= 3) {
+			for (size_t r = 0; r != num_rows; ++r) {
 				this->row(r)[2] *= z;
 			}
 		}
@@ -520,10 +557,12 @@ public:
 	 * @param s - vector of scaling factors.
 	 * @return reference to this matrix instance.
 	 */
-	template <size_t dimension> matrix& scale(const vector<component_type, dimension>& s)noexcept{
+	template <size_t dimension>
+	matrix& scale(const vector<component_type, dimension>& s) noexcept
+	{
 		using std::min;
-		for(size_t c = 0; c != min(dimension, num_columns); ++c){
-			for(size_t r = 0; r != num_rows; ++r){
+		for (size_t c = 0; c != min(dimension, num_columns); ++c) {
+			for (size_t r = 0; r != num_rows; ++r) {
 				this->row(r)[c] *= s[c];
 			}
 		}
@@ -540,9 +579,15 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
-	matrix& translate(std::enable_if_t<(num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)), enable_type> x, component_type y)noexcept{
+	matrix& translate(
+		std::enable_if_t<
+			(num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)),
+			enable_type> x,
+		component_type y
+	) noexcept
+	{
 		// only last column of the matrix changes
-		for(size_t r = 0; r != num_rows; ++r){
+		for (size_t r = 0; r != num_rows; ++r) {
 			this->row(r)[num_columns - 1] += this->row(r)[0] * x + this->row(r)[1] * y;
 		}
 		return *this;
@@ -557,9 +602,15 @@ public:
 	 * @param z - z component of translation vector.
 	 * @return reference to this matrix object.
 	 */
-	template <typename enable_type = component_type> matrix& translate(std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> x, component_type y, component_type z)noexcept{
+	template <typename enable_type = component_type>
+	matrix& translate(
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> x,
+		component_type y,
+		component_type z
+	) noexcept
+	{
 		// only last column of the matrix changes
-		for(size_t r = 0; r != num_rows; ++r){
+		for (size_t r = 0; r != num_rows; ++r) {
 			this->row(r)[num_columns - 1] += this->row(r)[0] * x + this->row(r)[1] * y + this->row(r)[2] * z;
 		}
 		return *this;
@@ -574,16 +625,19 @@ public:
 	 */
 	template <typename enable_type = component_type, size_t dimension>
 	matrix& translate(
-			const vector<std::enable_if_t<
-					((num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4))) && (dimension == 2 || dimension == 3)
-				, enable_type>, dimension>& t
-		)noexcept
+		const vector<
+			std::enable_if_t<
+				((num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)))
+					&& (dimension == 2 || dimension == 3),
+				enable_type>,
+			dimension>& t
+	) noexcept
 	{
 		// only last column of the matrix changes
-		for(size_t r = 0; r != num_rows; ++r){
+		for (size_t r = 0; r != num_rows; ++r) {
 			auto& e = this->row(r)[num_columns - 1];
 			using std::min;
-			for(size_t s = 0; s != min(dimension, num_columns - 1); ++s){
+			for (size_t s = 0; s != min(dimension, num_columns - 1); ++s) {
 				e += this->row(r)[s] * t[s];
 			}
 		}
@@ -598,7 +652,10 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
-	matrix& rotate(const quaternion<std::enable_if_t<num_rows == num_columns && (num_rows == 3 || num_rows == 4), enable_type>>& q)noexcept{
+	matrix& rotate(
+		const quaternion<std::enable_if_t<num_rows == num_columns && (num_rows == 3 || num_rows == 4), enable_type>>& q
+	) noexcept
+	{
 		return this->operator*=(matrix<component_type, num_rows, num_columns>(q));
 	}
 
@@ -612,11 +669,14 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
-	matrix& rotate(std::enable_if_t<(num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)), enable_type> a)noexcept{
-		if constexpr (num_rows == num_columns){
+	matrix& rotate(std::enable_if_t<
+				   (num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)),
+				   enable_type> a) noexcept
+	{
+		if constexpr (num_rows == num_columns) {
 			// square matrix
 			return this->rotate(vector<component_type, 3>(0, 0, a));
-		}else{
+		} else {
 			static_assert(num_rows == 2 && num_columns == 3, "2x3 matrix expected");
 
 			// multiply this matrix from the right by the rotation matrix:
@@ -647,25 +707,26 @@ public:
 	/**
 	 * @brief Transpose this matrix.
 	 */
-	matrix& transpose()noexcept{
+	matrix& transpose() noexcept
+	{
 		using std::swap;
 		using std::min;
-		for(size_t r = 1; r != min(num_rows, num_columns); ++r){
-			for(size_t c = 0; c != r; ++c){
+		for (size_t r = 1; r != min(num_rows, num_columns); ++r) {
+			for (size_t c = 0; c != r; ++c) {
 				swap(this->row(r)[c], this->row(c)[r]);
 			}
 		}
 		// in case the matrix is not square, then zero out the "non-square" parts
-		if constexpr (num_columns > num_rows){
-			for(size_t r = 0; r != num_rows; ++r){
+		if constexpr (num_columns > num_rows) {
+			for (size_t r = 0; r != num_rows; ++r) {
 				auto& cur_row = this->row(r);
-				for(size_t c = num_rows; c != num_columns; ++c){
+				for (size_t c = num_rows; c != num_columns; ++c) {
 					cur_row[c] = component_type(0);
 				}
 			}
-		}else{
+		} else {
 			static_assert(num_rows >= num_columns, "expected matrix with num_rows >= num_columns");
-			for(size_t r = num_columns; r != num_rows; ++r){
+			for (size_t r = num_columns; r != num_rows; ++r) {
 				this->row(r).set(component_type(0));
 			}
 		}
@@ -677,34 +738,35 @@ public:
 	 * @brief Make transposed matrix.
 	 * @return a new matrix which is a transpose of this matrix.
 	 */
-	matrix tposed()const noexcept{
+	matrix tposed() const noexcept
+	{
 		matrix ret;
 
 		using std::min;
 
-		for(size_t r = 1; r != min(num_columns, num_rows); ++r){
-			for(size_t c = 0; c != r; ++c){
+		for (size_t r = 1; r != min(num_columns, num_rows); ++r) {
+			for (size_t c = 0; c != r; ++c) {
 				ret[r][c] = this->row(c)[r];
 				ret[c][r] = this->row(r)[c];
 			}
 		}
 
 		// copy diagonal elements
-		for(size_t i = 0; i != min(num_columns, num_rows); ++i){
+		for (size_t i = 0; i != min(num_columns, num_rows); ++i) {
 			ret[i][i] = this->row(i)[i];
 		}
 
 		// in case the matrix is not square, then zero out the "non-square" parts
-		if constexpr (num_columns > num_rows){
-			for(size_t r = 0; r != num_rows; ++r){
+		if constexpr (num_columns > num_rows) {
+			for (size_t r = 0; r != num_rows; ++r) {
 				auto& cur_row = ret[r];
-				for(size_t c = num_rows; c != num_columns; ++c){
+				for (size_t c = num_rows; c != num_columns; ++c) {
 					cur_row[c] = component_type(0);
 				}
 			}
-		}else{
+		} else {
 			static_assert(num_rows >= num_columns, "expected matrix with num_rows >= num_columns");
-			for(size_t r = num_columns; r != num_rows; ++r){
+			for (size_t r = num_columns; r != num_rows; ++r) {
 				ret[r].set(component_type(0));
 			}
 		}
@@ -720,26 +782,30 @@ public:
 	 * @return minor matrix.
 	 */
 	template <typename enable_type = component_type>
-	matrix<std::enable_if_t<(num_rows >= 2 && num_columns >= 2), enable_type>, num_rows - 1, num_columns - 1> remove(size_t row, size_t col)const noexcept{
+	matrix<std::enable_if_t<(num_rows >= 2 && num_columns >= 2), enable_type>, num_rows - 1, num_columns - 1> remove(
+		size_t row,
+		size_t col
+	) const noexcept
+	{
 		matrix<component_type, num_rows - 1, num_columns - 1> ret;
 
 		ASSERT(row < num_rows)
 		ASSERT(col < num_columns)
 
-		for(size_t dr = 0; dr != row; ++dr){
-			for(size_t dc = 0; dc != col; ++dc){
+		for (size_t dr = 0; dr != row; ++dr) {
+			for (size_t dc = 0; dc != col; ++dc) {
 				ret[dr][dc] = this->row(dr)[dc];
 			}
-			for(size_t dc = col; dc != ret[dr].size(); ++dc){
+			for (size_t dc = col; dc != ret[dr].size(); ++dc) {
 				ret[dr][dc] = this->row(dr)[dc + 1];
 			}
 		}
 
-		for(size_t dr = row; dr != ret.size(); ++dr){
-			for(size_t dc = 0; dc != col; ++dc){
+		for (size_t dr = row; dr != ret.size(); ++dr) {
+			for (size_t dc = 0; dc != col; ++dc) {
 				ret[dr][dc] = this->row(dr + 1)[dc];
 			}
-			for(size_t dc = col; dc != ret[dr].size(); ++dc){
+			for (size_t dc = col; dc != ret[dr].size(); ++dc) {
 				ret[dr][dc] = this->row(dr + 1)[dc + 1];
 			}
 		}
@@ -756,7 +822,9 @@ public:
 	 * @param col - index of the column to remove.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<num_rows == num_columns && (num_rows >= 2), enable_type> minor(size_t row, size_t col)const noexcept{
+	std::enable_if_t<num_rows == num_columns && (num_rows >= 2), enable_type> minor(size_t row, size_t col)
+		const noexcept
+	{
 		return this->remove(row, col).det();
 	}
 
@@ -767,19 +835,20 @@ public:
 	 * @return matrix determinant.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type> det()const noexcept{
-		if constexpr (num_rows == num_columns){
-			if constexpr (num_rows == 1){
+	std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type> det() const noexcept
+	{
+		if constexpr (num_rows == num_columns) {
+			if constexpr (num_rows == 1) {
 				return this->row(0)[0];
-			}else{
+			} else {
 				component_type ret = 0;
 				component_type sign = 1;
-				for(size_t i = 0; i != num_columns; ++i, sign = -sign){
+				for (size_t i = 0; i != num_columns; ++i, sign = -sign) {
 					ret += sign * this->row(0)[i] * this->minor(0, i);
 				}
 				return ret;
 			}
-		}else{
+		} else {
 			static_assert(num_rows == 2 && (num_columns == 2 || num_columns == 3), "expected 2x2 or 2x3 matrix");
 			// for 2x3 matrix:
 
@@ -809,20 +878,25 @@ public:
 	 * @return right inverse matrix of this matrix.
 	 */
 	template <typename enable_type = component_type>
-	matrix<std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type>, num_rows, num_columns> inv()const noexcept{
-		if constexpr (num_rows == num_columns){
-			if constexpr (num_rows == 1){
+	matrix<
+		std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), enable_type>,
+		num_rows,
+		num_columns>
+	inv() const noexcept
+	{
+		if constexpr (num_rows == num_columns) {
+			if constexpr (num_rows == 1) {
 				return component_type(1) / this->row(0)[0];
-			}else{
+			} else {
 				component_type d = this->det();
 
 				// calculate matrix of minors
 				static_assert(num_rows == num_columns, "expected square matrix");
 				matrix<component_type, num_rows, num_columns> mm;
 
-				for(size_t r = 0; r != num_rows; ++r){
+				for (size_t r = 0; r != num_rows; ++r) {
 					component_type sign = r % 2 == 0 ? component_type(1) : component_type(-1);
-					for(size_t c = 0; c != num_columns; ++c){
+					for (size_t c = 0; c != num_columns; ++c) {
 						mm[r][c] = sign * this->minor(r, c);
 						sign = -sign;
 					}
@@ -832,21 +906,18 @@ public:
 				mm /= d;
 				return mm;
 			}
-		}else{
+		} else {
 			static_assert(num_rows == 2 && num_columns == 3, "expected 2x3 matrix");
 
 			matrix<component_type, 3, 3> m{
 				this->row(0),
 				this->row(1),
 				{0, 0, 1}
-			};
+            };
 
 			m.invert();
 
-			return {
-				m[0],
-				m[1]
-			};
+			return {m[0], m[1]};
 		}
 	}
 
@@ -854,7 +925,8 @@ public:
 	 * @brief Invert this matrix.
 	 * @return reference to this matrix.
 	 */
-	matrix& invert()noexcept{
+	matrix& invert() noexcept
+	{
 		this->operator=(this->inv());
 		return *this;
 	}
@@ -865,8 +937,9 @@ public:
 	 * @param threshold - the snapping threshold.
 	 * @return reference to this matrix.
 	 */
-	matrix& snap_to_zero(component_type threshold)noexcept{
-		for(auto& r : *this){
+	matrix& snap_to_zero(component_type threshold) noexcept
+	{
+		for (auto& r : *this) {
 			r.snap_to_zero(threshold);
 		}
 		return *this;
@@ -876,25 +949,33 @@ public:
 	 * @brief Set each element of this matrix to a given number.
 	 * @param num - number to set each matrix element to.
 	 */
-	matrix& set(component_type num)noexcept{
-		for(auto& e : *this){
+	matrix& set(component_type num) noexcept
+	{
+		for (auto& e : *this) {
 			e.set(num);
 		}
 		return *this;
 	}
 
-	friend std::ostream& operator<<(std::ostream& s, const matrix& mat){
-		for(auto& r : mat){
+	friend std::ostream& operator<<(std::ostream& s, const matrix& mat)
+	{
+		for (auto& r : mat) {
 			s << "|" << r << std::endl;
 		}
 		return s;
 	};
 };
 
-template <class component_type> using matrix2 = matrix<component_type, 2, 3>;
-template <class component_type> using matrix3 = matrix<component_type, 3, 3>;
-template <class component_type> using matrix4 = matrix<component_type, 4, 4>;
+template <class component_type>
+using matrix2 = matrix<component_type, 2, 3>;
+template <class component_type>
+using matrix3 = matrix<component_type, 3, 3>;
+template <class component_type>
+using matrix4 = matrix<component_type, 4, 4>;
 
-static_assert(sizeof(matrix4<int>) == sizeof(matrix4<int>::base_type), "r4::matrix must not define any member variables");
+static_assert(
+	sizeof(matrix4<int>) == sizeof(matrix4<int>::base_type),
+	"r4::matrix must not define any member variables"
+);
 
-}
+} // namespace r4
