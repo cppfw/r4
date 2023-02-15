@@ -351,13 +351,13 @@ jobs:
     steps:
       - name: clean
         uses: myci-actions/clean@master
-      - name: add cppfw deb repo
+      - name: add llvm repo (for clang-format)
         uses: myci-actions/add-deb-repo@master
         with:
-          repo: deb http://gagis.hopto.org/repo/cppfw/${{ matrix.os }} ${{ matrix.codename }} main
-          repo-name: cppfw
-          keys-asc: http://gagis.hopto.org/repo/cppfw/pubkey.gpg
-          install: devscripts equivs myci prorab prorab-extra python3-pip cmake git
+          repo: deb http://apt.llvm.org/${{ matrix.codename }} llvm-toolchain-${{ matrix.codename }} main
+          repo-name: llvm
+          keys-asc: https://apt.llvm.org/llvm-snapshot.gpg.key
+          install: clang-format clang-tidy
       - name: add cppfw deb repo
         uses: myci-actions/add-deb-repo@master
         with:
