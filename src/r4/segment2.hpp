@@ -150,19 +150,19 @@ public:
 	}
 
 	/**
-	 * @brief Unite this bounding box with another one.
-	 * The resulting bounding box is the one which has minimum p1 values and maximum p2 values of the
-	 * two bounding boxes.
-	 * @param bb - another bounding box to unite this one with.
+	 * @brief Unite this this segment with another one.
+	 * The resulting segment is the one which has minimum p1 values and maximum p2 values of the
+	 * two segments.
+	 * @param seg - another segment to unite this one with.
 	 * @return reference to this object.
 	 */
-	segment2& unite(const segment2& bb) noexcept
+	segment2& unite(const segment2& seg) noexcept
 	{
 		using std::min;
 		using std::max;
 
-		this->p1 = min(this->p1, bb.p1);
-		this->p2 = max(this->p2, bb.p2);
+		this->p1 = min(this->p1, seg.p1);
+		this->p2 = max(this->p2, seg.p2);
 
 		return *this;
 	}
