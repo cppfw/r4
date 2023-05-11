@@ -9,6 +9,8 @@ this_srcs += $(call prorab-src-dir, src)
 
 $(eval $(call prorab-config, ../../config))
 
+this_cxxflags += -I ../../src
+
 this_ldlibs += -ltst -lutki -lm $(addprefix -l,$(CONAN_LIBS))
 
 this_cxxflags += $(addprefix -I,$(CONAN_INCLUDE_DIRS))

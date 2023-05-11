@@ -103,6 +103,46 @@ public:
 	}
 
 	/**
+	 * @brief Get minimal x coordinate.
+	 * @return Minimal x coordinate from the two segment points.
+	 */
+	component_type min_x() const noexcept
+	{
+		using std::min;
+		return min(this->p1.x(), this->p2.x());
+	}
+
+	/**
+	 * @brief Get minimal y coordinate.
+	 * @return Minimal y coordinate from the two segment points.
+	 */
+	component_type min_y() const noexcept
+	{
+		using std::min;
+		return min(this->p1.y(), this->p2.y());
+	}
+
+	/**
+	 * @brief Get maximal x coordinate.
+	 * @return Maximal x coordinate from the two segment points.
+	 */
+	component_type max_x() const noexcept
+	{
+		using std::max;
+		return max(this->p1.x(), this->p2.x());
+	}
+
+	/**
+	 * @brief Get maximal y coordinate.
+	 * @return Maximal y coordinate from the two segment points.
+	 */
+	component_type max_y() const noexcept
+	{
+		using std::max;
+		return max(this->p1.y(), this->p2.y());
+	}
+
+	/**
 	 * @brief Get width of the segment's bounding box.
 	 * @return dx if it spositive.
 	 * @return 0 otherwise.
@@ -144,8 +184,8 @@ public:
 	{
 		using std::numeric_limits;
 		using limits = numeric_limits<typename decltype(this->p1)::value_type>;
-		this->p1 = decltype(this->p1){limits::max(), limits::max()};
-		this->p2 = decltype(this->p2){limits::min(), limits::min()};
+		this->p1 = decltype(this->p1)(limits::max());
+		this->p2 = decltype(this->p2)(limits::min());
 		return *this;
 	}
 
