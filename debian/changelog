@@ -1,3 +1,9 @@
+libr4 (1.0.72) unstable; urgency=medium
+
+  * conan: migrate to conan 2
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 17 May 2023 11:20:32 +0300
+
 libr4 (1.0.71) unstable; urgency=medium
 
   * fix lint issues
