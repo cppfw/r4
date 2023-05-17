@@ -12,14 +12,16 @@ class R4Conan(ConanFile):
 	description = "3D vector math C++ library"
 	topics = ("C++", "cross-platform")
 	settings = "os", "compiler", "build_type", "arch"
-	package_type = "library"
+	package_type = "header-library"
 	options = {"shared": [True, False], "fPIC": [True, False]}
 	default_options = {"shared": False, "fPIC": True}
 	generators = "AutotoolsDeps" # this will set CXXFLAGS etc. env vars
 
 	def requirements(self):
 		self.requires("utki/[>=1.1.202]@cppfw/main", transitive_headers=True)
-		self.tool_requires("tst/[>=0.0.1]@cppfw/main")
+
+	def build_requirements(self):
+		self.requires("tst/[>=0.3.29]@cppfw/main", visible=False)
 
 	def config_options(self):
 		if self.settings.os == "Windows":
@@ -72,6 +74,5 @@ class R4Conan(ConanFile):
 		self.cpp_info.libs = [self.name]
 
 	def package_id(self):
-
 		# change package id only when minor or major version changes, i.e. when ABI breaks
 		self.info.requires.minor_mode()
