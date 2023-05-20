@@ -1,3 +1,9 @@
+libr4 (1.0.73) unstable; urgency=medium
+
+  * conan: no link to -lr4
+
+ -- Ivan Gagis <igagis@gmail.com>  Sat, 20 May 2023 14:11:41 +0300
+
 libr4 (1.0.72) unstable; urgency=medium
 
   * conan: migrate to conan 2
