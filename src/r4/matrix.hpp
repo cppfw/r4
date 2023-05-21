@@ -41,7 +41,7 @@ namespace r4 {
 template <class component_type, size_t num_rows, size_t num_columns>
 class matrix :
 	// it's ok to inherit std::array<component_type> because r4::matrix only defines methods
-	// and doesn't define new any member variables (checked by static_assert after the
+	// and doesn't define any new member variables (checked by static_assert after the
 	// class declaration), so it is ok that std::array has non-virtual destructor
 	public std::array<vector<component_type, num_columns>, num_rows>
 {

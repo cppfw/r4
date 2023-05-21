@@ -51,7 +51,7 @@ class quaternion;
 template <class component_type, size_t dimension>
 class vector :
 	// it's ok to inherit std::array<component_type> because r4::vector only defines methods
-	// and doesn't define new any member variables (checked by static_assert after the
+	// and doesn't define any new member variables (checked by static_assert after the
 	// class declaration), so it is ok that std::array has non-virtual destructor
 	public std::array<component_type, dimension>
 {
