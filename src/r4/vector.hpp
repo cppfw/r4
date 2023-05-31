@@ -886,12 +886,27 @@ public:
 	 */
 	bool is_zero() const noexcept
 	{
-		for (auto& c : *this) {
+		for (const auto& c : *this) {
 			if (c != 0) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * @brief Check if any of the vector components is zero.
+	 * @return true if at least one component of the vector is zero.
+	 * @return false otherwise.
+	 */
+	bool is_any_zero() const noexcept
+	{
+		for (const auto& c : *this) {
+			if (c == 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

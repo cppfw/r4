@@ -320,6 +320,20 @@ tst::set set("vector3", [](tst::suite& suite){
         }
     );
 
+	suite.add<std::pair<r4::vector3<int>, bool>>(
+        "is_any_zero",
+        {
+            {{0, 0, 0}, true},
+            {{3, 0, 0}, true},
+            {{0, -4, 0}, true},
+            {{0, 0, 7}, true},
+            {{3, -4, 1}, false},
+        },
+        [](const auto& p){
+            tst::check_eq(p.first.is_any_zero(), p.second, SL);
+        }
+    );
+
     suite.add("negate", []{
         r4::vector3<int> a{3, -4, 7};
 

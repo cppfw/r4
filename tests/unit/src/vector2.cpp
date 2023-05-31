@@ -272,6 +272,22 @@ tst::set set("vector2", [](tst::suite& suite){
             tst::check_eq(p.first.is_zero(), p.second, SL);
         }
     );
+
+    suite.add<std::pair<r4::vector2<int>, bool>>(
+        "is_any_zero",
+        {
+            {{0, 0}, true},
+            {{0, 3}, true},
+            {{6, 0}, true},
+            {{4, 3}, false},
+            {{-4, 3}, false},
+            {{-4, -4}, false},
+            {{4, -3}, false},
+        },
+        [](const auto& p){
+            tst::check_eq(p.first.is_any_zero(), p.second, SL);
+        }
+    );
     
     suite.add<std::pair<r4::vector2<int>, bool>>(
         "is_positive_or_zero",
