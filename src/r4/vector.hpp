@@ -350,7 +350,12 @@ public:
 		return ret;
 	}
 
-	// TODO: doxygen
+	/**
+	 * @brief Unary component-wise operation.
+	 * Perform unary operation on each component of the vector.
+	 * @param op - unary operation to perform on each component of the vector.
+	 * @return Resulting vector.
+	 */
 	template <typename unary_operation_type>
 	vector comp_op(unary_operation_type op) const
 	{
@@ -359,7 +364,13 @@ public:
 		return res;
 	}
 
-	// TODO: doxygen
+	/**
+	 * @brief Binary component-wise operation.
+	 * Perform binary operation on each component of two vectors.
+	 * @param vec - second vector.
+	 * @param op - binary operation to perform on each component of two vectors.
+	 * @return Resulting vector.
+	 */
 	template <typename binary_operation_type>
 	vector comp_op(const vector& vec, binary_operation_type op) const
 	{
@@ -368,7 +379,13 @@ public:
 		return res;
 	}
 
-	// TODO: doxygen
+	/**
+	 * @brief Unary component-wise operation.
+	 * Perform unary operation on each component of the vector.
+	 * The result is saved into this vector.
+	 * @param op - unary operation to perform on each component of the vector.
+	 * @return Reference to this vector.
+	 */
 	template <typename unary_operation_type>
 	vector& comp_operation(unary_operation_type op)
 	{
@@ -376,7 +393,14 @@ public:
 		return *this;
 	}
 
-	// TODO: doxygen
+	/**
+	 * @brief Binary component-wise operation.
+	 * Perform binary operation on each component of two vectors.
+	 * The result is saved into this vector.
+	 * @param vec - second vector.
+	 * @param op - binary operation to perform on each component of two vectors.
+	 * @return Reference to this vector.
+	 */
 	template <typename binary_operation_type>
 	vector& comp_operation(const vector& vec, binary_operation_type op)
 	{
