@@ -257,9 +257,9 @@ public:
 	 */
 	constexpr vector(component_type num) noexcept
 	{
-		for (auto& c : *this) {
-			c = num;
-		}
+		this->comp_operation([&num](const auto&) {
+			return num;
+		});
 	}
 
 	/**
@@ -272,10 +272,10 @@ public:
 	template <typename enable_type = component_type>
 	constexpr vector(std::enable_if_t<dimension == 4, enable_type> num, component_type w) noexcept
 	{
-		for (size_t i = 0; i != dimension - 1; ++i) {
-			this->operator[](i) = num;
-		}
-		this->operator[](dimension - 1) = w;
+		std::for_each_n(this->begin(), dimension - 1, [&num](auto& a) {
+			a = num;
+		});
+		this->back() = w;
 	}
 
 	/**
