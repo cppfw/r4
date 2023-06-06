@@ -398,8 +398,7 @@ public:
 	 */
 	vector& operator=(component_type num) noexcept
 	{
-		this->set(num);
-		return *this;
+		return this->set(num);
 	}
 
 	/**
@@ -421,9 +420,9 @@ public:
 	 */
 	vector& set(component_type val) noexcept
 	{
-		for (auto& c : *this) {
-			c = val;
-		}
+		std::for_each(this->begin(), this->end(), [&val](auto& a) {
+			a = val;
+		});
 		return *this;
 	}
 
