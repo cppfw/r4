@@ -529,7 +529,7 @@ public:
 	 */
 	vector operator+(const vector& vec) const noexcept
 	{
-		return (vector(*this) += vec);
+		return this->comp_op(vec, std::plus<component_type>());
 	}
 
 	/**
@@ -577,7 +577,7 @@ public:
 	 */
 	vector operator-(const vector& vec) const noexcept
 	{
-		return (vector(*this) -= vec);
+		return this->comp_op(vec, std::minus<component_type>());
 	}
 
 	/**
@@ -740,9 +740,7 @@ public:
 	 */
 	vector comp_mul(const vector& vec) const noexcept
 	{
-		return this->comp_op(vec, [](const auto& a, const auto& b) mutable {
-			return a * b;
-		});
+		return this->comp_op(vec, std::multiplies<component_type>());
 	}
 
 	/**
@@ -754,9 +752,7 @@ public:
 	 */
 	vector& comp_multiply(const vector& vec) noexcept
 	{
-		return this->comp_operation(vec, [](const auto& a, const auto& b) {
-			return a * b;
-		});
+		return this->comp_operation(vec, std::multiplies<component_type>());
 	}
 
 	/**
@@ -769,9 +765,7 @@ public:
 	 */
 	vector comp_div(const vector& v) const noexcept
 	{
-		return this->comp_op(v, [](const auto& a, const auto& b) {
-			return a / b;
-		});
+		return this->comp_op(v, std::divides<component_type>());
 	}
 
 	/**
@@ -783,9 +777,7 @@ public:
 	 */
 	vector& comp_divide(const vector& v) noexcept
 	{
-		return this->comp_operation(v, [](const auto& a, const auto& b) {
-			return a / b;
-		});
+		return this->comp_operation(v, std::divides<component_type>());
 	}
 
 	/**
