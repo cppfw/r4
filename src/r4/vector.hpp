@@ -350,6 +350,40 @@ public:
 		return ret;
 	}
 
+	// TODO: doxygen
+	template <typename unary_operation_type>
+	vector comp_op(unary_operation_type op) const
+	{
+		vector res;
+		std::transform(this->begin(), this->end(), res.begin(), op);
+		return res;
+	}
+
+	// TODO: doxygen
+	template <typename binary_operation_type>
+	vector comp_op(const vector& vec, binary_operation_type op) const
+	{
+		vector res;
+		std::transform(this->begin(), this->end(), vec.begin(), res.begin(), op);
+		return res;
+	}
+
+	// TODO: doxygen
+	template <typename unary_operation_type>
+	vector& comp_operation(unary_operation_type op)
+	{
+		std::transform(this->begin(), this->end(), this->begin(), op);
+		return *this;
+	}
+
+	// TODO: doxygen
+	template <typename binary_operation_type>
+	vector& comp_operation(const vector& vec, binary_operation_type op)
+	{
+		std::transform(this->begin(), this->end(), vec.begin(), this->begin(), op);
+		return *this;
+	}
+
 	/**
 	 * @brief Assign from another vector.
 	 * TODO:
@@ -420,8 +454,8 @@ public:
 	 */
 	vector& set(component_type val) noexcept
 	{
-		std::for_each(this->begin(), this->end(), [&val](auto& a) {
-			a = val;
+		return this->comp_operation([&val](const auto&) {
+			return val;
 		});
 		return *this;
 	}
@@ -482,10 +516,9 @@ public:
 	 */
 	vector& operator+=(component_type number) noexcept
 	{
-		std::for_each(this->begin(), this->end(), [&number](auto& a) {
-			a += number;
+		return this->comp_operation([&number](auto& a) {
+			return a + number;
 		});
-		return *this;
 	}
 
 	/**
@@ -563,10 +596,9 @@ public:
 	 */
 	vector& operator*=(component_type num) noexcept
 	{
-		std::for_each(this->begin(), this->end(), [&num](auto& a) {
-			a *= num;
+		return this->comp_operation([&num](auto& a) {
+			return a * num;
 		});
-		return *this;
 	}
 
 	/**
@@ -613,10 +645,9 @@ public:
 		ASSERT(num != 0, [&](auto& o) {
 			o << "vector::operator/=(): division by 0";
 		})
-		std::for_each(this->begin(), this->end(), [&num](auto& a) {
-			a /= num;
+		return this->comp_operation([&num](auto& a) {
+			return a / num;
 		});
-		return *this;
 	}
 
 	/**
@@ -627,9 +658,12 @@ public:
 	component_type operator*(const vector& vec) const noexcept
 	{
 		component_type res = 0;
-		for (size_t i = 0; i != dimension; ++i) {
-			res += this->operator[](i) * vec[i];
-		}
+
+		this->comp_op(vec, [&res](const auto& a, const auto& b) {
+			res += a * b;
+			return component_type();
+		});
+
 		return res;
 	}
 
@@ -671,36 +705,6 @@ public:
 	std::enable_if_t<dimension >= 3, enable_type> operator%(const vector& vec) const noexcept
 	{
 		return this->cross(vec);
-	}
-
-	template <typename unary_operation_type>
-	vector comp_op(unary_operation_type op) const
-	{
-		vector res;
-		std::transform(this->begin(), this->end(), res.begin(), op);
-		return res;
-	}
-
-	template <typename binary_operation_type>
-	vector comp_op(const vector& vec, binary_operation_type op) const
-	{
-		vector res;
-		std::transform(this->begin(), this->end(), vec.begin(), res.begin(), op);
-		return res;
-	}
-
-	template <typename unary_operation_type>
-	vector& comp_operation(unary_operation_type op)
-	{
-		std::transform(this->begin(), this->end(), this->begin(), op);
-		return *this;
-	}
-
-	template <typename binary_operation_type>
-	vector& comp_operation(const vector& vec, binary_operation_type op)
-	{
-		std::transform(this->begin(), this->end(), vec.begin(), this->begin(), op);
-		return *this;
 	}
 
 	/**
