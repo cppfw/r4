@@ -436,17 +436,29 @@ public:
 	vector& operator+=(const vector<component_type, another_dimension>& vec) noexcept
 	{
 		if constexpr (another_dimension >= dimension) {
-			for (size_t i = 0; i != dimension; ++i) {
-				this->operator[](i) += vec[i];
-			}
+			std::transform( //
+				this->begin(),
+				this->end(),
+				vec.begin(),
+				this->begin(),
+				[](const auto& a, const auto& b) {
+					return a + b;
+				}
+			);
 		} else {
 			static_assert(
-				another_dimension <= dimension,
+				another_dimension < dimension,
 				"dimension of another vector cannot be greater than of this vector"
 			);
-			for (size_t i = 0; i != another_dimension; ++i) {
-				this->operator[](i) += vec[i];
-			}
+			std::transform( //
+				vec.begin(),
+				vec.end(),
+				this->begin(),
+				this->begin(),
+				[](const auto& a, const auto& b) {
+					return a + b;
+				}
+			);
 		}
 		return *this;
 	}
