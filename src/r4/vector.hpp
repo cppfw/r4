@@ -609,7 +609,7 @@ public:
 	 */
 	vector operator-() const noexcept
 	{
-		return this->comp_op(std::negate<component_type>());
+		return vector(*this).negate();
 	}
 
 	/**
@@ -787,7 +787,13 @@ public:
 	 */
 	vector& negate() noexcept
 	{
-		return this->comp_operation(std::negate<component_type>());
+		return this->comp_operation([](const auto& a) {
+			if constexpr (std::is_signed_v<component_type>) {
+				return -a;
+			} else {
+				return (~a + component_type(1));
+			}
+		});
 	}
 
 	/**
