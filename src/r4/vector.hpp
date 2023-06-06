@@ -651,6 +651,36 @@ public:
 		return this->cross(vec);
 	}
 
+	template <typename unary_operation_type>
+	vector comp_op(unary_operation_type op) const
+	{
+		vector res;
+		std::transform(this->begin(), this->end(), res.begin(), op);
+		return res;
+	}
+
+	template <typename binary_operation_type>
+	vector comp_op(const vector& vec, binary_operation_type op) const
+	{
+		vector res;
+		std::transform(this->begin(), this->end(), vec.begin(), res.begin(), op);
+		return res;
+	}
+
+	template <typename unary_operation_type>
+	vector& comp_operation(unary_operation_type op)
+	{
+		std::transform(this->begin(), this->end(), this->begin(), op);
+		return *this;
+	}
+
+	template <typename binary_operation_type>
+	vector& comp_operation(const vector& vec, binary_operation_type op)
+	{
+		std::transform(this->begin(), this->end(), vec.begin(), this->begin(), op);
+		return *this;
+	}
+
 	/**
 	 * @brief Component-wise multiplication.
 	 * Performs component-wise multiplication of two vectors.
@@ -660,11 +690,9 @@ public:
 	 */
 	vector comp_mul(const vector& vec) const noexcept
 	{
-		vector res;
-		for (size_t i = 0; i != dimension; ++i) {
-			res[i] = this->operator[](i) * vec[i];
-		}
-		return res;
+		return this->comp_op(vec, [](const auto& a, const auto& b) mutable {
+			return a * b;
+		});
 	}
 
 	/**
@@ -676,10 +704,9 @@ public:
 	 */
 	vector& comp_multiply(const vector& vec) noexcept
 	{
-		for (size_t i = 0; i != dimension; ++i) {
-			this->operator[](i) *= vec[i];
-		}
-		return *this;
+		return this->comp_operation(vec, [](const auto& a, const auto& b) {
+			return a * b;
+		});
 	}
 
 	/**
@@ -692,11 +719,9 @@ public:
 	 */
 	vector comp_div(const vector& v) const noexcept
 	{
-		vector res;
-		for (size_t i = 0; i != dimension; ++i) {
-			res[i] = this->operator[](i) / v[i];
-		}
-		return res;
+		return this->comp_op(v, [](const auto& a, const auto& b) {
+			return a / b;
+		});
 	}
 
 	/**
@@ -708,10 +733,9 @@ public:
 	 */
 	vector& comp_divide(const vector& v) noexcept
 	{
-		for (size_t i = 0; i != dimension; ++i) {
-			this->operator[](i) /= v[i];
-		}
-		return *this;
+		return this->comp_operation(v, [](const auto& a, const auto& b) {
+			return a / b;
+		});
 	}
 
 	/**
@@ -721,14 +745,13 @@ public:
 	 */
 	vector& negate() noexcept
 	{
-		for (auto& c : *this) {
+		return this->comp_operation([](const auto& a) {
 			if constexpr (std::is_signed_v<component_type>) {
-				c = -c;
+				return -a;
 			} else {
-				c = ~c + component_type(1);
+				return (~a + component_type(1));
 			}
-		}
-		return *this;
+		});
 	}
 
 	/**
