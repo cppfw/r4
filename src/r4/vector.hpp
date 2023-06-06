@@ -344,9 +344,9 @@ public:
 	vector<another_component_type, dimension> to() const noexcept
 	{
 		vector<another_component_type, dimension> ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = another_component_type(this->operator[](i));
-		}
+		std::transform(this->begin(), this->end(), ret.begin(), [](const auto& a) {
+			return another_component_type(a);
+		});
 		return ret;
 	}
 
