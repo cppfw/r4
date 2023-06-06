@@ -787,9 +787,12 @@ public:
 	component_type norm_pow2() const noexcept
 	{
 		component_type res = 0;
-		for (size_t i = 0; i != dimension; ++i) {
-			res += utki::pow2(this->operator[](i));
-		}
+
+		this->comp_op([&res](const auto& a) {
+			res += utki::pow2(a);
+			return component_type();
+		});
+
 		return res;
 	}
 
@@ -811,15 +814,16 @@ public:
 	vector& normalize() noexcept
 	{
 		component_type mag = this->norm();
-		if (mag == 0) {
-			this->x() = 1;
-			for (auto i = std::next(this->begin()); i != this->end(); ++i) {
-				*i = component_type(0);
-			}
-			return *this;
+		ASSERT(mag >= component_type(0))
+		if (mag != component_type(0)) {
+			return (*this) /= mag;
 		}
 
-		return (*this) /= this->norm();
+		this->x() = 1;
+		std::for_each(std::next(this->begin()), this->end(), [](const auto&) {
+			return component_type(0);
+		});
+		return *this;
 	}
 
 	/**
@@ -873,12 +877,10 @@ public:
 	 */
 	friend vector round(const vector& v) noexcept
 	{
-		using std::round;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = component_type(round(v[i]));
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::round;
+			return component_type(round(a));
+		});
 	}
 
 	/**
@@ -888,12 +890,10 @@ public:
 	 */
 	friend vector ceil(const vector& v) noexcept
 	{
-		using std::ceil;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = component_type(ceil(v[i]));
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::ceil;
+			return component_type(ceil(a));
+		});
 	}
 
 	/**
@@ -903,12 +903,10 @@ public:
 	 */
 	friend vector floor(const vector& v) noexcept
 	{
-		using std::floor;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = component_type(floor(v[i]));
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::floor;
+			return component_type(floor(a));
+		});
 	}
 
 	/**
@@ -919,13 +917,13 @@ public:
 	 */
 	vector& snap_to_zero(component_type threshold) noexcept
 	{
-		for (auto& c : *this) {
+		return this->comp_operation([&threshold](const auto& a) {
 			using std::abs;
-			if (abs(c) <= threshold) {
-				c = 0;
+			if (abs(a) <= threshold) {
+				return component_type(0);
 			}
-		}
-		return *this;
+			return a;
+		});
 	}
 
 	/**
@@ -1025,12 +1023,10 @@ public:
 	 */
 	friend vector abs(const vector& v) noexcept
 	{
-		using std::abs;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = abs(v[i]);
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::abs;
+			return abs(a);
+		});
 	}
 
 	/**
@@ -1062,12 +1058,10 @@ public:
 	 */
 	friend vector min(const vector& va, const vector& vb) noexcept
 	{
-		using std::min;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = min(va[i], vb[i]);
-		}
-		return ret;
+		return va.comp_op(vb, [](const auto& a, const auto& b) {
+			using std::min;
+			return min(a, b);
+		});
 	}
 
 	/**
@@ -1078,12 +1072,10 @@ public:
 	 */
 	friend vector max(const vector& va, const vector& vb) noexcept
 	{
-		using std::max;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = max(va[i], vb[i]);
-		}
-		return ret;
+		return va.comp_op(vb, [](const auto& a, const auto& b) {
+			using std::max;
+			return max(a, b);
+		});
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const vector<component_type, dimension>& vec)
