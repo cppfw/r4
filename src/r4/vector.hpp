@@ -604,15 +604,6 @@ public:
 	}
 
 	/**
-	 * @brief Unary minus.
-	 * @return Negated vector.
-	 */
-	vector operator-() const noexcept
-	{
-		return vector(*this).negate();
-	}
-
-	/**
 	 * @brief Multiply by scalar and assign.
 	 * Multiplies this vector by scalar and assigns result back to this vector.
 	 * @param num - scalar to multiply by.
@@ -780,6 +771,31 @@ public:
 		return this->comp_operation(v, std::divides<component_type>());
 	}
 
+private:
+	// MSVC compiler doesn't allow negating unsigned types,
+	// this is why we cannot use std::negate and introduce our own
+	// negation functor
+	struct negate_functor {
+		component_type operator()(component_type a) const
+		{
+			if constexpr (std::is_signed_v<component_type>) {
+				return -a;
+			} else {
+				return (~a + component_type(1));
+			}
+		}
+	};
+
+public:
+	/**
+	 * @brief Unary minus.
+	 * @return Negated vector.
+	 */
+	vector operator-() const noexcept
+	{
+		return this->comp_op(negate_functor());
+	}
+
 	/**
 	 * @brief Negate this vector.
 	 * Negates this vector.
@@ -787,13 +803,7 @@ public:
 	 */
 	vector& negate() noexcept
 	{
-		return this->comp_operation([](const auto& a) {
-			if constexpr (std::is_signed_v<component_type>) {
-				return -a;
-			} else {
-				return (~a + component_type(1));
-			}
-		});
+		return this->comp_operation(negate_functor());
 	}
 
 	/**
