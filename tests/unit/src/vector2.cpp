@@ -145,6 +145,13 @@ tst::set set("vector2", [](tst::suite& suite){
 		tst::check_eq(r[1], -2, SL);
     });
 
+    suite.add("operator_minus__unsigned", []{
+        auto r = -r4::vector2<unsigned>{13, 14};
+
+		tst::check_eq(r[0], unsigned(-13), SL);
+		tst::check_eq(r[1], unsigned(-14), SL);
+    });
+
     suite.add("operator_multiply_equals_number", []{
         r4::vector2<int> v2{2, 3};
 
@@ -346,6 +353,15 @@ tst::set set("vector2", [](tst::suite& suite){
         tst::check(!v.is_negative(), SL);
         tst::check_eq(v.x(), -13, SL);
         tst::check_eq(v.y(), 14, SL);
+    });
+
+    suite.add("negate__unsigned", []{
+        r4::vector2<unsigned> v{13, 14};
+
+        v.negate();
+
+        tst::check_eq(v.x(), unsigned(-13), SL);
+        tst::check_eq(v.y(), unsigned(-14), SL);
     });
 
     suite.add("abs", []{
