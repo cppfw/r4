@@ -482,9 +482,9 @@ public:
 	 */
 	vector& operator+=(component_type number) noexcept
 	{
-		for (size_t i = 0; i != dimension; ++i) {
-			this->operator[](i) += number;
-		}
+		std::for_each(this->begin(), this->end(), [&number](auto& a) {
+			a += number;
+		});
 		return *this;
 	}
 
@@ -563,9 +563,9 @@ public:
 	 */
 	vector& operator*=(component_type num) noexcept
 	{
-		for (auto& c : *this) {
-			c *= num;
-		}
+		std::for_each(this->begin(), this->end(), [&num](auto& a) {
+			a *= num;
+		});
 		return *this;
 	}
 
@@ -613,9 +613,9 @@ public:
 		ASSERT(num != 0, [&](auto& o) {
 			o << "vector::operator/=(): division by 0";
 		})
-		for (auto& c : *this) {
-			c /= num;
-		}
+		std::for_each(this->begin(), this->end(), [&num](auto& a) {
+			a /= num;
+		});
 		return *this;
 	}
 
