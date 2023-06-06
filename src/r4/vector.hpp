@@ -257,9 +257,9 @@ public:
 	 */
 	constexpr vector(component_type num) noexcept
 	{
-		for (auto& c : *this) {
-			c = num;
-		}
+		this->comp_operation([&num](const auto&) {
+			return num;
+		});
 	}
 
 	/**
@@ -272,10 +272,10 @@ public:
 	template <typename enable_type = component_type>
 	constexpr vector(std::enable_if_t<dimension == 4, enable_type> num, component_type w) noexcept
 	{
-		for (size_t i = 0; i != dimension - 1; ++i) {
-			this->operator[](i) = num;
-		}
-		this->operator[](dimension - 1) = w;
+		std::for_each_n(this->begin(), dimension - 1, [&num](auto& a) {
+			a = num;
+		});
+		this->back() = w;
 	}
 
 	/**
@@ -344,10 +344,68 @@ public:
 	vector<another_component_type, dimension> to() const noexcept
 	{
 		vector<another_component_type, dimension> ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = another_component_type(this->operator[](i));
-		}
+		std::transform(this->begin(), this->end(), ret.begin(), [](const auto& a) {
+			return another_component_type(a);
+		});
 		return ret;
+	}
+
+	/**
+	 * @brief Unary component-wise operation.
+	 * Perform unary operation on each component of the vector.
+	 * @param op - unary operation to perform on each component of the vector.
+	 * @return Resulting vector.
+	 */
+	template <typename unary_operation_type>
+	vector comp_op(unary_operation_type op) const
+	{
+		vector res;
+		std::transform(this->begin(), this->end(), res.begin(), op);
+		return res;
+	}
+
+	/**
+	 * @brief Binary component-wise operation.
+	 * Perform binary operation on each component of two vectors.
+	 * @param vec - second vector.
+	 * @param op - binary operation to perform on each component of two vectors.
+	 * @return Resulting vector.
+	 */
+	template <typename binary_operation_type>
+	vector comp_op(const vector& vec, binary_operation_type op) const
+	{
+		vector res;
+		std::transform(this->begin(), this->end(), vec.begin(), res.begin(), op);
+		return res;
+	}
+
+	/**
+	 * @brief Unary component-wise operation.
+	 * Perform unary operation on each component of the vector.
+	 * The result is saved into this vector.
+	 * @param op - unary operation to perform on each component of the vector.
+	 * @return Reference to this vector.
+	 */
+	template <typename unary_operation_type>
+	vector& comp_operation(unary_operation_type op)
+	{
+		std::transform(this->begin(), this->end(), this->begin(), op);
+		return *this;
+	}
+
+	/**
+	 * @brief Binary component-wise operation.
+	 * Perform binary operation on each component of two vectors.
+	 * The result is saved into this vector.
+	 * @param vec - second vector.
+	 * @param op - binary operation to perform on each component of two vectors.
+	 * @return Reference to this vector.
+	 */
+	template <typename binary_operation_type>
+	vector& comp_operation(const vector& vec, binary_operation_type op)
+	{
+		std::transform(this->begin(), this->end(), vec.begin(), this->begin(), op);
+		return *this;
 	}
 
 	/**
@@ -360,21 +418,32 @@ public:
 	vector& operator=(const vector<component_type, another_dimension>& vec) noexcept
 	{
 		if constexpr (another_dimension >= dimension) {
-			for (size_t i = 0; i != dimension; ++i) {
-				this->operator[](i) = vec[i];
-			}
+			std::transform( //
+				this->begin(),
+				this->end(),
+				vec.begin(),
+				this->begin(),
+				[](const auto& a, const auto& b) {
+					return b;
+				}
+			);
 		} else {
 			static_assert(
-				another_dimension <= dimension,
+				another_dimension < dimension,
 				"dimension of another vector cannot be greater than of this vector"
 			);
-			size_t i = 0;
-			for (; i != another_dimension; ++i) {
-				this->operator[](i) = vec[i];
-			}
-			for (; i != dimension; ++i) {
-				this->operator[](i) = component_type(0);
-			}
+			auto i = std::transform( //
+				vec.begin(),
+				vec.end(),
+				this->begin(),
+				this->begin(),
+				[](const auto& a, const auto& b) {
+					return a;
+				}
+			);
+			std::transform(i, this->end(), i, [](const auto&) {
+				return component_type(0);
+			});
 		}
 		return *this;
 	}
@@ -387,8 +456,7 @@ public:
 	 */
 	vector& operator=(component_type num) noexcept
 	{
-		this->set(num);
-		return *this;
+		return this->set(num);
 	}
 
 	/**
@@ -410,9 +478,9 @@ public:
 	 */
 	vector& set(component_type val) noexcept
 	{
-		for (auto& c : *this) {
-			c = val;
-		}
+		return this->comp_operation([&val](const auto&) {
+			return val;
+		});
 		return *this;
 	}
 
@@ -426,17 +494,29 @@ public:
 	vector& operator+=(const vector<component_type, another_dimension>& vec) noexcept
 	{
 		if constexpr (another_dimension >= dimension) {
-			for (size_t i = 0; i != dimension; ++i) {
-				this->operator[](i) += vec[i];
-			}
+			std::transform( //
+				this->begin(),
+				this->end(),
+				vec.begin(),
+				this->begin(),
+				[](const auto& a, const auto& b) {
+					return a + b;
+				}
+			);
 		} else {
 			static_assert(
-				another_dimension <= dimension,
+				another_dimension < dimension,
 				"dimension of another vector cannot be greater than of this vector"
 			);
-			for (size_t i = 0; i != another_dimension; ++i) {
-				this->operator[](i) += vec[i];
-			}
+			std::transform( //
+				vec.begin(),
+				vec.end(),
+				this->begin(),
+				this->begin(),
+				[](const auto& a, const auto& b) {
+					return a + b;
+				}
+			);
 		}
 		return *this;
 	}
@@ -449,7 +529,7 @@ public:
 	 */
 	vector operator+(const vector& vec) const noexcept
 	{
-		return (vector(*this) += vec);
+		return this->comp_op(vec, std::plus<component_type>());
 	}
 
 	/**
@@ -460,10 +540,9 @@ public:
 	 */
 	vector& operator+=(component_type number) noexcept
 	{
-		for (size_t i = 0; i != dimension; ++i) {
-			this->operator[](i) += number;
-		}
-		return *this;
+		return this->comp_operation([&number](auto& a) {
+			return a + number;
+		});
 	}
 
 	/**
@@ -498,7 +577,7 @@ public:
 	 */
 	vector operator-(const vector& vec) const noexcept
 	{
-		return (vector(*this) -= vec);
+		return this->comp_op(vec, std::minus<component_type>());
 	}
 
 	/**
@@ -525,15 +604,6 @@ public:
 	}
 
 	/**
-	 * @brief Unary minus.
-	 * @return Negated vector.
-	 */
-	vector operator-() const noexcept
-	{
-		return vector(*this).negate();
-	}
-
-	/**
 	 * @brief Multiply by scalar and assign.
 	 * Multiplies this vector by scalar and assigns result back to this vector.
 	 * @param num - scalar to multiply by.
@@ -541,10 +611,9 @@ public:
 	 */
 	vector& operator*=(component_type num) noexcept
 	{
-		for (auto& c : *this) {
-			c *= num;
-		}
-		return *this;
+		return this->comp_operation([&num](auto& a) {
+			return a * num;
+		});
 	}
 
 	/**
@@ -591,10 +660,9 @@ public:
 		ASSERT(num != 0, [&](auto& o) {
 			o << "vector::operator/=(): division by 0";
 		})
-		for (auto& c : *this) {
-			c /= num;
-		}
-		return *this;
+		return this->comp_operation([&num](auto& a) {
+			return a / num;
+		});
 	}
 
 	/**
@@ -605,9 +673,12 @@ public:
 	component_type operator*(const vector& vec) const noexcept
 	{
 		component_type res = 0;
-		for (size_t i = 0; i != dimension; ++i) {
-			res += this->operator[](i) * vec[i];
-		}
+
+		this->comp_op(vec, [&res](const auto& a, const auto& b) {
+			res += a * b;
+			return component_type();
+		});
+
 		return res;
 	}
 
@@ -660,11 +731,7 @@ public:
 	 */
 	vector comp_mul(const vector& vec) const noexcept
 	{
-		vector res;
-		for (size_t i = 0; i != dimension; ++i) {
-			res[i] = this->operator[](i) * vec[i];
-		}
-		return res;
+		return this->comp_op(vec, std::multiplies<component_type>());
 	}
 
 	/**
@@ -676,10 +743,7 @@ public:
 	 */
 	vector& comp_multiply(const vector& vec) noexcept
 	{
-		for (size_t i = 0; i != dimension; ++i) {
-			this->operator[](i) *= vec[i];
-		}
-		return *this;
+		return this->comp_operation(vec, std::multiplies<component_type>());
 	}
 
 	/**
@@ -692,11 +756,7 @@ public:
 	 */
 	vector comp_div(const vector& v) const noexcept
 	{
-		vector res;
-		for (size_t i = 0; i != dimension; ++i) {
-			res[i] = this->operator[](i) / v[i];
-		}
-		return res;
+		return this->comp_op(v, std::divides<component_type>());
 	}
 
 	/**
@@ -708,10 +768,32 @@ public:
 	 */
 	vector& comp_divide(const vector& v) noexcept
 	{
-		for (size_t i = 0; i != dimension; ++i) {
-			this->operator[](i) /= v[i];
+		return this->comp_operation(v, std::divides<component_type>());
+	}
+
+private:
+	// MSVC compiler doesn't allow negating unsigned types,
+	// this is why we cannot use std::negate and introduce our own
+	// negation functor
+	struct negate_functor {
+		component_type operator()(component_type a) const
+		{
+			if constexpr (std::is_signed_v<component_type>) {
+				return -a;
+			} else {
+				return (~a + component_type(1));
+			}
 		}
-		return *this;
+	};
+
+public:
+	/**
+	 * @brief Unary minus.
+	 * @return Negated vector.
+	 */
+	vector operator-() const noexcept
+	{
+		return this->comp_op(negate_functor());
 	}
 
 	/**
@@ -721,14 +803,7 @@ public:
 	 */
 	vector& negate() noexcept
 	{
-		for (auto& c : *this) {
-			if constexpr (std::is_signed_v<component_type>) {
-				c = -c;
-			} else {
-				c = ~c + component_type(1);
-			}
-		}
-		return *this;
+		return this->comp_operation(negate_functor());
 	}
 
 	/**
@@ -738,9 +813,12 @@ public:
 	component_type norm_pow2() const noexcept
 	{
 		component_type res = 0;
-		for (size_t i = 0; i != dimension; ++i) {
-			res += utki::pow2(this->operator[](i));
-		}
+
+		this->comp_op([&res](const auto& a) {
+			res += utki::pow2(a);
+			return component_type();
+		});
+
 		return res;
 	}
 
@@ -762,15 +840,16 @@ public:
 	vector& normalize() noexcept
 	{
 		component_type mag = this->norm();
-		if (mag == 0) {
-			this->x() = 1;
-			for (auto i = std::next(this->begin()); i != this->end(); ++i) {
-				*i = component_type(0);
-			}
-			return *this;
+		ASSERT(mag >= component_type(0))
+		if (mag != component_type(0)) {
+			return (*this) /= mag;
 		}
 
-		return (*this) /= this->norm();
+		this->x() = 1;
+		std::for_each(std::next(this->begin()), this->end(), [](const auto&) {
+			return component_type(0);
+		});
+		return *this;
 	}
 
 	/**
@@ -824,12 +903,10 @@ public:
 	 */
 	friend vector round(const vector& v) noexcept
 	{
-		using std::round;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = component_type(round(v[i]));
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::round;
+			return component_type(round(a));
+		});
 	}
 
 	/**
@@ -839,12 +916,10 @@ public:
 	 */
 	friend vector ceil(const vector& v) noexcept
 	{
-		using std::ceil;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = component_type(ceil(v[i]));
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::ceil;
+			return component_type(ceil(a));
+		});
 	}
 
 	/**
@@ -854,12 +929,10 @@ public:
 	 */
 	friend vector floor(const vector& v) noexcept
 	{
-		using std::floor;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = component_type(floor(v[i]));
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::floor;
+			return component_type(floor(a));
+		});
 	}
 
 	/**
@@ -870,13 +943,13 @@ public:
 	 */
 	vector& snap_to_zero(component_type threshold) noexcept
 	{
-		for (auto& c : *this) {
+		return this->comp_operation([&threshold](const auto& a) {
 			using std::abs;
-			if (abs(c) <= threshold) {
-				c = 0;
+			if (abs(a) <= threshold) {
+				return component_type(0);
 			}
-		}
-		return *this;
+			return a;
+		});
 	}
 
 	/**
@@ -976,12 +1049,10 @@ public:
 	 */
 	friend vector abs(const vector& v) noexcept
 	{
-		using std::abs;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = abs(v[i]);
-		}
-		return ret;
+		return v.comp_op([](const auto& a) {
+			using std::abs;
+			return abs(a);
+		});
 	}
 
 	/**
@@ -1013,12 +1084,10 @@ public:
 	 */
 	friend vector min(const vector& va, const vector& vb) noexcept
 	{
-		using std::min;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = min(va[i], vb[i]);
-		}
-		return ret;
+		return va.comp_op(vb, [](const auto& a, const auto& b) {
+			using std::min;
+			return min(a, b);
+		});
 	}
 
 	/**
@@ -1029,12 +1098,10 @@ public:
 	 */
 	friend vector max(const vector& va, const vector& vb) noexcept
 	{
-		using std::max;
-		vector ret;
-		for (size_t i = 0; i != dimension; ++i) {
-			ret[i] = max(va[i], vb[i]);
-		}
-		return ret;
+		return va.comp_op(vb, [](const auto& a, const auto& b) {
+			using std::max;
+			return max(a, b);
+		});
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const vector<component_type, dimension>& vec)
