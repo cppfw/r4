@@ -204,6 +204,7 @@ public:
 	 * @brief Default constructor.
 	 * Default constructor does not initialize vector components to any values.
 	 */
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init)
 	constexpr vector() = default;
 
 	/**
@@ -456,7 +457,8 @@ public:
 	 */
 	vector& operator=(component_type num) noexcept
 	{
-		return this->set(num);
+		this->set(num);
+		return *this;
 	}
 
 	/**

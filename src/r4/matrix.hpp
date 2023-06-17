@@ -55,6 +55,7 @@ public:
 	 * NOTE: it does not initialize the matrix with any values.
 	 * Matrix elements are undefined after the matrix is created with this constructor.
 	 */
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init)
 	constexpr matrix() = default;
 
 	/**

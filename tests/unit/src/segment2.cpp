@@ -7,10 +7,10 @@
 template class r4::segment2<int>;
 
 namespace{
-tst::set set("segment2", [](tst::suite& suite){
+const tst::set set("segment2", [](tst::suite& suite){
 	
 	suite.add("set_empty_bounding_box", [](){
-		r4::segment2<int> seg;
+		r4::segment2<int> seg{};
 
 		seg.set_empty_bounding_box();
 

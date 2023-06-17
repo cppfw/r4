@@ -9,7 +9,7 @@ using namespace std::string_literals;
 template class r4::matrix<int, 4, 4>;
 
 namespace{
-tst::set set("matrix4", [](tst::suite& suite){
+const tst::set set("matrix4", [](tst::suite& suite){
     suite.add("constructor_4x_vector4", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
@@ -30,7 +30,7 @@ tst::set set("matrix4", [](tst::suite& suite){
     });
 
     suite.add("constructor_quaternion", []{
-        r4::quaternion<float> q;
+        r4::quaternion<float> q{};
 		q.set_rotation(1, 2, 3, utki::pi<float>() / 6);
 
 		r4::matrix4<float> m(q);

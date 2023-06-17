@@ -7,7 +7,7 @@
 template class r4::vector<int, 3>;
 
 namespace{
-tst::set set("vector3", [](tst::suite& suite){
+const tst::set set("vector3", [](tst::suite& suite){
     suite.add("constructor_x_y_z", []{
         r4::vector3<int> v{3, 4, 5};
 

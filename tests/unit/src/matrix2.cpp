@@ -9,7 +9,7 @@ using namespace std::string_literals;
 template class r4::matrix<int, 2, 3>;
 
 namespace{
-tst::set set("matrix2", [](tst::suite& suite){
+const tst::set set("matrix2", [](tst::suite& suite){
     suite.add("operator_out", []{
         r4::matrix2<int> m;
 		m.set_identity();

@@ -7,7 +7,7 @@
 template class r4::rectangle<int>;
 
 namespace{
-tst::set set("rectangle", [](tst::suite& suite){
+const tst::set set("rectangle", [](tst::suite& suite){
     suite.add("constructor_x_y_w_h", []{
         r4::rectangle<int> r{3, 4, 5, 6};
 

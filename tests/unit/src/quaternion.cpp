@@ -7,7 +7,7 @@
 template class r4::quaternion<float>;
 
 namespace{
-tst::set set("quaternion", [](tst::suite& suite){
+const tst::set set("quaternion", [](tst::suite& suite){
 	suite.add("constructor_vec_scalar", []{
 		r4::vector3<int> v{3, 4, 5};
 		r4::quaternion<int> a{v, 6};
