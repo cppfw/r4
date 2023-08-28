@@ -360,7 +360,7 @@ public:
 	template <typename unary_operation_type>
 	vector comp_op(unary_operation_type op) const
 	{
-		vector res;
+		vector res{};
 		std::transform(this->begin(), this->end(), res.begin(), op);
 		return res;
 	}
