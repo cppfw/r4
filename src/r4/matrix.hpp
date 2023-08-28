@@ -227,11 +227,16 @@ public:
 	 */
 	vector<component_type, num_rows> operator*(const vector<component_type, num_columns>& vec) const noexcept
 	{
-		vector<component_type, num_rows> r;
-		for (size_t i = 0; i != num_rows; ++i) {
-			r[i] = this->row(i) * vec;
-		}
-		return r;
+		vector<component_type, num_rows> res;
+		std::transform( //
+			this->begin(),
+			this->end(),
+			res.begin(),
+			[&vec](const auto& r) {
+				return r * vec;
+			}
+		);
+		return res;
 	}
 
 	// TODO: add doxygen comment

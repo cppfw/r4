@@ -375,7 +375,7 @@ public:
 	template <typename binary_operation_type>
 	vector comp_op(const vector& vec, binary_operation_type op) const
 	{
-		vector res;
+		vector res{};
 		std::transform(this->begin(), this->end(), vec.begin(), res.begin(), op);
 		return res;
 	}
