@@ -115,6 +115,35 @@ public:
 	}
 
 	/**
+	 * @brief Unary component-wise operation.
+	 * Perform unary operation on each component of the vector.
+	 * @param op - unary operation to perform on each component of the vector.
+	 * @return Resulting vector.
+	 */
+	template <typename unary_operation_type>
+	matrix comp_op(unary_operation_type op) const
+	{
+		matrix res{};
+		std::transform(this->begin(), this->end(), res.begin(), op);
+		return res;
+	}
+
+	/**
+	 * @brief Binary component-wise operation.
+	 * Perform binary operation on each component of two vectors.
+	 * @param vec - second vector.
+	 * @param op - binary operation to perform on each component of two vectors.
+	 * @return Resulting vector.
+	 */
+	template <typename binary_operation_type>
+	matrix comp_op(const matrix& mat, binary_operation_type op) const
+	{
+		matrix res{};
+		std::transform(this->begin(), this->end(), mat.begin(), res.begin(), op);
+		return res;
+	}
+
+	/**
 	 * @brief Convert to different element type.
 	 * @return matrix with converted element type.
 	 */
@@ -122,9 +151,14 @@ public:
 	matrix<another_component_type, num_rows, num_columns> to() noexcept
 	{
 		matrix<another_component_type, num_rows, num_columns> ret;
-		for (size_t i = 0; i != num_rows; ++i) {
-			ret[i] = this->row(i).template to<another_component_type>();
-		}
+		std::transform( //
+			this->begin(),
+			this->end(),
+			ret.begin(),
+			[](const auto& r) {
+				return r.template to<another_component_type>();
+			}
+		);
 		return ret;
 	}
 
@@ -211,11 +245,12 @@ public:
 	 */
 	matrix operator-(const matrix& m) const noexcept
 	{
-		matrix res;
-		for (size_t r = 0; r != num_rows; ++r) {
-			res[r] = this->row(r) - m[r];
-		}
-		return res;
+		return this->comp_op( //
+			m,
+			[](const auto& r1, const auto& r2) {
+				return r1 - r2;
+			}
+		);
 	}
 
 	/**
@@ -362,11 +397,9 @@ public:
 	 */
 	matrix operator/(component_type num) const noexcept
 	{
-		matrix res;
-		for (unsigned r = 0; r != num_rows; ++r) {
-			res[r] = this->row(r) / num;
-		}
-		return res;
+		return this->comp_op([&num](const auto& r) {
+			return r / num;
+		});
 	}
 
 	/**
