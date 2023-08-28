@@ -420,23 +420,21 @@ public:
 
 	/**
 	 * @brief Initialize this matrix with identity matrix.
-	 * Defined for both, square and non-square matrices.
+	 * Defined only for square matrices and 2x3 matrix.
 	 */
-	matrix& set_identity() noexcept
+	std::enable_if_t<num_rows == num_columns || (num_rows == 2 && num_columns == 3), matrix>& set_identity() noexcept
 	{
-		using std::min;
-		for (size_t r = 1; r != num_rows; ++r) {
-			for (size_t c = 0; c != min(r, num_columns); ++c) {
-				this->row(r)[c] = component_type(0);
-			}
-		}
-		for (size_t i = 0; i != min(num_rows, num_columns); ++i) {
-			this->row(i)[i] = component_type(1);
-		}
-		for (size_t r = 0; r != num_columns; ++r) {
-			for (size_t c = r + 1; c != num_columns; ++c) {
-				this->row(r)[c] = component_type(0);
-			}
+		size_t row_index = 0;
+		for (auto& r : *this) {
+			auto one_iter = utki::next(r.begin(), row_index);
+
+			std::fill(r.begin(), one_iter, component_type(0));
+
+			*one_iter = component_type(1);
+
+			std::fill(std::next(one_iter), r.end(), component_type(0));
+
+			++row_index;
 		}
 		return *this;
 	}
@@ -526,7 +524,7 @@ public:
 
 	/**
 	 * @brief Multiply current matrix by scale matrix.
-	 * Multiplies this matrix M by scale matrix dimension from the right (M = M * dimension).
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
 	 * Defined only for 1x1, 2x2, 2x3, 3x3, 4x4 matrices.
 	 * @param s - scaling factor to be applied in all directions (x, y and z).
 	 * @return reference to this matrix instance.
@@ -538,11 +536,10 @@ public:
 	scale(component_type s) noexcept
 	{
 		using std::min;
-		size_t end_col = min(min(num_columns, num_rows), size_t(3)); // for 2x3 and 4x4 matrix do not scale last column
-		for (size_t r = 0; r != num_rows; ++r) {
-			auto& cur_row = this->row(r);
-			for (size_t c = 0; c != end_col; ++c) {
-				cur_row[c] *= s;
+		size_t num_cols = min(min(num_columns, num_rows), size_t(3)); // for 2x3 and 4x4 matrix do not scale last column
+		for (auto& r : *this) {
+			for (auto& e : utki::make_span(r.data(), num_cols)) {
+				e *= s;
 			}
 		}
 		return *this;
@@ -550,7 +547,7 @@ public:
 
 	/**
 	 * @brief Multiply current matrix by scale matrix.
-	 * Multiplies this matrix M by scale matrix dimension from the right (M = M * dimension).
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
 	 * @param x - scaling factor in x direction.
 	 * @param y - scaling factor in y direction.
 	 * @return reference to this matrix instance.
@@ -570,7 +567,7 @@ public:
 
 	/**
 	 * @brief Multiply current matrix by scale matrix.
-	 * Multiplies this matrix M by scale matrix dimension from the right (M = M * dimension).
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
 	 * @param x - scaling factor in x direction.
 	 * @param y - scaling factor in y direction.
 	 * @param z - scaling factor in z direction.
@@ -600,11 +597,16 @@ public:
 	matrix& scale(const vector<component_type, dimension>& s) noexcept
 	{
 		using std::min;
-		for (size_t c = 0; c != min(dimension, num_columns); ++c) {
-			for (size_t r = 0; r != num_rows; ++r) {
-				this->row(r)[c] *= s[c];
+		auto num_cols = min(dimension, num_columns);
+
+		for (auto& r : *this) {
+			auto s_iter = s.begin();
+			for (auto& e : utki::make_span(r.data(), num_cols)) {
+				e *= *s_iter;
+				++s_iter;
 			}
 		}
+
 		return *this;
 	}
 
