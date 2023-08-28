@@ -669,19 +669,22 @@ public:
 		const vector<
 			std::enable_if_t<
 				((num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)))
-					&& (dimension == 2 || dimension == 3),
+					&& (dimension == 2 || dimension == 3) && (dimension < num_columns),
 				enable_type>,
 			dimension>& t
 	) noexcept
 	{
 		// only last column of the matrix changes
-		for (size_t r = 0; r != num_rows; ++r) {
-			auto& e = this->row(r)[num_columns - 1];
-			using std::min;
-			for (size_t s = 0; s != min(dimension, num_columns - 1); ++s) {
-				e += this->row(r)[s] * t[s];
+		for (auto& r : *this) {
+			auto& res = r.back();
+
+			auto r_iter = r.begin();
+			for (const auto& e : t) {
+				res += e * *r_iter;
+				++r_iter;
 			}
 		}
+
 		return *this;
 	}
 
