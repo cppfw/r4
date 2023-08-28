@@ -332,7 +332,7 @@ const tst::set set("matrix3", [](tst::suite& suite){
                 { 70, 80, 90 }
             };
         
-        float a = utki::pi<float>() / 6;
+        float a = float(utki::pi) / 6;
 
         decltype(m) res(m);
         res.rotate(a);

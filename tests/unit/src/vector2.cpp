@@ -408,7 +408,7 @@ const tst::set set("vector2", [](tst::suite& suite){
     suite.add("rotate_angle", []{
         r4::vector2<float> v{41.0f, 30.0f};
 
-		v.rotate(utki::pi<float>() / 6);
+		v.rotate(float(utki::pi) / 6);
 
 		auto r = v.to<int>();
 
@@ -417,7 +417,7 @@ const tst::set set("vector2", [](tst::suite& suite){
     });
 
     suite.add("rotated_angle", []{
-        auto v = r4::vector2<float>{41.0f, 30.0f}.rot(utki::pi<float>() / 6);
+        auto v = r4::vector2<float>{41.0f, 30.0f}.rot(float(utki::pi) / 6);
 
 		auto r = v.to<int>();
 

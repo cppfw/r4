@@ -31,7 +31,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 
     suite.add("constructor_quaternion", []{
         r4::quaternion<float> q{};
-		q.set_rotation(1, 2, 3, utki::pi<float>() / 6);
+		q.set_rotation(1, 2, 3, float(utki::pi) / 6);
 
 		r4::matrix4<float> m(q);
 
