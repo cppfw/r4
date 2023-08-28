@@ -914,7 +914,7 @@ public:
 				this->row(0),
 				this->row(1),
 				{0, 0, 1}
-            };
+			};
 
 			m.invert();
 

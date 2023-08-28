@@ -179,7 +179,8 @@ public:
 	{
 		return quaternion<another_component_type>{
 			this->v.template to<another_component_type>(),
-			another_component_type(this->s)};
+			another_component_type(this->s)
+		};
 	}
 
 	/**

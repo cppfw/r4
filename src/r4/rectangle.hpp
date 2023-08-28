@@ -222,7 +222,8 @@ public:
 	{
 		return rectangle<another_component_type>{
 			this->p.template to<another_component_type>(),
-			this->d.template to<another_component_type>()};
+			this->d.template to<another_component_type>()
+		};
 	}
 
 	friend std::ostream& operator<<(std::ostream& s, const rectangle<component_type>& rect)

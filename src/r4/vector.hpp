@@ -699,14 +699,16 @@ public:
 			return vector{
 				this->y() * vec.z() - this->z() * vec.y(),
 				this->z() * vec.x() - this->x() * vec.z(),
-				this->x() * vec.y() - this->y() * vec.x()};
+				this->x() * vec.y() - this->y() * vec.x()
+			};
 		} else {
 			static_assert(dimension == 4, "cross product makes no sense for non 3d (4d) vectors");
 			return vector{
 				this->y() * vec.z() - this->z() * vec.y(),
 				this->z() * vec.x() - this->x() * vec.z(),
 				this->x() * vec.y() - this->y() * vec.x(),
-				this->w() * vec.w()};
+				this->w() * vec.w()
+			};
 		}
 	}
 
