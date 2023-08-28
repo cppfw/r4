@@ -320,13 +320,18 @@ public:
 	{
 		matrix<component_type, num_rows, another_num_column> ret;
 		for (size_t rd = 0; rd != ret.size(); ++rd) {
-			auto& row_d = ret[rd];
-			for (size_t cd = 0; cd != row_d.size(); ++cd) {
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+			auto& row_dst = ret[rd];
+			const auto& row_src = this->row(rd);
+
+			for (size_t cd = 0; cd != row_dst.size(); ++cd) {
 				component_type v = 0;
 				for (size_t i = 0; i != num_columns; ++i) {
-					v += this->row(rd)[i] * m[i][cd];
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+					v += row_src[i] * m[i][cd];
 				}
-				ret[rd][cd] = v;
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+				row_dst[cd] = v;
 			}
 		}
 		return ret;
@@ -680,7 +685,7 @@ public:
 
 			auto r_iter = r.begin();
 			for (const auto& e : t) {
-				res += e * *r_iter;
+				res += *r_iter * e;
 				++r_iter;
 			}
 		}
@@ -755,8 +760,11 @@ public:
 	{
 		using std::swap;
 		using std::min;
-		for (size_t r = 1; r != min(num_rows, num_columns); ++r) {
+
+		auto square_index = min(num_rows, num_columns);
+		for (size_t r = 1; r != square_index; ++r) {
 			for (size_t c = 0; c != r; ++c) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				swap(this->row(r)[c], this->row(c)[r]);
 			}
 		}
@@ -765,6 +773,7 @@ public:
 			for (size_t r = 0; r != num_rows; ++r) {
 				auto& cur_row = this->row(r);
 				for (size_t c = num_rows; c != num_columns; ++c) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 					cur_row[c] = component_type(0);
 				}
 			}
@@ -788,29 +797,37 @@ public:
 
 		using std::min;
 
-		for (size_t r = 1; r != min(num_columns, num_rows); ++r) {
+		auto square_index = min(num_columns, num_rows);
+
+		for (size_t r = 1; r != square_index; ++r) {
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+			auto& ret_row = ret[r];
+			const auto& src_row = this->row(r);
 			for (size_t c = 0; c != r; ++c) {
-				ret[r][c] = this->row(c)[r];
-				ret[c][r] = this->row(r)[c];
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+				ret_row[c] = this->row(c)[r];
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+				ret[c][r] = src_row[c];
 			}
 		}
 
 		// copy diagonal elements
-		for (size_t i = 0; i != min(num_columns, num_rows); ++i) {
+		for (size_t i = 0; i != square_index; ++i) {
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 			ret[i][i] = this->row(i)[i];
 		}
 
 		// in case the matrix is not square, then zero out the "non-square" parts
 		if constexpr (num_columns > num_rows) {
-			for (size_t r = 0; r != num_rows; ++r) {
-				auto& cur_row = ret[r];
-				for (size_t c = num_rows; c != num_columns; ++c) {
-					cur_row[c] = component_type(0);
+			for (auto& r : ret) {
+				for (auto& c : utki::make_span(r).subspan(num_rows)) {
+					c = component_type(0);
 				}
 			}
 		} else {
 			static_assert(num_rows >= num_columns, "expected matrix with num_rows >= num_columns");
 			for (size_t r = num_columns; r != num_rows; ++r) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				ret[r].set(component_type(0));
 			}
 		}
@@ -838,18 +855,24 @@ public:
 
 		for (size_t dr = 0; dr != row; ++dr) {
 			for (size_t dc = 0; dc != col; ++dc) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				ret[dr][dc] = this->row(dr)[dc];
 			}
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 			for (size_t dc = col; dc != ret[dr].size(); ++dc) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				ret[dr][dc] = this->row(dr)[dc + 1];
 			}
 		}
 
 		for (size_t dr = row; dr != ret.size(); ++dr) {
 			for (size_t dc = 0; dc != col; ++dc) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				ret[dr][dc] = this->row(dr + 1)[dc];
 			}
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 			for (size_t dc = col; dc != ret[dr].size(); ++dc) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				ret[dr][dc] = this->row(dr + 1)[dc + 1];
 			}
 		}
@@ -888,6 +911,7 @@ public:
 				component_type ret = 0;
 				component_type sign = 1;
 				for (size_t i = 0; i != num_columns; ++i, sign = -sign) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 					ret += sign * this->row(0)[i] * this->minor(0, i);
 				}
 				return ret;
@@ -941,6 +965,7 @@ public:
 				for (size_t r = 0; r != num_rows; ++r) {
 					component_type sign = r % 2 == 0 ? component_type(1) : component_type(-1);
 					for (size_t c = 0; c != num_columns; ++c) {
+						// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 						mm[r][c] = sign * this->minor(r, c);
 						sign = -sign;
 					}
