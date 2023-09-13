@@ -1,3 +1,9 @@
+libr4 (1.0.77) unstable; urgency=medium
+
+  * add 2d cross product
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 13 Sep 2023 18:22:37 +0300
+
 libr4 (1.0.76) unstable; urgency=medium
 
   * archlinux: deploy
