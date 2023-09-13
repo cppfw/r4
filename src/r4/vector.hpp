@@ -721,7 +721,9 @@ public:
 	 * @return Cross product of this vector by given vector.
 	 */
 	template <typename enable_type = vector>
-	std::enable_if_t<dimension >= 3, enable_type> operator%(const vector& vec) const noexcept
+	// TODO: remove deprecated stuff
+	[[deprecated("use cross()")]] std::enable_if_t<dimension >= 3, enable_type> operator%(const vector& vec
+	) const noexcept
 	{
 		return this->cross(vec);
 	}

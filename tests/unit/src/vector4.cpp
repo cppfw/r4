@@ -298,17 +298,6 @@ const tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(r[3], 60, SL);
     });
 
-    suite.add("operator_percent_vector4", []{
-        r4::vector4<int> v4{3, 4, 5, 6};
-
-		auto r = v4 % r4::vector4<int>{7, 8, 9, 10};
-
-		tst::check_eq(r[0], -4, SL);
-        tst::check_eq(r[1], 8, SL);
-		tst::check_eq(r[2], -4, SL);
-		tst::check_eq(r[3], 60, SL);
-    });
-
     suite.add<std::pair<r4::vector4<int>, r4::vector4<int>>>(
         "operator_equals_equals_vector4_true",
         {

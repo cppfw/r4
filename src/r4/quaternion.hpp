@@ -333,7 +333,7 @@ public:
 	}
 
 	// TODO: remove deprecated stuff
-	quaternion& operator%=(const quaternion& q) noexcept
+	[[deprecated("use operator*=()")]] quaternion& operator%=(const quaternion& q) noexcept
 	{
 		LOG([](auto& o) {
 			o << "quaternion::operator%=() is DEPRECATED!, use quaternion::operator*=() instead!\n";
@@ -350,11 +350,11 @@ public:
 	 */
 	quaternion operator*(const quaternion& q) const noexcept
 	{
-		return quaternion(this->s * q.v + q.s * this->v + this->v % q.v, this->s * q.s - this->v * q.v);
+		return quaternion(this->s * q.v + q.s * this->v + this->v.cross(q.v), this->s * q.s - this->v * q.v);
 	}
 
 	// TODO: remove deprecated stuff
-	quaternion operator%(const quaternion& q) const noexcept
+	[[deprecated("use operator*()")]] quaternion operator%(const quaternion& q) const noexcept
 	{
 		LOG([](auto& o) {
 			o << "quaternion::operator%() is DEPRECATED!, use quaternion::operator*() instead!\n";

@@ -295,17 +295,6 @@ const tst::set set("vector3", [](tst::suite& suite){
 		tst::check_eq(r[2], -3, SL);
     });
 
-    suite.add("operator_percent_vector3", []{
-        r4::vector3<int> a{3, 4, 5};
-		r4::vector3<int> b{6, 7, 8};
-
-		auto r = a % b;
-
-		tst::check_eq(r[0], -3, SL);
-		tst::check_eq(r[1], 6, SL);
-		tst::check_eq(r[2], -3, SL);
-    });
-
     suite.add<std::pair<r4::vector3<int>, bool>>(
         "is_zero",
         {
