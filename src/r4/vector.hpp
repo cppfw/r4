@@ -686,16 +686,19 @@ public:
 
 	/**
 	 * @brief Cross product.
-	 * First three components of the resulting 4d vector is a result of cross
+	 * For 4d vectors, first three components of the resulting 4d vector is a result of cross
 	 * product between two 3d vectors formed from first 3 components of initial 4d vectors.
 	 * The forth component is a simple multiplication of 4th components of initial vectors.
 	 * @param vec - vector to multiply by.
 	 * @return Cross product of this vector by given vector.
 	 */
-	template <typename enable_type = vector>
-	std::enable_if_t<dimension == 3 || dimension == 4, enable_type> cross(const vector& vec) const noexcept
+	template <typename enable_type = std::conditional_t<dimension == 2, typename base_type::value_type, vector>>
+	std::enable_if_t<dimension == 2 || dimension == 3 || dimension == 4, enable_type> cross(const vector& vec
+	) const noexcept
 	{
-		if constexpr (dimension == 3) {
+		if constexpr (dimension == 2) {
+			return this->x() * vec.y() - this->y() * vec.x();
+		} else if constexpr (dimension == 3) {
 			return vector{
 				this->y() * vec.z() - this->z() * vec.y(),
 				this->z() * vec.x() - this->x() * vec.z(),

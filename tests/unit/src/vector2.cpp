@@ -219,6 +219,13 @@ const tst::set set("vector2", [](tst::suite& suite){
 		tst::check_eq(r, 3 * 5 + 4 * 6, SL);
     });
 
+    suite.add("cross_product", [](){
+        r4::vector2<int> a{3, 4};
+		r4::vector2<int> b{5, 6};
+
+        tst::check_eq(a.cross(b), -2, SL);
+    });
+
     suite.add("comp_mul_vector2", []{
         r4::vector2<int> a{3, 4};
 		r4::vector2<int> b{5, 6};
