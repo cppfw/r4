@@ -304,6 +304,27 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
+	suite.add("perspective", [](){
+		r4::matrix4<int> m{
+			{1, 2, 3, 4},
+			{5, 6, 7, 8},
+			{9, 10, 11, 12},
+			{13, 14, 15, 16}
+		};
+
+		m.perspective(3);
+
+		std::stringstream ss;
+		ss << m.to<int>();
+		auto str = ss.str();
+		auto cmp =
+				"|1 2 15 4" "\n"
+				"|5 6 31 8" "\n"
+				"|9 10 47 12" "\n"
+				"|13 14 63 16" "\n"s;
+		tst::check_eq(str, cmp, SL);
+	});
+
     suite.add("set_quaternion", []{
         r4::matrix4<float> m{
 		 	{1, 2, 3, 4},

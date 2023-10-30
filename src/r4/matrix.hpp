@@ -501,7 +501,7 @@ public:
 
 	/**
 	 * @brief Multiply current matrix by frustum matrix.
-	 * Multiplies this matrix M by frustum matrix dimension from the right (M = M * dimension).
+	 * Multiplies this matrix M by frustum matrix F from the right (M = M * F).
 	 * Parameters are identical to glFrustum() function from OpenGL.
 	 * Defined only for 4x4 matrices.
 	 * @param left - left vertical clipping plane.
@@ -513,7 +513,7 @@ public:
 	 * @return reference to this matrix instance.
 	 */
 	template <typename enable_type = component_type>
-	matrix frustum(
+	matrix& frustum(
 		std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> left,
 		component_type right,
 		component_type bottom,
@@ -525,6 +525,32 @@ public:
 		matrix f;
 		f.set_frustum(left, right, bottom, top, near_val, far_val);
 		return this->operator*=(f);
+	}
+
+	/**
+	 * @brief Multiply current matrix by perspective projection matrix.
+	 * Multiplies this matrix by perspective projection matrix P from the right (M = M * P).
+	 * This operation is defined only for 4x4 matrices.
+	 * Perspective projection matrix is:
+	 *
+	 *      | 1 0 0 0 |
+	 *  P = | 0 1 0 0 |
+	 *      | 0 0 1 0 |
+	 *      | 0 0 p 1 |
+	 *
+	 * @param p - element [3][2] of matrix P.
+	 * @return Reference to this matrix.
+	 */
+	template <typename enable_type = component_type>
+	matrix& perspective(
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> p = component_type(1)
+	) noexcept
+	{
+		this->row(0)[2] += this->row(0)[3] * p;
+		this->row(1)[2] += this->row(1)[3] * p;
+		this->row(2)[2] += this->row(2)[3] * p;
+		this->row(3)[2] += this->row(3)[3] * p;
+		return *this;
 	}
 
 	/**
