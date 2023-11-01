@@ -131,6 +131,25 @@ public:
 	}
 
 	/**
+	 * @brief Test if the rectangle contains given rectangle.
+	 *
+	 * @param rect - rectangle to test for containment.
+	 * @return true if the rectangle fully contains the given rectangle.
+	 * @return false otherwise.
+	 */
+	bool contains(const rectangle& rect) const noexcept
+	{
+		auto this_x2y2 = this->x2_y2();
+		auto rect_x2y2 = rect.x2_y2();
+
+		return //
+			this->p.x() <= rect.p.x() && //
+			this->p.y() <= rect.p.y() && //
+			this_x2y2.x() >= rect_x2y2.x() && //
+			this_x2y2.y() >= rect_x2y2.y();
+	}
+
+	/**
 	 * @brief Intersect this rectangle with given rectangle.
 	 * The intersection result is stored in this rectangle.
 	 * @param rect - rectangle to intersect this rectnagle with.

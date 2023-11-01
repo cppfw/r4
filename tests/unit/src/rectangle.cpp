@@ -62,6 +62,31 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check(!r.overlaps(p[8]), SL);
     });
 
+	suite.add<std::pair<r4::rectangle<int>, r4::rectangle<int>>>(
+		"contains__rectangle__true",
+		{
+			{{{10, 20},{30, 40}}, {{10, 20},{30, 40}}},
+			{{{10, 20},{30, 40}}, {{11, 20},{29, 40}}},
+			{{{10, 20},{30, 40}}, {{11, 21},{29, 39}}},
+		},
+		[](const auto& p){
+			tst::check(p.first.contains(p.second), SL);
+		}
+	);
+
+	suite.add<std::pair<r4::rectangle<int>, r4::rectangle<int>>>(
+		"contains__rectangle__false",
+		{
+			{{{10, 20},{30, 40}}, {{11, 20},{30, 40}}},
+			{{{10, 20},{30, 40}}, {{9, 20},{30, 40}}},
+			{{{10, 20},{30, 40}}, {{10, 21},{30, 40}}},
+			{{{10, 20},{30, 40}}, {{10, 19},{30, 40}}},
+		},
+		[](const auto& p){
+			tst::check(!p.first.contains(p.second), SL);
+		}
+	);
+
     suite.add("intersect_rectangle", []{
         r4::rectangle<int> r{ {3, 4}, {6, 8} };
 		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
