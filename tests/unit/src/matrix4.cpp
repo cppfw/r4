@@ -451,6 +451,27 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
+	suite.add("scale_vector4", []{
+        r4::matrix4<int> m{
+		 	{1, 2, 3, 4},
+			{5, 6, 7, 8},
+			{9, 10, 11, 12},
+			{13, 14, 15, 16}
+		};
+
+		m.scale(r4::vector4<int>{3, 4, 5, 6});
+
+		std::stringstream ss;
+		ss << m;
+		auto str = ss.str();
+		auto cmp =
+				"|3 8 15 24" "\n"
+				"|15 24 35 48" "\n"
+				"|27 40 55 72" "\n"
+				"|39 56 75 96" "\n"s;
+		tst::check_eq(str, cmp, SL);
+    });
+
     suite.add("translate_x_y", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},

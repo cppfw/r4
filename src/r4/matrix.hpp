@@ -620,7 +620,7 @@ public:
 
 	/**
 	 * @brief Multiply current matrix by scale matrix.
-	 * Multiplies this matrix M by scale matrix dimension from the right (M = M * dimension).
+	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
 	 * @param s - vector of scaling factors.
 	 * @return reference to this matrix instance.
 	 */
@@ -628,7 +628,7 @@ public:
 	matrix& scale(const vector<component_type, dimension>& s) noexcept
 	{
 		using std::min;
-		auto num_cols = min(dimension, num_columns);
+		constexpr auto num_cols = min(dimension, num_columns);
 
 		for (auto& r : *this) {
 			auto s_iter = s.begin();
