@@ -298,7 +298,10 @@ public:
 	{
 		static_assert(num_rows == 2 && num_columns == 3, "2x3 matrix expected");
 		static_assert(dimension == 2, "2d vector expected");
-		return vector<component_type, 2>{this->row(0) * vec + this->row(0)[2], this->row(1) * vec + this->row(1)[2]};
+		return vector<component_type, 2>{
+			this->row(0) * vec + this->row(0)[2], //
+			this->row(1) * vec + this->row(1)[2]
+		};
 	}
 
 	/**
