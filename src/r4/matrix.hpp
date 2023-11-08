@@ -340,7 +340,7 @@ public:
 		return ret;
 	}
 
-	// Define operaotr*(matrix) for 2x3 matrices. See description of operator*(matrix) for square matrices for info.
+	// Define operator*(matrix) for 2x3 matrices. See description of operator*(matrix) for square matrices for info.
 	template <typename enable_type = matrix>
 	std::enable_if_t<num_rows == 2 && num_columns == 3, enable_type> operator*(const matrix& matr) const noexcept
 	{
