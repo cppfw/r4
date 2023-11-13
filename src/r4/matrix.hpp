@@ -542,7 +542,7 @@ public:
 	 *      | 0 0 p 1 |
 	 *
 	 * The meaning of this matrix is as follows:
-	 * - the projection center point (eye) is at (0, 0, -1 / p) point.
+	 * - the projection center point, i.e. the eye, is at (0, 0, -1 / p) point.
 	 * - the projection surface is the x-y plane
 	 *
 	 * @param p - element [3][2] of matrix P.
