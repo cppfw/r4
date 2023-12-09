@@ -10,12 +10,31 @@ template class r4::matrix<int, 4, 4>;
 
 namespace{
 const tst::set set("matrix4", [](tst::suite& suite){
-    suite.add("constructor_4x_vector4", []{
+    suite.add("constructor_4x_initializer_list4", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
 			{9, 10, 11, 12},
 			{13, 14, 15, 16}
+		};
+
+		std::stringstream ss;
+		ss << m;
+		auto str = ss.str();
+		auto cmp =
+				"|1 2 3 4" "\n"
+				"|5 6 7 8" "\n"
+				"|9 10 11 12" "\n"
+				"|13 14 15 16" "\n"s;
+		tst::check_eq(str, cmp, SL);
+    });
+
+	suite.add("constructor_4x_vector4", []{
+        r4::matrix4<int> m{
+		 	r4::vector4<int>{1, 2, 3, 4},
+			r4::vector4<int>{5, 6, 7, 8},
+			r4::vector4<int>{9, 10, 11, 12},
+			r4::vector4<int>{13, 14, 15, 16}
 		};
 
 		std::stringstream ss;

@@ -55,9 +55,9 @@ const tst::set set("matrix3", [](tst::suite& suite){
     });
 
     suite.add("constructor_3x_vector4", []{
-        r4::vector4<int> r0(1, 2, 3, 4);
-        r4::vector4<int> r1(5, 6, 7, 8);
-        r4::vector4<int> r2(9, 10, 11, 12);
+        r4::vector3<int> r0(1, 2, 3);
+        r4::vector3<int> r1(5, 6, 7);
+        r4::vector3<int> r2(9, 10, 11);
 
         r4::matrix3<int> m(r0, r1, r2);
 

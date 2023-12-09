@@ -64,7 +64,7 @@ public:
 	 * @param rows - parameter pack with initializing rows.
 	 */
 	template <typename... argument_type, std::enable_if_t<sizeof...(argument_type) == num_rows, bool> = true>
-	constexpr explicit matrix(argument_type... rows) noexcept :
+	constexpr explicit matrix(const vector<argument_type, num_columns>&... rows) noexcept :
 		base_type{rows...}
 	{
 		static_assert(
