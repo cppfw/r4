@@ -7,7 +7,7 @@ this_srcs += $(call prorab-src-dir, src)
 
 $(eval $(call prorab-config, ../../config))
 
-this_cxxflags += -I ../../src
+this_cxxflags += -isystem ../../src
 
 this_ldlibs += -ltst -lutki -lm
 
