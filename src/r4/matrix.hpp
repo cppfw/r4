@@ -131,7 +131,7 @@ public:
 	/**
 	 * @brief Binary component-wise operation.
 	 * Perform binary operation on each component of two vectors.
-	 * @param vec - second vector.
+	 * @param mat - second matrix.
 	 * @param op - binary operation to perform on each component of two vectors.
 	 * @return Resulting vector.
 	 */
