@@ -12,6 +12,6 @@ $(eval $(prorab-build-lib))
 
 $(eval $(prorab-clang-format))
 
-this_src_dir := 
+this_src_dir := $(this_name)
 this_license_file := ../LICENSE
 $(eval $(prorab-license))
