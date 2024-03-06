@@ -1,3 +1,9 @@
+libr4 (1.0.82) unstable; urgency=medium
+
+  * bookworm
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 06 Mar 2024 15:32:55 +0200
+
 libr4 (1.0.81) unstable; urgency=medium
 
   * doxygen comment fix
