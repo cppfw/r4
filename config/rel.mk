@@ -1,13 +1,9 @@
 include $(config_dir)base/base.mk
 
-this_cxxflags += -O3
+# TODO: use -O3 when https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105651 is fixed in debian bookworm
+this_cxxflags += -O2
 
 this_lint_cmd = $(prorab_lint_cmd_clang_tidy)
-
-# WORKAROUND: Use clang++ instead of g++ because Debian bookworm's version of g++ has bug,
-# it gives compiler warnings (which are turned to errors by -Werror) when using -O3 optimization
-this_cxx := clang++
-this_cc := clang
 
 # WORKAROUND: on ubuntu jammy dpkg-buildpackage passes -ffat-lto-objects compilation flag
 # which is not supported by clang and clang-tidy complains about it:
