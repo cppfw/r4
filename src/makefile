@@ -2,6 +2,9 @@ include prorab.mk
 include prorab-license.mk
 include prorab-clang-format.mk
 
+$(info g++ version:)
+$(info $(shell g++ --version))
+
 this_name := r4
 
 this_soname := 0
