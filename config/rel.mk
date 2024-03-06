@@ -4,6 +4,10 @@ this_cxxflags += -O3
 
 this_lint_cmd = $(prorab_lint_cmd_clang_tidy)
 
+# WORKAROUND: Use clang++ instead of g++ because Debian bookworm's version of g++ has bug,
+# it gives compiler warnings (which are turned to errors by -Werror) when using -O3 optimization
+this_cxx := clang++
+
 # WORKAROUND: on ubuntu jammy dpkg-buildpackage passes -ffat-lto-objects compilation flag
 # which is not supported by clang and clang-tidy complains about it:
 # error: optimization flag '-ffat-lto-objects' is not supported [clang-diagnostic-ignored-optimization-argument]

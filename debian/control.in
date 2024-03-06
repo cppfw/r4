@@ -8,6 +8,8 @@ Build-Depends:
 		prorab-extra,
 		myci,
 		doxygen,
+# for now using clang++ instead of gcc
+		clang,
 		clang-tidy,
 		clang-format,
 		libutki-dev,
