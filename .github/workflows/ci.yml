@@ -56,7 +56,7 @@ jobs:
         # due to some bug in gcov, we need to use --gcov-ignore-parse-errors=negative_hits.warn
         run: gcovr --gcov-ignore-parse-errors=negative_hits.warn --exclude-throw-branches --filter src/ --cobertura > cobertura.xml
       - name: upload coverage report to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cobertura.xml
           path: cobertura.xml
