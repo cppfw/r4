@@ -1,3 +1,9 @@
+libr4 (1.0.83) unstable; urgency=medium
+
+  * add rectangle::rectangle(segment2)
+
+ -- Ivan Gagis <igagis@gmail.com>  Sat, 27 Apr 2024 01:14:36 +0300
+
 libr4 (1.0.82) unstable; urgency=medium
 
   * bookworm
