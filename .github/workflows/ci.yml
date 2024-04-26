@@ -64,7 +64,7 @@ jobs:
         uses: codecov/codecov-action@v3
         if: always() # even if previous steps fail, this one needs to be run
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           files: cobertura.xml
           # flags: unittests # optional
           name: codecov-umbrella # optional
