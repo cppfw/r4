@@ -8,7 +8,7 @@ template class r4::rectangle<int>;
 
 namespace{
 const tst::set set("rectangle", [](tst::suite& suite){
-    suite.add("constructor_x_y_w_h", []{
+    suite.add("constructor__x_y_w_h", []{
         r4::rectangle<int> r{3, 4, 5, 6};
 
 		tst::check_eq(r.p.x(), 3, SL);
@@ -17,7 +17,7 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check_eq(r.d.y(), 6, SL);
     });
 
-    suite.add("constructor_vector2_vector2", []{
+    suite.add("constructor__vector2_vector2", []{
         r4::rectangle<int> r{ {3, 4}, {5, 6} };
 
 		tst::check_eq(r.p.x(), 3, SL);
@@ -25,6 +25,32 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check_eq(r.d.x(), 5, SL);
 		tst::check_eq(r.d.y(), 6, SL);
     });
+
+	suite.add<std::pair<r4::segment2<int>, r4::rectangle<int>>>(
+		"constructor__segment",
+		{
+			{
+				{{10, 20}, {30, 50}}, // segment
+				{{10, 20}, {20, 30}} // rectangle
+			},
+			{
+				{{30, 50}, {10, 20}}, // segment
+				{{10, 20}, {20, 30}} // rectangle
+			},
+			{
+				{{10, 50}, {20, 30}}, // segment
+				{{10, 30}, {10, 20}} // rectangle
+			},
+			{
+				{{30, 20}, {10, 50}}, // segment
+				{{10, 20}, {20, 30}} // rectangle
+			},
+		},
+		[](const auto& p){
+			r4::rectangle<int> r(p.first);
+			tst::check_eq(r, p.second, SL);
+		}
+	);
 
     suite.add("center", []{
         r4::rectangle<int> r{ {3, 4}, {6, 8} };

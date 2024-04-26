@@ -29,6 +29,7 @@ SOFTWARE.
 #include <algorithm>
 #include <iostream>
 
+#include "segment2.hpp"
 #include "vector.hpp"
 
 // Under Windows and MSVC compiler there are 'min' and 'max' macros defined for some reason, get rid of them.
@@ -87,6 +88,15 @@ public:
 	constexpr rectangle(const vector2<component_type>& pos, const vector2<component_type>& dims) noexcept :
 		p(pos),
 		d(dims)
+	{}
+
+	/**
+	 * @brief Construct rectangle from segment.
+	 * @param seg - segment to construct rectangle from.
+	 */
+	constexpr rectangle(segment2<component_type> seg) noexcept :
+		p(seg.min_x(), seg.min_y()),
+		d(abs(seg.dx()), abs(seg.dy()))
 	{}
 
 	/**

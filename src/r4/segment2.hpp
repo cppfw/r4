@@ -144,7 +144,7 @@ public:
 
 	/**
 	 * @brief Get width of the segment's bounding box.
-	 * @return dx if it spositive.
+	 * @return dx if it is positive.
 	 * @return 0 otherwise.
 	 */
 	component_type width() const noexcept
@@ -155,7 +155,7 @@ public:
 
 	/**
 	 * @brief Get height of the segment's bounding box.
-	 * @return dy if it spositive.
+	 * @return dy if it is positive.
 	 * @return 0 otherwise.
 	 */
 	component_type height() const noexcept
