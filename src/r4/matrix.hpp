@@ -449,13 +449,14 @@ public:
 
 	/**
 	 * @brief Set current matrix to frustum matrix.
+	 * The frustum matrix is same as defined by OpenGL, see glFrustum() function.
 	 * Parameters are identical to glFrustum() function from OpenGL.
 	 * Defined only for 4x4 matrices.
 	 * @param left - left vertical clipping plane.
 	 * @param right - right vertical clipping plane.
 	 * @param bottom - bottom horizontal clipping plane.
 	 * @param top - top horizontal clipping plane.
-	 * @param near_val - distance to near depth clipping plane. Must be positive.
+	 * @param near_val - distance to near clipping plane. Must be positive.
 	 * @param far_val - distance to the far clipping plane. Must be positive.
 	 * @return reference to this matrix instance.
 	 */
@@ -505,14 +506,15 @@ public:
 	/**
 	 * @brief Multiply current matrix by frustum matrix.
 	 * Multiplies this matrix M by frustum matrix F from the right (M = M * F).
+	 * The frustum matrix is same as defined by OpenGL, see glFrustum() function.
 	 * Parameters are identical to glFrustum() function from OpenGL.
 	 * Defined only for 4x4 matrices.
 	 * @param left - left vertical clipping plane.
 	 * @param right - right vertical clipping plane.
 	 * @param bottom - bottom horizontal clipping plane.
 	 * @param top - top horizontal clipping plane.
-	 * @param near_val - distance to near depth clipping plane. Must be positive.
-	 * @param far_val - distance to the far clipping plane. Must be positive.
+	 * @param near - distance to near clipping plane. Must be positive.
+	 * @param far - distance to the far clipping plane. Must be positive.
 	 * @return reference to this matrix instance.
 	 */
 	template <typename enable_type = component_type>
@@ -521,13 +523,80 @@ public:
 		component_type right,
 		component_type bottom,
 		component_type top,
-		component_type near_val,
-		component_type far_val
+		component_type near,
+		component_type far
 	) noexcept
 	{
 		matrix f;
-		f.set_frustum(left, right, bottom, top, near_val, far_val);
+		f.set_frustum(left, right, bottom, top, near, far);
 		return this->operator*=(f);
+	}
+
+	/**
+	 * @brief Set current matrix to perspective projection matrix.
+	 * The perspective projection matrix is same as defined by
+	 * OpenGL Utility library (GLU), see gluPerspective() function.
+	 * Parameters are identical to gluPerspective() function from GLU,
+	 * except 'fov_y' is in radians.
+	 * Defined only for 4x4 matrices.
+	 * @param fov_y - y-axis field of view angle, in radians.
+	 * @param aspect - the field of view aspect ratio, x / y.
+	 * @param near - near clipping plane, must be positive.
+	 * @param far - far clipping plane, must be positive.
+	 * @return reference to this matrix instance.
+	 */
+	template <typename enable_type = component_type>
+	matrix& set_perspective(
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> fov_y,
+		component_type aspect,
+		component_type near,
+		component_type far
+	) noexcept
+	{
+		ASSERT(aspect > 0)
+		ASSERT(near > 0)
+		ASSERT(far > near)
+
+		using std::tan;
+		component_type tan_half_fov_y = tan(fov_y / component_type(2));
+		component_type minus_d = near - far;
+
+		this->set(0);
+
+		this->row(0)[0] = component_type(1) / (aspect * tan_half_fov_y);
+		this->row(1)[1] = component_type(1) / tan_half_fov_y;
+		this->row(2)[2] = (far + near) / minus_d;
+		this->row(2)[3] = component_type(2) * far * near / minus_d;
+		this->row(3)[2] = -component_type(1);
+
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply current matrix by perspective projection matrix.
+	 * Multiplies this matrix M by perspective projection matrix P from the right (M = M * P).
+	 * The perspective projection matrix is same as defined by
+	 * OpenGL Utility library (GLU), see gluPerspective() function.
+	 * Parameters are identical to gluPerspective() function from GLU,
+	 * except 'fov_y' is in radians.
+	 * Defined only for 4x4 matrices.
+	 * @param fov_y - y-axis field of view angle, in radians.
+	 * @param aspect - the field of view aspect ratio, x / y.
+	 * @param near - near clipping plane, must be positive.
+	 * @param far - far clipping plane, must be positive.
+	 * @return reference to this matrix instance.
+	 */
+	template <typename enable_type = component_type>
+	matrix& perspective(
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, enable_type> fov_y,
+		component_type aspect,
+		component_type near,
+		component_type far
+	) noexcept
+	{
+		matrix p;
+		p.set_perspective(fov_y, aspect, near, far);
+		return this->operator*=(p);
 	}
 
 	/**
