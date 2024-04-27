@@ -310,20 +310,85 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		};
 
 		m.set_frustum(-2, 2, -1.5, 1.5, 2, 100);
-		m *= 1000.0f;
 
+		auto expected =
+			"|1000 0 0 0" "\n"
+			"|0 1333 0 0" "\n"
+			"|0 0 -1040 -4081" "\n"
+			"|0 0 -1000 0" "\n"s;
+
+		m *= 1000.0f;
 		std::stringstream ss;
 		ss << m.to<int>();
 		auto str = ss.str();
-		auto cmp =
-				"|1000 0 0 0" "\n"
-				"|0 1333 0 0" "\n"
-				"|0 0 -1040 -4081" "\n"
-				"|0 0 -1000 0" "\n"s;
-		tst::check_eq(str, cmp, SL);
+		tst::check_eq(str, expected, SL);
     });
 
-	suite.add("perspective", [](){
+    suite.add("frustum_l_r_b_t_n_f", []{
+        r4::matrix4<float> m;
+		m.set_identity();
+		m.frustum(-2, 2, -1.5, 1.5, 2, 100);
+
+		auto expected =
+			"|1000 0 0 0" "\n"
+			"|0 1333 0 0" "\n"
+			"|0 0 -1040 -4081" "\n"
+			"|0 0 -1000 0" "\n"s;
+
+		m *= 1000.0f;
+		std::stringstream ss;
+		ss << m.to<int>();
+		auto str = ss.str();
+		tst::check_eq(str, expected, SL);
+    });
+
+	suite.add("set_perspective__fovy_aspect_near_far", [](){
+		r4::matrix4<float> m;
+		m.set_perspective(
+			utki::pi / 2,
+			16.0f / 9,
+			1,
+			10
+		);
+
+		auto expected =
+			"|562 0 0 0" "\n"
+			"|0 1000 0 0" "\n"
+			"|0 0 -1222 -2222" "\n"
+			"|0 0 -1000 0" "\n"s;
+
+		m *= 1000.0f;
+		std::stringstream ss;
+		ss << m.to<int>();
+		auto str = ss.str();
+		tst::check_eq(str, expected, SL);
+	});
+
+	suite.add("perspective__fovy_aspect_near_far", [](){
+		r4::matrix4<float> m;
+		m.set_identity();
+
+		m.perspective(
+			utki::pi / 2,
+			16.0f / 9,
+			1,
+			10
+		);
+
+		auto expected =
+			"|562 0 0 0" "\n"
+			"|0 1000 0 0" "\n"
+			"|0 0 -1222 -2222" "\n"
+			"|0 0 -1000 0" "\n"s;
+
+		m *= 1000.0f;
+		std::stringstream ss;
+		ss << m.to<int>();
+		auto str = ss.str();
+		tst::check_eq(str, expected, SL);
+	});
+
+	suite.add("perspective__p", [](){
 		r4::matrix4<int> m{
 			{1, 2, 3, 4},
 			{5, 6, 7, 8},
