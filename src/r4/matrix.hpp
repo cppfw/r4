@@ -630,6 +630,69 @@ public:
 	}
 
 	/**
+	 * @brief Set current matrix to look-at matrix.
+	 * The look-at matrix is same as defined by
+	 * OpenGL Utility library (GLU), see gluLookAt() function.
+	 * Defined only for 4x4 matrices.
+	 * @param eye - position of the eye point.
+	 * @param center - position of the look-at point.
+	 * @param up - direction of the up vector.
+	 * @return reference to this matrix instance.
+	 */
+	template <typename enable_type = component_type>
+	matrix& set_look_at(
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, vector3<enable_type>> eye,
+		vector3<component_type> center,
+		vector3<component_type> up
+	) noexcept
+	{
+		auto f = (center - eye).normalize();
+		auto s = f.cross(up).normalize();
+		auto u = s.cross(f);
+
+		this->set(0);
+
+		this->row(0)[0] = s[0];
+		this->row(0)[1] = s[1];
+		this->row(0)[2] = s[2];
+		this->row(0)[3] = -s * eye;
+		this->row(1)[0] = u[0];
+		this->row(1)[1] = u[1];
+		this->row(1)[2] = u[2];
+		this->row(1)[3] = -u * eye;
+		this->row(2)[0] = -f[0];
+		this->row(2)[1] = -f[1];
+		this->row(2)[2] = -f[2];
+		this->row(2)[3] = f * eye;
+		this->row(3)[3] = 1;
+
+		return *this;
+	}
+
+	/**
+	 * @brief Multiply current matrix by look-at matrix.
+	 * Multiplies this matrix M by look-at matrix L from the right (M = M * L).
+	 * The look-at matrix is same as defined by
+	 * OpenGL Utility library (GLU), see gluLookAt() function.
+	 * Defined only for 4x4 matrices.
+	 * @param eye - position of the eye point.
+	 * @param center - position of the look-at point.
+	 * @param up - direction of the up vector.
+	 * @return reference to this matrix instance.
+	 */
+	template <typename enable_type = component_type>
+	matrix& look_at(
+		std::enable_if_t<num_rows == num_columns && num_rows == 4, vector3<enable_type>> eye,
+		vector3<component_type> center,
+		vector3<component_type> up
+	) noexcept
+	{
+		matrix l;
+		l.set_look_at(eye, center, up);
+		return this->operator*=(l);
+	}
+
+	/**
 	 * @brief Multiply current matrix by scale matrix.
 	 * Multiplies this matrix M by scale matrix S from the right (M = M * S).
 	 * Defined only for 1x1, 2x2, 2x3, 3x3, 4x4 matrices.

@@ -409,6 +409,50 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
 	});
 
+	suite.add("set_look_at", [](){
+		r4::matrix4<float> m;
+		m.set_look_at(
+			{3, 1, 3},
+			{0, 1, 0},
+			{0, 2, 0}
+		);
+
+		auto expected =
+			"|707 0 -707 0" "\n"
+			"|0 1000 0 -1000" "\n"
+			"|707 0 707 -4242" "\n"
+			"|0 0 0 1000" "\n"s;
+
+		m *= 1000.0f;
+		std::stringstream ss;
+		ss << m.to<int>();
+		auto str = ss.str();
+		tst::check_eq(str, expected, SL);
+	});
+
+	suite.add("look_at", [](){
+		r4::matrix4<float> m;
+		m.set_identity();
+
+		m.look_at(
+			{3, 1, 3},
+			{0, 1, 0},
+			{0, 2, 0}
+		);
+
+		auto expected =
+			"|707 0 -707 0" "\n"
+			"|0 1000 0 -1000" "\n"
+			"|707 0 707 -4242" "\n"
+			"|0 0 0 1000" "\n"s;
+
+		m *= 1000.0f;
+		std::stringstream ss;
+		ss << m.to<int>();
+		auto str = ss.str();
+		tst::check_eq(str, expected, SL);
+	});
+
     suite.add("set_quaternion", []{
         r4::matrix4<float> m{
 		 	{1, 2, 3, 4},
