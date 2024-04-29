@@ -409,6 +409,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
 	});
 
+// these tests fail in mingw32 build, due to floating point calculations difference
 #if CFG_OS != CFG_OS_WINDOWS || CFG_CPU_BITS != 32
 	suite.add("set_look_at", [](){
 		r4::matrix4<float> m;
