@@ -1,3 +1,9 @@
+libr4 (1.0.85) unstable; urgency=medium
+
+  * add new methods to matrix
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 29 Apr 2024 22:44:34 +0300
+
 libr4 (1.0.84) unstable; urgency=medium
 
   * add matrix::look_at() and matrix::perspective(fov)
