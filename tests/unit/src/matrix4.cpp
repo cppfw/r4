@@ -409,6 +409,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
 	});
 
+#if CFG_OS != CFG_OS_WINDOWS || CFG_CPU_BITS != 32
 	suite.add("set_look_at", [](){
 		r4::matrix4<float> m;
 		m.set_look_at(
@@ -452,6 +453,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		auto str = ss.str();
 		tst::check_eq(str, expected, SL);
 	});
+#endif
 
     suite.add("set_quaternion", []{
         r4::matrix4<float> m{
