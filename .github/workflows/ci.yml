@@ -61,7 +61,7 @@ jobs:
           name: cobertura.xml
           path: cobertura.xml
       - name: upload coverage data to codecov.io
-        uses: codecov/codecov-action@v4.3.0
+        uses: codecov/codecov-action@v4
         if: always() # even if previous steps fail, this one needs to be run
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -165,7 +165,7 @@ jobs:
       - name: deploy deb packages
         run: |
           echo "${{ secrets.MYCI_REPO_SSH_KEY }}" > repo_key_rsa && chmod 600 repo_key_rsa
-          myci-deploy-apt-ssh.sh --key repo_key_rsa --server gagis.hopto.org --repo cppfw/${{ matrix.os }} --distro ${{ matrix.codename }} --component main ../lib${PACKAGE_NAME}*_${PACKAGE_VERSION}_*.deb
+          myci-deploy-apt-ssh.sh --key repo_key_rsa --server gagis.hopto.org --repo cppfw/${{ matrix.os }} --distro ${{ matrix.codename }} --component main ../lib${PACKAGE_NAME}*_${PACKAGE_VERSION}_*.*deb
         if: startsWith(github.ref, 'refs/tags/')
 ##### archlinux #####
   archlinux:
@@ -241,6 +241,15 @@ jobs:
     - name: set PATH to use latest make
       uses: myci-actions/export-env-var@master
       with: {name: PATH, value: "$HOMEBREW_PREFIX/opt/make/libexec/gnubin:$PATH"}
+    - name: set CFLAGS
+      uses: myci-actions/export-env-var@master
+      with: {name: CFLAGS, value: "-I $HOMEBREW_PREFIX/include $CFLAGS"}
+    - name: set CXXFLAGS
+      uses: myci-actions/export-env-var@master
+      with: {name: CXXFLAGS, value: "-I $HOMEBREW_PREFIX/include $CXXFLAGS"}
+    - name: set LDFLAGS
+      uses: myci-actions/export-env-var@master
+      with: {name: LDFLAGS, value: "-L $HOMEBREW_PREFIX/lib $LDFLAGS"}
     - name: install deps
       run: myci-brew-install.sh `myci-list-deps-homebrew.sh`
     - name: build

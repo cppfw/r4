@@ -11,11 +11,11 @@ class Libr4 < Formula
 
   # use gmake here because otherwise homebrew uses default Mac's make which is of too old version 3.81
   def install
-    ENV['PATH'] += ':/usr/local/bin'
-    system "gmake", "--include-dir=$(brew --prefix)/include", "install", "PREFIX=#{prefix}", "lint=off"
+    ENV['PATH'] += ":#{ENV['HOMEBREW_PREFIX']}/bin"
+    system "#{ENV['HOMEBREW_PREFIX']}/opt/make/libexec/gnubin/make", "--include-dir=$(brew --prefix)/include", "install", "PREFIX=#{prefix}", "lint=off"
   end
 
   test do
-    system "gmake", "--include-dir=$(brew --prefix)/include", "test"
+    system "#{ENV['HOMEBREW_PREFIX']}/opt/make/libexec/gnubin/make", "--include-dir=$(brew --prefix)/include", "test"
   end
 end
