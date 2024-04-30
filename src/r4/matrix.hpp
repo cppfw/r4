@@ -31,9 +31,15 @@ SOFTWARE.
 #include "quaternion.hpp"
 #include "vector.hpp"
 
-// undefine possibly defined macro
+// undefine possibly defined macros
 #ifdef minor
 #	undef minor
+#endif
+#ifdef near
+#	undef near
+#endif
+#ifdef far
+#	undef far
 #endif
 
 namespace r4 {
