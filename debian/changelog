@@ -1,3 +1,9 @@
+libr4 (1.0.87) unstable; urgency=medium
+
+  * undefine windows macros
+
+ -- Ivan Gagis <igagis@gmail.com>  Tue, 30 Apr 2024 22:28:23 +0300
+
 libr4 (1.0.86) unstable; urgency=medium
 
   * fix homebrew formulae
