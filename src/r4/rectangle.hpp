@@ -96,7 +96,10 @@ public:
 	 */
 	constexpr rectangle(segment2<component_type> seg) noexcept :
 		p(seg.min_x(), seg.min_y()),
-		d(abs(seg.dx()), abs(seg.dy()))
+		d([&]() -> decltype(this->d) {
+			using std::abs;
+			return {abs(seg.dx()), abs(seg.dy())};
+		}())
 	{}
 
 	/**
