@@ -1,3 +1,9 @@
+libr4 (1.0.88) unstable; urgency=medium
+
+  * use std::abs()
+
+ -- Ivan Gagis <igagis@gmail.com>  Fri, 03 May 2024 01:09:48 +0300
+
 libr4 (1.0.87) unstable; urgency=medium
 
   * undefine windows macros
