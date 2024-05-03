@@ -1,3 +1,9 @@
+libr4 (1.0.89) unstable; urgency=medium
+
+  * fix rectangle from segment constructor
+
+ -- Ivan Gagis <igagis@gmail.com>  Fri, 03 May 2024 17:14:24 +0300
+
 libr4 (1.0.88) unstable; urgency=medium
 
   * use std::abs()
