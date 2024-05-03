@@ -144,29 +144,35 @@ public:
 
 	/**
 	 * @brief Get width of the segment's bounding box.
-	 * @return dx if it is positive.
-	 * @return 0 otherwise.
+	 * @return horizontal distance from leftmost point to rightmost point. Always positive.
 	 */
 	component_type width() const noexcept
 	{
-		using std::max;
-		return max(component_type(0), this->dx());
+		// the underlying type can be unsigned, so do not use abs(dx)
+		if (this->p1.x() <= this->p2.x()) {
+			return this->p2.x() - this->p1.x();
+		} else {
+			return this->p1.x() - this->p2.x();
+		}
 	}
 
 	/**
 	 * @brief Get height of the segment's bounding box.
-	 * @return dy if it is positive.
-	 * @return 0 otherwise.
+	 * @return vertical distance from topmost point to bottommost point. Always positive.
 	 */
 	component_type height() const noexcept
 	{
-		using std::max;
-		return max(component_type(0), this->dy());
+		// the underlying type can be unsigned, so do not use abs(dy)
+		if (this->p1.y() <= this->p2.y()) {
+			return this->p2.y() - this->p1.y();
+		} else {
+			return this->p1.y() - this->p2.y();
+		}
 	}
 
 	/**
 	 * @brief Get dimensions of the segment's bounding box.
-	 * @return (width, height) vector.
+	 * @return (width, height) vector. Always positive.
 	 */
 	vector2<component_type> dims() const noexcept
 	{

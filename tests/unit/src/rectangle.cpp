@@ -33,7 +33,7 @@ const tst::set set("rectangle", [](tst::suite& suite){
 	});
 
 	suite.add<std::pair<r4::segment2<int>, r4::rectangle<int>>>(
-		"constructor__segment",
+		"constructor__segment2_int",
 		{
 			{
 				{{10, 20}, {30, 50}}, // segment
@@ -54,6 +54,32 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		},
 		[](const auto& p){
 			r4::rectangle<int> r(p.first);
+			tst::check_eq(r, p.second, SL);
+		}
+	);
+
+	suite.add<std::pair<r4::segment2<unsigned>, r4::rectangle<unsigned>>>(
+		"constructor__segment2_unsigned",
+		{
+			{
+				{{10, 20}, {30, 50}}, // segment
+				{{10, 20}, {20, 30}} // rectangle
+			},
+			{
+				{{30, 50}, {10, 20}}, // segment
+				{{10, 20}, {20, 30}} // rectangle
+			},
+			{
+				{{10, 50}, {20, 30}}, // segment
+				{{10, 30}, {10, 20}} // rectangle
+			},
+			{
+				{{30, 20}, {10, 50}}, // segment
+				{{10, 20}, {20, 30}} // rectangle
+			},
+		},
+		[](const auto& p){
+			r4::rectangle<unsigned> r(p.first);
 			tst::check_eq(r, p.second, SL);
 		}
 	);
