@@ -203,6 +203,15 @@ public:
 	}
 
 	/**
+	 * @brief Convert to vector4 holding components of the quaternion.
+	 * @return vector4 with components (v.x, v.y, v.z, s).
+	 */
+	vector<component_type, 4> to_vector4() const noexcept
+	{
+		return {this->v.x(), this->v.y(), this->v.z(), this->s};
+	}
+
+	/**
 	 * @brief Operator equals.
 	 *
 	 * @param q - quaternion to compare to for equality.

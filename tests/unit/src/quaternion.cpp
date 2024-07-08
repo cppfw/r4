@@ -69,6 +69,17 @@ const tst::set set("quaternion", [](tst::suite& suite){
 		tst::check_eq(qi.s, 4, SL);
 	});
 
+	suite.add("to_vector4", []{
+		r4::quaternion<int> qf(1, 2, 3, 4);
+
+		auto v = qf.to_vector4();
+
+		tst::check_eq(v[0], 1, SL);
+		tst::check_eq(v[1], 2, SL);
+		tst::check_eq(v[2], 3, SL);
+		tst::check_eq(v[3], 4, SL);
+	});
+
 	suite.add("operator_exclamation_mark", []{
 		r4::quaternion<int> a{3, 4, 5, 6};
 
