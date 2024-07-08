@@ -94,7 +94,7 @@ public:
 	 * @brief Construct rectangle from segment.
 	 * @param seg - segment to construct rectangle from.
 	 */
-	constexpr rectangle(segment2<component_type> seg) noexcept :
+	constexpr rectangle(const segment2<component_type>& seg) noexcept :
 		p(seg.min_x(), seg.min_y()),
 		d(seg.dims())
 	{}
