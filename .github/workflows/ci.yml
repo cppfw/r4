@@ -29,13 +29,7 @@ jobs:
           repo: deb https://gagis.hopto.org/repo/cppfw/${{ env.linux_distro }} ${{ env.linux_release }} main
           repo-name: cppfw
           keys-asc: https://gagis.hopto.org/repo/cppfw/pubkey.gpg
-          install: myci git
-      - name: install ci tools
-        run: |
-          apt --quiet install --assume-yes devscripts equivs lcov python3-pip
-
-          # install gcovr >5.2
-          pip install git+https://github.com/gcovr/gcovr.git
+          install: myci git pipx
       - name: add llvm repo (for clang-format)
         uses: myci-actions/add-deb-repo@master
         with:
@@ -53,8 +47,11 @@ jobs:
       - name: test
         run: make config=gcov test
       - name: generate coverage report
-        # due to some bug in gcov, we need to use --gcov-ignore-parse-errors=negative_hits.warn
-        run: gcovr --gcov-ignore-parse-errors=negative_hits.warn --exclude-throw-branches --filter src/ --cobertura > cobertura.xml
+        run: pipx run gcovr --exclude-throw-branches --filter src/ --cobertura > cobertura.xml
+      # TODO: remove
+      # - name: generate coverage report
+      #   # due to some bug in gcov, we need to use --gcov-ignore-parse-errors=negative_hits.warn
+      #   run: gcovr --gcov-ignore-parse-errors=negative_hits.warn --exclude-throw-branches --filter src/ --cobertura > cobertura.xml
       - name: upload coverage report to artifacts
         uses: actions/upload-artifact@v4
         with:
