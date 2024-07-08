@@ -27,6 +27,15 @@ const tst::set set("quaternion", [](tst::suite& suite){
 		tst::check_eq(a.s, 6, SL);
 	});
 
+	suite.add("constructor__initializer_list", []{
+		r4::quaternion<int> a = {3, 4, 5, 6};
+
+		tst::check_eq(a.v[0], 3, SL);
+		tst::check_eq(a.v[1], 4, SL);
+		tst::check_eq(a.v[2], 5, SL);
+		tst::check_eq(a.s, 6, SL);
+	});
+
 	suite.add("constructor__vector3", []{
 		r4::quaternion<float> q{r4::vector3<float>{3, 4, 5}};
 		q *= 1000.0f;

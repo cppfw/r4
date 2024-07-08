@@ -145,7 +145,7 @@ public:
 	 * @param z - z component.
 	 * @param w - w component.
 	 */
-	constexpr explicit quaternion(component_type x, component_type y, component_type z, component_type w) noexcept :
+	constexpr quaternion(component_type x, component_type y, component_type z, component_type w) noexcept :
 		v(x, y, z),
 		s(w)
 	{}
