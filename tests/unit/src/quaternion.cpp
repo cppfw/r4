@@ -48,7 +48,7 @@ const tst::set set("quaternion", [](tst::suite& suite){
 	});
 
 	suite.add("constructor__angle", []{
-		r4::quaternion<float> q{utki::pi / 3};
+		r4::quaternion<float> q{float(utki::pi / 3)};
 		q *= 1000.0f;
 		auto r = q.to<int>();
 

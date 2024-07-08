@@ -345,7 +345,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 	suite.add("set_perspective__fovy_aspect_near_far", [](){
 		r4::matrix4<float> m;
 		m.set_perspective(
-			utki::pi / 2,
+			float(utki::pi / 2),
 			16.0f / 9,
 			1,
 			10
@@ -369,7 +369,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		m.set_identity();
 
 		m.perspective(
-			utki::pi / 2,
+			float(utki::pi / 2),
 			16.0f / 9,
 			1,
 			10
