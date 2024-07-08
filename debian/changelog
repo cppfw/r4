@@ -1,3 +1,9 @@
+libr4 (1.0.90) unstable; urgency=medium
+
+  * add matrix::submatrix(), add quaternion(vector4)
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 08 Jul 2024 16:43:27 +0300
+
 libr4 (1.0.89) unstable; urgency=medium
 
   * fix rectangle from segment constructor
