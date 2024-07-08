@@ -169,6 +169,37 @@ public:
 	}
 
 	/**
+	 * @brief Get submatrix.
+	 * Get submatrix of this matrix.
+	 * @tparam row_number - starting row of the submatrix.
+	 * @tparam column_number - starting column of the submatrix.
+	 * @tparam rows_count - number of rows in the submatrix.
+	 * @tparam columns_count - number of columns in the submatrix.
+	 * @return A submatrix of this matrix.
+	 */
+	template <size_t row_number, size_t column_number, size_t rows_count, size_t columns_count>
+	matrix<component_type, rows_count, columns_count> submatrix() const noexcept
+	{
+		static_assert(row_number + rows_count <= num_rows, "submatrix rows go beyond the original matrix rows");
+		static_assert(
+			column_number + columns_count <= num_columns,
+			"submatrix columns go beyond the original matrix columns"
+		);
+
+		matrix<component_type, rows_count, columns_count> ret;
+
+		for (size_t sr = row_number, dr = 0; dr != rows_count; ++dr, ++sr) {
+			auto& src_row = this->row(sr);
+			auto& dst_row = ret.row(dr);
+			for (size_t sc = column_number, dc = 0; dc != columns_count; ++dc, ++sc) {
+				dst_row[dc] = src_row[sc];
+			}
+		}
+
+		return ret;
+	}
+
+	/**
 	 * @brief Set this matrix to be a rotation matrix.
 	 * Defined only for 3x3 and 4x4 matrices.
 	 * Sets this matrix to a matrix representing a rotation defined by a unit quaternion.
