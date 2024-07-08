@@ -325,7 +325,7 @@ const tst::set set("matrix3", [](tst::suite& suite){
         tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("rotate_angle", []{
+    suite.add("rotate__quaternion", []{
         r4::matrix3<float> m{
                 { 10, 20, 30 },
                 { 40, 50, 60 },
@@ -335,7 +335,7 @@ const tst::set set("matrix3", [](tst::suite& suite){
         float a = float(utki::pi) / 6;
 
         decltype(m) res(m);
-        res.rotate(a);
+        res.rotate(r4::quaternion<float>(a));
 
         using std::sin;
         using std::cos;

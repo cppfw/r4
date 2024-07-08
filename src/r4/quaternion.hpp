@@ -133,7 +133,7 @@ public:
 	 * @param vec - vector part of the quaternion.
 	 * @param scalar - scalar part of the quaternion.
 	 */
-	constexpr quaternion(const vector<component_type, 3>& vec, component_type scalar) noexcept :
+	constexpr explicit quaternion(const vector<component_type, 3>& vec, component_type scalar) noexcept :
 		v(vec),
 		s(scalar)
 	{}
@@ -145,9 +145,18 @@ public:
 	 * @param z - z component.
 	 * @param w - w component.
 	 */
-	constexpr quaternion(component_type x, component_type y, component_type z, component_type w) noexcept :
+	constexpr explicit quaternion(component_type x, component_type y, component_type z, component_type w) noexcept :
 		v(x, y, z),
 		s(w)
+	{}
+
+	/**
+	 * @brief Create quaternion with given components.
+	 * @param components - x, y, z, w quaternion components as vector4.
+	 */
+	constexpr explicit quaternion(const vector<component_type, 4>& components) noexcept :
+		v(components.x(), components.y(), components.z()),
+		s(components.w())
 	{}
 
 	/**
@@ -158,7 +167,17 @@ public:
 	 * rotation in radians.
 	 * @param rot - vector which defines the rotation.
 	 */
-	constexpr quaternion(const vector<component_type, 3>& rot) noexcept;
+	constexpr explicit quaternion(const vector<component_type, 3>& rot) noexcept;
+
+	/**
+	 * @brief Construct rotation quaternion.
+	 * Constructs a quaternion representing rotation (unit quaternion).
+	 * Rotation is given by a rotation angle. Rotation axis is always (0, 0, 1).
+	 * @param angle - angle in radians to rotate about (0, 0, 1) axis.
+	 */
+	constexpr explicit quaternion(component_type angle) noexcept :
+		quaternion(vector<component_type, 3>{0, 0, angle})
+	{}
 
 	/**
 	 * @brief Default constructor.

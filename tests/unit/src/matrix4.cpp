@@ -10,7 +10,7 @@ template class r4::matrix<int, 4, 4>;
 
 namespace{
 const tst::set set("matrix4", [](tst::suite& suite){
-    suite.add("constructor_4x_initializer_list4", []{
+    suite.add("constructor__4x_initializer_list4", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -29,7 +29,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-	suite.add("constructor_4x_vector4", []{
+	suite.add("constructor__4x_vector4", []{
         r4::matrix4<int> m{
 		 	r4::vector4<int>{1, 2, 3, 4},
 			r4::vector4<int>{5, 6, 7, 8},
@@ -48,7 +48,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("constructor_quaternion", []{
+    suite.add("constructor__quaternion", []{
         r4::quaternion<float> q{};
 		q.set_rotation(1, 2, 3, float(utki::pi) / 6);
 
@@ -67,7 +67,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("operator_multiply_vector2", []{
+    suite.add("operator_multiply__vector2", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -81,7 +81,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[1], 5 * 3 + 6 * 4 + 8, SL);
     });
 
-    suite.add("operator_multiply_vector3", []{
+    suite.add("operator_multiply__vector3", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -96,7 +96,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[2], 9 * 3 + 10 * 4 + 11 * 5 + 12, SL);
     });
 
-    suite.add("operator_multiply_vector4", []{
+    suite.add("operator_multiply__vector4", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -112,7 +112,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[3], 13 * 3 + 14 * 4 + 15 * 5 + 16 * 6, SL);
     });
 
-    suite.add("operator_multiply_matrix4", []{
+    suite.add("operator_multiply__matrix4", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -189,7 +189,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("operator_multiply_equals_matrix4", []{
+    suite.add("operator_multiply_equals__matrix4", []{
         r4::matrix4<int> r{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -224,7 +224,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[3][3], 13 * 20 + 14 * 24 + 15 * 28 + 16 * 32, SL);
     });
 
-    suite.add("operator_multiply_equals_number", []{
+    suite.add("operator_multiply_equals__number", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -245,7 +245,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("left_mul_matrix4", []{
+    suite.add("left_mul__matrix4", []{
         r4::matrix4<int> m2{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -301,7 +301,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("set_frustum_l_r_b_t_n_f", []{
+    suite.add("set_frustum__l_r_b_t_n_f", []{
         r4::matrix4<float> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -324,7 +324,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, expected, SL);
     });
 
-    suite.add("frustum_l_r_b_t_n_f", []{
+    suite.add("frustum__l_r_b_t_n_f", []{
         r4::matrix4<float> m;
 		m.set_identity();
 		m.frustum(-2, 2, -1.5, 1.5, 2, 100);
@@ -477,7 +477,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("scale_x_y", []{
+    suite.add("scale__x_y", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -498,7 +498,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("scale_x_y_z", []{
+    suite.add("scale__x_y_z", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -519,7 +519,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("scale_number", []{
+    suite.add("scale__number", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -540,7 +540,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("scale_vector2", []{
+    suite.add("scale__vector2", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -561,7 +561,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("scale_vector3", []{
+    suite.add("scale__vector3", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -582,7 +582,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-	suite.add("scale_vector4", []{
+	suite.add("scale__vector4", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -603,7 +603,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("translate_x_y", []{
+    suite.add("translate__x_y", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -624,7 +624,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("translate_x_y_z", []{
+    suite.add("translate__x_y_z", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -645,7 +645,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("translate_vector2", []{
+    suite.add("translate__vector2", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -666,7 +666,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("translate_vector3", []{
+    suite.add("translate__vector3", []{
         r4::matrix4<int> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -687,7 +687,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, cmp, SL);
     });
 
-    suite.add("rotate_quaternion", []{
+    suite.add("rotate__quaternion", []{
         r4::matrix4<float> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -707,7 +707,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(m.to<int>(), cmp.to<int>(), SL);
     });
 
-    suite.add("rotate_vector3", []{
+    suite.add("rotate__vector3", []{
         r4::matrix4<float> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -722,7 +722,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 
 		auto cmp = m * rot;
 
-		m.rotate(vec);
+		m.rotate(r4::quaternion<float>(vec));
 
 		cmp *= 1000.0f;
 		m *= 1000.0f;
@@ -730,7 +730,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(m.to<int>(), cmp.to<int>(), SL);
     });
 
-    suite.add("rotate_number", []{
+    suite.add("rotate__number", []{
         r4::matrix4<float> m{
 		 	{1, 2, 3, 4},
 			{5, 6, 7, 8},
@@ -747,7 +747,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 
 		auto cmp = m * rot;
 
-		m.rotate(angle);
+		m.rotate(r4::quaternion<float>(angle));
 
 		cmp *= 1000.0f;
 		m *= 1000.0f;
@@ -755,7 +755,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(m.to<int>(), cmp.to<int>(), SL);
     });
 
-    suite.add("remove_r_c_and_minor_r_c", []{
+    suite.add("remove__r_c___and___minor__r_c", []{
         r4::matrix4<int> m{
 		 	{1 , 2 , 3 , 4 },
 			{5 , 6 , 7 , 8 },
