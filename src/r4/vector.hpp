@@ -816,8 +816,8 @@ public:
 	}
 
 	/**
-	 * @brief Calculate power 2 of vector norm.
-	 * @return Power 2 of this vector norm.
+	 * @brief Calculate power 2 of the vector's norm.
+	 * @return This vector's norm to the power of 2.
 	 */
 	component_type norm_pow2() const noexcept
 	{
