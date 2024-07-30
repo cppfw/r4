@@ -693,9 +693,8 @@ public:
 	 * @return Cross product of this vector by given vector.
 	 */
 	template <typename enable_type = std::conditional_t<dimension == 2, typename base_type::value_type, vector>>
-	std::enable_if_t<dimension == 2 || dimension == 3 || dimension == 4, enable_type> cross(
-		const vector& vec
-	) const noexcept
+	std::enable_if_t<dimension == 2 || dimension == 3 || dimension == 4, enable_type> //
+	cross(const vector& vec) const noexcept
 	{
 		if constexpr (dimension == 2) {
 			return this->x() * vec.y() - this->y() * vec.x();
