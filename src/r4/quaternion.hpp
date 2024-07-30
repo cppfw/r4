@@ -165,6 +165,8 @@ public:
 	 * Rotation is given by 3 dimensional vector, whose direction defines the
 	 * axis about which rotation is done and its norm defines the angle of
 	 * rotation in radians.
+	 * Rotation direction is determined by the right-hand rule: if we look in the
+	 * direction of the rotation axis, then positive angle rotation is clockwise.
 	 * @param rot - vector which defines the rotation.
 	 */
 	constexpr explicit quaternion(const vector<component_type, 3>& rot) noexcept;
