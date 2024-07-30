@@ -872,13 +872,15 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type, size_t dimension>
-	matrix& translate(const vector<
-					  std::enable_if_t<
-						  ((num_rows == 2 && num_columns == 3) ||
-						   (num_rows == num_columns && (num_rows == 3 || num_rows == 4))) &&
-							  (dimension == 2 || dimension == 3) && (dimension < num_columns),
-						  enable_type>,
-					  dimension>& t) noexcept
+	matrix& translate(
+		const vector<
+			std::enable_if_t<
+				((num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4))
+				) && (dimension == 2 || dimension == 3) &&
+					(dimension < num_columns),
+				enable_type>,
+			dimension>& t
+	) noexcept
 	{
 		// only last column of the matrix changes
 		for (auto& r : *this) {
@@ -919,9 +921,11 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
-	matrix& rotate(std::enable_if_t<
-				   (num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)),
-				   enable_type> a) noexcept
+	matrix& rotate(
+		std::enable_if_t<
+			(num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)),
+			enable_type> a
+	) noexcept
 	{
 		if constexpr (num_rows == num_columns) {
 			// square matrix
@@ -1090,8 +1094,10 @@ public:
 	 * @param col - index of the column to remove.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<num_rows == num_columns && (num_rows >= 2), enable_type> minor(size_t row, size_t col)
-		const noexcept
+	std::enable_if_t<num_rows == num_columns && (num_rows >= 2), enable_type> minor(
+		size_t row,
+		size_t col
+	) const noexcept
 	{
 		return this->remove(row, col).det();
 	}
