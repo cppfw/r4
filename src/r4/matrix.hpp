@@ -924,19 +924,23 @@ public:
 	 * Rotation is done around (0, 0, 1) axis by given number of radians.
 	 * Positive direction of rotation is determined by a right-hand rule, i.e. from X-axis to Y-axis.
 	 * Defined only for 2x3, 3x3 and 4x4 matrices.
-	 * @param a - the angle of rotation in radians.
+	 * @param angle - the angle of rotation in radians.
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
 	matrix& rotate(
+		// clang-format off
 		std::enable_if_t<
-			(num_rows == 2 && num_columns == 3) || (num_rows == num_columns && (num_rows == 3 || num_rows == 4)),
-			enable_type> a
+			(num_rows == 2 && num_columns == 3) ||
+				(num_rows == num_columns && (num_rows == 3 || num_rows == 4)),
+			enable_type
+		> angle
+		// clang-format on
 	) noexcept
 	{
 		if constexpr (num_rows == num_columns) {
 			// square matrix
-			return this->rotate(vector<component_type, 3>(0, 0, a));
+			return this->rotate(vector<component_type, 3>(0, 0, angle));
 		} else {
 			static_assert(num_rows == 2 && num_columns == 3, "2x3 matrix expected");
 
@@ -946,8 +950,8 @@ public:
 
 			using std::cos;
 			using std::sin;
-			component_type sina = sin(a);
-			component_type cosa = cos(a);
+			component_type sina = sin(angle);
+			component_type cosa = cos(angle);
 
 			component_type m00 = this->row(0)[0] * cosa + this->row(0)[1] * sina;
 			component_type m10 = this->row(1)[0] * cosa + this->row(1)[1] * sina;
@@ -1101,7 +1105,7 @@ public:
 	 * @param col - index of the column to remove.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<num_rows == num_columns && (num_rows >= 2), enable_type> minor(
+	std::enable_if_t<num_rows == num_columns && (num_rows >= 2), enable_type> minor( //
 		size_t row,
 		size_t col
 	) const noexcept
