@@ -868,19 +868,25 @@ public:
 	 * @brief Multiply this matrix by translation matrix.
 	 * Multiplies this matrix M by translation matrix T from the right (M = M * T).
 	 * Defined only for 2x3, 3x3 and 4x4 matrices.
-	 * @param t - translation vector, can have 2 or 3 components.
+	 * @param translation - translation vector, can have 2 or 3 components.
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type, size_t dimension>
-	matrix& translate( //
-		const vector< //
-			std::enable_if_t< //
-				((num_rows == 2 && num_columns == 3) || //
-				(num_rows == num_columns && (num_rows == 3 || num_rows == 4))) && //
-					(dimension == 2 || dimension == 3) && //
+	matrix& translate(
+		// clang-format off
+		const vector<
+			std::enable_if_t<
+				(
+					(num_rows == 2 && num_columns == 3) ||
+					(num_rows == num_columns && (num_rows == 3 || num_rows == 4))
+				) &&
+					(dimension == 2 || dimension == 3) &&
 					(dimension < num_columns),
-				enable_type>,
-			dimension>& t
+				enable_type
+			>,
+			dimension
+		>& translation
+		// clang-format on
 	) noexcept
 	{
 		// only last column of the matrix changes
@@ -888,7 +894,7 @@ public:
 			auto& res = r.back();
 
 			auto r_iter = r.begin();
-			for (const auto& e : t) {
+			for (const auto& e : translation) {
 				res += *r_iter * e;
 				++r_iter;
 			}
