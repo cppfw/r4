@@ -403,6 +403,37 @@ const tst::set set("vector2", [](tst::suite& suite){
 		tst::check_eq(v[1], v[0], SL);
     });
 
+    suite.add("set_object_with_autoconversion", []{
+        enum class custom_val{
+            a,
+            b,
+            c
+        };
+
+        struct some_type{
+            int a;
+
+            some_type() :
+                a(0)
+            {}
+
+            some_type(custom_val v) :
+                a(int(v))
+            {}
+
+            some_type(int v) :
+                a(v)
+            {}
+        };
+
+        r4::vector2<some_type> v{7, 8};
+
+		v.set(custom_val::b);
+
+		tst::check(v[0].a == 1, SL);
+		tst::check(v[1].a == v[0].a, SL);
+    });
+
     suite.add("set_x_y", []{
         r4::vector2<int> v{3, 4};
 

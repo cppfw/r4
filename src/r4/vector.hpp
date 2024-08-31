@@ -467,7 +467,9 @@ public:
 	 * @return Reference to this vector object.
 	 */
 	template <typename... arguments_type>
-	vector& set(arguments_type... a) noexcept
+	// enable this method only if number of arguments passed is same as the vector dimension
+	std::enable_if_t<sizeof...(arguments_type) == dimension, vector&> //
+	set(arguments_type... a) noexcept
 	{
 		this->base_type::operator=(base_type{component_type(a)...});
 		return *this;
