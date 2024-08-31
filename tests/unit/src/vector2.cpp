@@ -411,11 +411,9 @@ const tst::set set("vector2", [](tst::suite& suite){
         };
 
         struct some_type{
-            int a;
+            int a = 0;
 
-            some_type() :
-                a(0)
-            {}
+            some_type() = default;
 
             some_type(custom_val v) :
                 a(int(v))
