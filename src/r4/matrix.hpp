@@ -923,7 +923,7 @@ public:
 	 * Multiplies this matrix M by rotation matrix num_rows from the right (M = M * num_rows).
 	 * Rotation is done around (0, 0, 1) axis by given number of radians.
 	 * Positive direction of rotation is determined by a right-hand rule, i.e. from X-axis to Y-axis.
-	 * Defined only for 2x3, 3x3 and 4x4 matrices.
+	 * Defined only for 2x3 matrices.
 	 * @param angle - the angle of rotation in radians.
 	 * @return reference to this matrix object.
 	 */
@@ -931,42 +931,36 @@ public:
 	matrix& rotate(
 		// clang-format off
 		std::enable_if_t<
-			(num_rows == 2 && num_columns == 3) ||
-				(num_rows == num_columns && (num_rows == 3 || num_rows == 4)),
+			num_rows == 2 && num_columns == 3,
 			enable_type
 		> angle
 		// clang-format on
 	) noexcept
 	{
-		if constexpr (num_rows == num_columns) {
-			// square matrix
-			return this->rotate(vector<component_type, 3>(0, 0, angle));
-		} else {
-			static_assert(num_rows == 2 && num_columns == 3, "2x3 matrix expected");
+		static_assert(num_rows == 2 && num_columns == 3, "2x3 matrix expected");
 
-			// multiply this matrix from the right by the rotation matrix:
-			//               | cos(a) -sin(a) 0 |
-			// this = this * | sin(a)  cos(a) 0 |
+		// multiply this matrix from the right by the rotation matrix:
+		//               | cos(a) -sin(a) 0 |
+		// this = this * | sin(a)  cos(a) 0 |
 
-			using std::cos;
-			using std::sin;
-			component_type sina = sin(angle);
-			component_type cosa = cos(angle);
+		using std::cos;
+		using std::sin;
+		component_type sina = sin(angle);
+		component_type cosa = cos(angle);
 
-			component_type m00 = this->row(0)[0] * cosa + this->row(0)[1] * sina;
-			component_type m10 = this->row(1)[0] * cosa + this->row(1)[1] * sina;
-			sina = -sina;
-			component_type m01 = this->row(0)[0] * sina + this->row(0)[1] * cosa;
-			component_type m11 = this->row(1)[0] * sina + this->row(1)[1] * cosa;
+		component_type m00 = this->row(0)[0] * cosa + this->row(0)[1] * sina;
+		component_type m10 = this->row(1)[0] * cosa + this->row(1)[1] * sina;
+		sina = -sina;
+		component_type m01 = this->row(0)[0] * sina + this->row(0)[1] * cosa;
+		component_type m11 = this->row(1)[0] * sina + this->row(1)[1] * cosa;
 
-			this->row(0)[0] = m00;
-			this->row(1)[0] = m10;
+		this->row(0)[0] = m00;
+		this->row(1)[0] = m10;
 
-			this->row(0)[1] = m01;
-			this->row(1)[1] = m11;
+		this->row(0)[1] = m01;
+		this->row(1)[1] = m11;
 
-			return *this;
-		}
+		return *this;
 	}
 
 	/**
