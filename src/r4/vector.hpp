@@ -1118,9 +1118,18 @@ public:
 	friend std::ostream& operator<<(std::ostream& s, const vector<component_type, dimension>& vec)
 	{
 		static_assert(dimension >= 1, "dimension cannot be 0");
-		s << vec.x();
+		if constexpr (std::is_same_v<component_type, uint8_t>) {
+			s << unsigned(vec.x());
+		} else {
+			s << vec.x();
+		}
 		for (auto i = std::next(vec.begin()); i != vec.end(); ++i) {
-			s << " " << (*i);
+			s << " ";
+			if constexpr (std::is_same_v<component_type, uint8_t>) {
+				s << unsigned(*i);
+			} else {
+				s << (*i);
+			}
 		}
 		return s;
 	}

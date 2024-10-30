@@ -3,6 +3,8 @@
 
 #include "../../../src/r4/vector.hpp"
 
+using namespace std::string_literals;
+
 // declare templates to instantiate all template methods to include all methods to gcov coverage
 template class r4::vector<int, 4>;
 
@@ -345,6 +347,39 @@ const tst::set set("vector4", [](tst::suite& suite){
             tst::check(p.first != p.second, SL);
         }
     );
+
+    suite.add("operator_output__int", [](){
+        r4::vector4<int> a{3, 4, 5, 6};
+
+        std::stringstream ss;
+        ss << a;
+
+        auto s = ss.str();
+
+        tst::check_eq(s, "3 4 5 6"s, SL);
+    });
+
+    suite.add("operator_output__uint8_t", [](){
+        r4::vector4<uint8_t> a{3, 4, 5, 6};
+
+        std::stringstream ss;
+        ss << a;
+
+        auto s = ss.str();
+
+        tst::check_eq(s, "3 4 5 6"s, SL);
+    });
+
+    suite.add("operator_output__float", [](){
+        r4::vector4<float> a{3.5, 4.6, 5.7, 6.8};
+
+        std::stringstream ss;
+        ss << a;
+
+        auto s = ss.str();
+
+        tst::check_eq(s, "3.5 4.6 5.7 6.8"s, SL);
+    });
 
     suite.add("comp_mul_vector4", []{
         r4::vector4<int> a{3, 4, 5, 6};
