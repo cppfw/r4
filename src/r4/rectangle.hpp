@@ -162,6 +162,8 @@ public:
 	/**
 	 * @brief Intersect this rectangle with given rectangle.
 	 * The intersection result is stored in this rectangle.
+	 * In case rectangles do not intersect, the resulting rectangle will have
+	 * zero dimensions and position set to max of position components of the two rectangles.
 	 * @param rect - rectangle to intersect this rectnagle with.
 	 * @return referenct to this rectangle.
 	 */
@@ -179,6 +181,7 @@ public:
 
 	/**
 	 * @brief Get intersection of rectangles.
+	 * See intersect().
 	 * @param rect - rectangle to get intersection with.
 	 * @return Intersection rectangle.
 	 */
