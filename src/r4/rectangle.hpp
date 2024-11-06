@@ -178,6 +178,16 @@ public:
 	}
 
 	/**
+	 * @brief Get intersection of rectangles.
+	 * @param rect - rectangle to get intersection with.
+	 * @return Intersection rectangle.
+	 */
+	rectangle intersection(const rectangle& rect) const noexcept
+	{
+		return rectangle(*this).intersect(rect);
+	}
+
+	/**
 	 * @brief Unite this rectangle with given rectangle.
 	 * @param rect - rectangle to unite this rectangle with.
 	 * @return reference to this rectangle.
@@ -192,6 +202,16 @@ public:
 		this->p = min_xy;
 		this->d = max_xy - min_xy;
 		return *this;
+	}
+
+	/**
+	 * @brief Get uion of rectangles.
+	 * @param rect - rectianlge to get union with.
+	 * @return Union of rectangles.
+	 */
+	rectangle union_rect(const rectangle& rect)
+	{
+		return rectangle(*this).unite(rect);
 	}
 
 	/**

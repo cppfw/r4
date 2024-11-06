@@ -145,7 +145,7 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		}
 	);
 
-	suite.add("intersect_rectangle", []{
+	suite.add("intersect__rectangle", []{
 		r4::rectangle<int> r{ {3, 4}, {6, 8} };
 		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
 
@@ -156,13 +156,33 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check_eq(r, cmp, SL);
 	});
 
-	suite.add("intersect_zero_rectangle_with_non_zero_rectangle_should_result_in_zero_rectangle", []{
+	suite.add("intersect__zero_rectangle_with_non_zero_rectangle_should_result_in_zero_rectangle", []{
 		r4::rectangle<unsigned> r{ 0, 0 };
 		r4::rectangle<unsigned> r1{ 289, 3, 149, 248 };
 
 		r.intersect(r1);
 
 		tst::check(r.d.is_zero(), SL);
+	});
+
+	suite.add("intersection__rectangle", []{
+		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
+
+		auto res = r.intersection(r1);
+
+		r4::rectangle<int> cmp{ {5, 6}, {4, 6} };
+
+		tst::check_eq(res, cmp, SL);
+	});
+
+	suite.add("intersection__zero_rectangle_with_non_zero_rectangle_should_result_in_zero_rectangle", []{
+		r4::rectangle<unsigned> r{ 0, 0 };
+		r4::rectangle<unsigned> r1{ 289, 3, 149, 248 };
+
+		auto res = r.intersection(r1);
+
+		tst::check(res.d.is_zero(), SL);
 	});
 
 	suite.add("unite", []{
@@ -174,6 +194,17 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		r4::rectangle<int> cmp{ {3, 4}, {8, 10} };
 
 		tst::check_eq(r0, cmp, SL);
+	});
+
+	suite.add("union_rect", []{
+		r4::rectangle<int> r0{ {3, 4}, {6, 8} };
+		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
+
+		auto res = r0.union_rect(r1);
+
+		r4::rectangle<int> cmp{ {3, 4}, {8, 10} };
+
+		tst::check_eq(res, cmp, SL);
 	});
 
 	suite.add("pdx_pdy", []{
