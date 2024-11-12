@@ -305,7 +305,7 @@ public:
 			this->end(),
 			res.begin(),
 			[&vec](const auto& r) {
-				return r * vec;
+				return r.dot(vec);
 			}
 		);
 		return res;
@@ -320,10 +320,10 @@ public:
 	{
 		static_assert(num_rows == 4 && num_columns == 4, "4x4 matrix expected");
 		return vector<component_type, 4>{
-			this->row(0) * vec + this->row(0)[3],
-			this->row(1) * vec + this->row(1)[3],
-			this->row(2) * vec + this->row(2)[3],
-			this->row(3) * vec + this->row(3)[3],
+			this->row(0).dot(vec) + this->row(0)[3],
+			this->row(1).dot(vec) + this->row(1)[3],
+			this->row(2).dot(vec) + this->row(2)[3],
+			this->row(3).dot(vec) + this->row(3)[3],
 		};
 	}
 
@@ -336,8 +336,8 @@ public:
 		static_assert(num_rows == 2 && num_columns == 3, "2x3 matrix expected");
 		static_assert(dimension == 2, "2d vector expected");
 		return vector<component_type, 2>{
-			this->row(0) * vec + this->row(0)[2], //
-			this->row(1) * vec + this->row(1)[2]
+			this->row(0).dot(vec) + this->row(0)[2], //
+			this->row(1).dot(vec) + this->row(1)[2]
 		};
 	}
 
@@ -692,15 +692,15 @@ public:
 		this->row(0)[0] = s[0];
 		this->row(0)[1] = s[1];
 		this->row(0)[2] = s[2];
-		this->row(0)[3] = -s * eye;
+		this->row(0)[3] = -s.dot(eye);
 		this->row(1)[0] = u[0];
 		this->row(1)[1] = u[1];
 		this->row(1)[2] = u[2];
-		this->row(1)[3] = -u * eye;
+		this->row(1)[3] = -u.dot(eye);
 		this->row(2)[0] = -f[0];
 		this->row(2)[1] = -f[1];
 		this->row(2)[2] = -f[2];
-		this->row(2)[3] = f * eye;
+		this->row(2)[3] = f.dot(eye);
 		this->row(3)[3] = 1;
 
 		return *this;

@@ -694,9 +694,6 @@ public:
 	 */
 	component_type operator*(const vector& vec) const noexcept
 	{
-		LOG([](auto& o) {
-			o << "r4::vector::operator*(vector) is DEPRECATED, please use r4::vector::dot(vector) instead";
-		})
 		return this->dot(vec);
 	}
 
