@@ -1,3 +1,9 @@
+libr4 (1.0.96) unstable; urgency=medium
+
+  * remove deprecation of vector::operaotr*(vector)
+
+ -- Ivan Gagis <igagis@gmail.com>  Tue, 12 Nov 2024 17:12:48 +0200
+
 libr4 (1.0.95) unstable; urgency=medium
 
   * add vector::dot()
