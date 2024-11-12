@@ -671,10 +671,10 @@ public:
 
 	/**
 	 * @brief Dot product.
-	 * @param vec -vector to multiply by.
+	 * @param vec - vector to multiply by.
 	 * @return Dot product of this vector and given vector.
 	 */
-	component_type operator*(const vector& vec) const noexcept
+	component_type dot(const vector& vec) const noexcept
 	{
 		component_type res = 0;
 
@@ -684,6 +684,20 @@ public:
 		});
 
 		return res;
+	}
+
+	/**
+	 * @brief Dot product.
+	 * Deprecated, use vector::dot(vector) function.
+	 * @param vec - vector to multiply by.
+	 * @return Dot product of this vector and given vector.
+	 */
+	component_type operator*(const vector& vec) const noexcept
+	{
+		LOG([](auto& o) {
+			o << "r4::vector::operator*(vector) is DEPRECATED, please use r4::vector::dot(vector) instead";
+		})
+		return this->dot(vec);
 	}
 
 	/**

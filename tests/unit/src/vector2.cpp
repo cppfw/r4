@@ -219,6 +219,15 @@ const tst::set set("vector2", [](tst::suite& suite){
 		tst::check_eq(r, 3 * 5 + 4 * 6, SL);
     });
 
+    suite.add("dot_product", []{
+        r4::vector2<int> a{3, 4};
+		r4::vector2<int> b{5, 6};
+
+		auto r = a.dot(b);
+
+		tst::check_eq(r, 3 * 5 + 4 * 6, SL);
+    });
+
     suite.add("cross_product", [](){
         r4::vector2<int> a{3, 4};
 		r4::vector2<int> b{5, 6};

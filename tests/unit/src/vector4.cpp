@@ -289,6 +289,14 @@ const tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(r, 3 * 7 + 4 * 8 + 5 * 9 + 6 * 10, SL);
     });
 
+    suite.add("dot_product", []{
+        r4::vector4<int> v4{3, 4, 5, 6};
+
+		auto r = v4.dot(r4::vector4<int>{7, 8, 9, 10});
+
+		tst::check_eq(r, 3 * 7 + 4 * 8 + 5 * 9 + 6 * 10, SL);
+    });
+
 	suite.add("cross_vector4", []{
         r4::vector4<int> v4{3, 4, 5, 6};
 
