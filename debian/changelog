@@ -1,3 +1,9 @@
+libr4 (1.0.97) unstable; urgency=medium
+
+  * conan: rebuild
+
+ -- Ivan Gagis <igagis@gmail.com>  Sun, 17 Nov 2024 22:35:31 +0200
+
 libr4 (1.0.96) unstable; urgency=medium
 
   * remove deprecation of vector::operaotr*(vector)
