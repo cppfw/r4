@@ -8,12 +8,12 @@ project(${name})
 
 find_package(utki CONFIG REQUIRED)
 
-file(GLOB_RECURSE srcs "../src/${name}/*.cpp")
+# file(GLOB_RECURSE srcs "../src/${name}/*.cpp")
 
 add_library(
     ${name}
     INTERFACE
-    ${srcs}
+#    ${srcs}
 )
 
 target_compile_features(${name} PUBLIC cxx_std_17)
