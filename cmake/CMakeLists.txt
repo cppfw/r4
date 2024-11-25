@@ -8,15 +8,15 @@ project(${name})
 
 find_package(utki CONFIG REQUIRED)
 
-# file(GLOB_RECURSE srcs "../src/${name}/*.cpp")
+file(GLOB_RECURSE srcs "../src/${name}/*.cpp")
 
 add_library(
     ${name}
     INTERFACE
-#    ${srcs}
+    ${srcs}
 )
 
-target_compile_features(${name} PUBLIC cxx_std_17)
+# target_compile_features(${name} PUBLIC cxx_std_17)
 set_target_properties(${name} PROPERTIES CXX_STANDARD_REQUIRED ON)
 set_target_properties(${name} PROPERTIES CXX_EXTENSIONS OFF)
 
