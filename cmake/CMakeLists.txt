@@ -29,7 +29,7 @@ target_include_directories(
 
 target_link_libraries(
     ${name}
-    PUBLIC
+    INTERFACE
         utki::utki
 )
 
