@@ -1,3 +1,9 @@
+libr4 (1.0.98) unstable; urgency=medium
+
+  * vcpkgize
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 25 Nov 2024 23:00:36 +0200
+
 libr4 (1.0.97) unstable; urgency=medium
 
   * conan: rebuild
