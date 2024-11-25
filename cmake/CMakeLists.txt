@@ -12,7 +12,7 @@ file(GLOB_RECURSE srcs "../src/${name}/*.cpp")
 
 add_library(
     ${name}
-    STATIC
+    INTERFACE
     ${srcs}
 )
 
