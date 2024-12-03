@@ -1,3 +1,9 @@
+libr4 (1.0.99) unstable; urgency=medium
+
+  * conan: macos
+
+ -- Ivan Gagis <igagis@gmail.com>  Tue, 03 Dec 2024 14:06:25 +0200
+
 libr4 (1.0.98) unstable; urgency=medium
 
   * vcpkgize
