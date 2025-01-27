@@ -81,8 +81,10 @@ public:
 
 private:
 	template <size_t... indices>
-	constexpr matrix(std::initializer_list<vector<component_type, num_columns>> rows, std::index_sequence<indices...>) noexcept
-		:
+	constexpr matrix(
+		std::initializer_list<vector<component_type, num_columns>> rows,
+		std::index_sequence<indices...>
+	) noexcept :
 		base_type{*std::next(rows.begin(), indices)...}
 	{}
 
