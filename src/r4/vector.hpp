@@ -212,7 +212,11 @@ public:
 	 * Initializes vector components to given values.
 	 * @param v - parameter pack with initializing values.
 	 */
-	template <typename... arguments_type, std::enable_if_t<sizeof...(arguments_type) == dimension, bool> = true>
+	template <
+		typename... arguments_type, //
+		std::enable_if_t<
+			sizeof...(arguments_type) == dimension, //
+			bool> = true>
 	constexpr explicit vector(arguments_type... v) noexcept :
 		base_type{component_type(v)...}
 	{
@@ -221,8 +225,11 @@ public:
 
 private:
 	template <size_t... indices>
-	constexpr vector(std::initializer_list<component_type> vals, std::index_sequence<indices...>) noexcept :
-		base_type{*std::next(vals.begin(), indices)...}
+	constexpr vector(
+		std::initializer_list<component_type> vals, //
+		std::index_sequence<indices...>
+	) noexcept :
+		base_type{*std::next(std::cbegin(vals), indices)...}
 	{}
 
 public:
