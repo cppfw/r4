@@ -228,7 +228,9 @@ private:
 	constexpr vector(
 		std::initializer_list<component_type> vals, //
 		std::index_sequence<indices...>
-	) noexcept :
+	)
+		// NOTE: cannot make it noexcept because std::next() is not noexcept
+		:
 		base_type{*std::next(std::cbegin(vals), indices)...}
 	{}
 
