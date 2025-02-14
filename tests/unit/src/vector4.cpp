@@ -1,6 +1,8 @@
 #include <tst/set.hpp>
 #include <tst/check.hpp>
 
+#include <utki/string.hpp>
+
 #include "../../../src/r4/vector.hpp"
 
 using namespace std::string_literals;
@@ -387,6 +389,38 @@ const tst::set set("vector4", [](tst::suite& suite){
         auto s = ss.str();
 
         tst::check_eq(s, "3.5 4.6 5.7 6.8"s, SL);
+    });
+
+    suite.add("comp_op__unary__change_type", []{
+        r4::vector4<int> a{3, 4, 5, 6};
+
+        auto res = a.comp_op([](const auto& e){
+            return utki::cat(e);
+        });
+
+        r4::vector4<std::string> expected = {
+            "3", "4", "5", "6"
+        };
+
+        tst::check_eq(res, expected, SL);
+    });
+
+    suite.add("comp_op__binary__change_type", []{
+        r4::vector4<int> a{3, 4, 5, 6};
+        r4::vector4<int> b{6, 7, 8, 9};
+
+        auto res = a.comp_op(
+            b, //
+            [](const auto& ea, const auto& eb){
+                return utki::cat(ea, eb);
+            }
+        );
+
+        r4::vector4<std::string> expected = {
+            "36", "47", "58", "69"
+        };
+
+        tst::check_eq(res, expected, SL);
     });
 
     suite.add("comp_mul_vector4", []{

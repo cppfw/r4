@@ -358,10 +358,21 @@ public:
 	 * @return Resulting vector.
 	 */
 	template <typename unary_operation_type>
-	vector comp_op(unary_operation_type op) const
+	auto comp_op(unary_operation_type op) const //
+		-> vector<
+			decltype(op(std::declval<component_type>())), //
+			dimension>
 	{
-		vector res{};
-		std::transform(this->begin(), this->end(), res.begin(), op);
+		vector<
+			decltype(op(std::declval<component_type>())), //
+			dimension>
+			res{};
+		std::transform(
+			this->begin(), //
+			this->end(),
+			res.begin(),
+			op
+		);
 		return res;
 	}
 
@@ -373,10 +384,31 @@ public:
 	 * @return Resulting vector.
 	 */
 	template <typename binary_operation_type>
-	vector comp_op(const vector& vec, binary_operation_type op) const
+	auto comp_op(
+		const vector& vec, //
+		binary_operation_type op
+	) const
+		-> vector<
+			decltype(op(
+				std::declval<component_type>(), //
+				std::declval<component_type>()
+			)), //
+			dimension>
 	{
-		vector res{};
-		std::transform(this->begin(), this->end(), vec.begin(), res.begin(), op);
+		vector<
+			decltype(op(
+				std::declval<component_type>(), //
+				std::declval<component_type>()
+			)), //
+			dimension>
+			res{};
+		std::transform(
+			this->begin(), //
+			this->end(),
+			vec.begin(),
+			res.begin(),
+			op
+		);
 		return res;
 	}
 
@@ -390,7 +422,12 @@ public:
 	template <typename unary_operation_type>
 	vector& comp_operation(unary_operation_type op)
 	{
-		std::transform(this->begin(), this->end(), this->begin(), op);
+		std::transform(
+			this->begin(), //
+			this->end(),
+			this->begin(),
+			op
+		);
 		return *this;
 	}
 
@@ -533,7 +570,10 @@ public:
 	 */
 	vector operator+(const vector& vec) const noexcept
 	{
-		return this->comp_op(vec, std::plus<component_type>());
+		return this->comp_op(
+			vec, //
+			std::plus<component_type>()
+		);
 	}
 
 	/**
@@ -581,7 +621,10 @@ public:
 	 */
 	vector operator-(const vector& vec) const noexcept
 	{
-		return this->comp_op(vec, std::minus<component_type>());
+		return this->comp_op(
+			vec, //
+			std::minus<component_type>()
+		);
 	}
 
 	/**
@@ -678,10 +721,13 @@ public:
 	{
 		component_type res = 0;
 
-		this->comp_op(vec, [&res](const auto& a, const auto& b) {
-			res += a * b;
-			return component_type();
-		});
+		this->comp_op(
+			vec, //
+			[&res](const auto& a, const auto& b) {
+				res += a * b;
+				return component_type();
+			}
+		);
 
 		return res;
 	}
@@ -738,7 +784,8 @@ public:
 	 */
 	template <typename enable_type = vector>
 	// TODO: remove deprecated stuff
-	[[deprecated("use cross()")]] std::enable_if_t<dimension >= 3, enable_type> operator%(const vector& vec
+	[[deprecated("use cross()")]] std::enable_if_t<dimension >= 3, enable_type> operator%(
+		const vector& vec
 	) const noexcept
 	{
 		return this->cross(vec);
@@ -836,10 +883,9 @@ public:
 	{
 		component_type res = 0;
 
-		this->comp_op([&res](const auto& a) {
-			res += utki::pow2(a);
-			return component_type();
-		});
+		for (const auto& e : *this) {
+			res += utki::pow2(e);
+		}
 
 		return res;
 	}
