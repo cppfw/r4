@@ -1,3 +1,9 @@
+libr4 (1.0.101) unstable; urgency=medium
+
+  * improve vector::comp_op
+
+ -- Ivan Gagis <igagis@gmail.com>  Wed, 19 Feb 2025 14:52:15 +0200
+
 libr4 (1.0.100) unstable; urgency=medium
 
   * conan: wasm
