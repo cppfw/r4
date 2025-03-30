@@ -63,7 +63,7 @@ public:
 	/**
 	 * @brief First vector component.
 	 */
-	component_type& x() noexcept
+	constexpr component_type& x() noexcept
 	{
 		return this->operator[](0);
 	}
@@ -71,7 +71,7 @@ public:
 	/**
 	 * @brief First vector component.
 	 */
-	const component_type& x() const noexcept
+	constexpr const component_type& x() const noexcept
 	{
 		return this->operator[](0);
 	}
@@ -79,7 +79,7 @@ public:
 	/**
 	 * @brief First vector component.
 	 */
-	component_type& r() noexcept
+	constexpr component_type& r() noexcept
 	{
 		return this->operator[](0);
 	}
@@ -87,7 +87,7 @@ public:
 	/**
 	 * @brief First vector component.
 	 */
-	const component_type& r() const noexcept
+	constexpr const component_type& r() const noexcept
 	{
 		return this->operator[](0);
 	}
@@ -96,7 +96,7 @@ public:
 	 * @brief Second vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 1), enable_type&> y() noexcept
+	constexpr std::enable_if_t<(dimension > 1), enable_type&> y() noexcept
 	{
 		return this->operator[](1);
 	}
@@ -105,7 +105,7 @@ public:
 	 * @brief Second vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 1), const enable_type&> y() const noexcept
+	constexpr std::enable_if_t<(dimension > 1), const enable_type&> y() const noexcept
 	{
 		return this->operator[](1);
 	}
@@ -114,7 +114,7 @@ public:
 	 * @brief Second vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 1), enable_type&> g() noexcept
+	constexpr std::enable_if_t<(dimension > 1), enable_type&> g() noexcept
 	{
 		return this->operator[](1);
 	}
@@ -123,7 +123,7 @@ public:
 	 * @brief Second vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 1), const enable_type&> g() const noexcept
+	constexpr std::enable_if_t<(dimension > 1), const enable_type&> g() const noexcept
 	{
 		return this->operator[](1);
 	}
@@ -132,7 +132,7 @@ public:
 	 * @brief Third vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 2), enable_type&> z() noexcept
+	constexpr std::enable_if_t<(dimension > 2), enable_type&> z() noexcept
 	{
 		return this->operator[](2);
 	}
@@ -141,7 +141,7 @@ public:
 	 * @brief Third vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 2), const enable_type&> z() const noexcept
+	constexpr std::enable_if_t<(dimension > 2), const enable_type&> z() const noexcept
 	{
 		return this->operator[](2);
 	}
@@ -150,7 +150,7 @@ public:
 	 * @brief Third vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 2), enable_type&> b() noexcept
+	constexpr std::enable_if_t<(dimension > 2), enable_type&> b() noexcept
 	{
 		return this->operator[](2);
 	}
@@ -159,7 +159,7 @@ public:
 	 * @brief Third vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 2), const enable_type&> b() const noexcept
+	constexpr std::enable_if_t<(dimension > 2), const enable_type&> b() const noexcept
 	{
 		return this->operator[](2);
 	}
@@ -168,7 +168,7 @@ public:
 	 * @brief Fourth vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 3), enable_type&> w() noexcept
+	constexpr std::enable_if_t<(dimension > 3), enable_type&> w() noexcept
 	{
 		return this->operator[](3);
 	}
@@ -177,7 +177,7 @@ public:
 	 * @brief Fourth vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 3), const enable_type&> w() const noexcept
+	constexpr std::enable_if_t<(dimension > 3), const enable_type&> w() const noexcept
 	{
 		return this->operator[](3);
 	}
@@ -186,7 +186,7 @@ public:
 	 * @brief Fourth vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 3), enable_type&> a() noexcept
+	constexpr std::enable_if_t<(dimension > 3), enable_type&> a() noexcept
 	{
 		return this->operator[](3);
 	}
@@ -195,7 +195,7 @@ public:
 	 * @brief Fourth vector component.
 	 */
 	template <typename enable_type = component_type>
-	std::enable_if_t<(dimension > 3), const enable_type&> a() const noexcept
+	constexpr std::enable_if_t<(dimension > 3), const enable_type&> a() const noexcept
 	{
 		return this->operator[](3);
 	}
