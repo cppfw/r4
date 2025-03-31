@@ -381,7 +381,7 @@ const tst::set set("vector4", [](tst::suite& suite){
     });
 
     suite.add("operator_output__float", [](){
-        r4::vector4<float> a{3.5, 4.6, 5.7, 6.8};
+        r4::vector4<float> a{3.5f, 4.6f, 5.7f, 6.8f};
 
         std::stringstream ss;
         ss << a;
