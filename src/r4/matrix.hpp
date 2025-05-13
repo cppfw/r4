@@ -115,7 +115,12 @@ public:
 	 */
 	template <typename enable_type = component_type>
 	constexpr matrix(
-		const quaternion<std::enable_if_t<num_rows == num_columns&&(num_rows == 3 || num_rows == 4), enable_type>>& quat
+		const quaternion< //
+			std::enable_if_t<
+				num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
+				enable_type //
+				> //
+			>& quat
 	) noexcept
 	{
 		this->set(quat);
@@ -209,7 +214,12 @@ public:
 	 */
 	template <typename enable_type = component_type>
 	matrix& set(
-		const quaternion<std::enable_if_t<num_rows == num_columns&&(num_rows == 3 || num_rows == 4), enable_type>>& quat
+		const quaternion< //
+			std::enable_if_t<
+				num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
+				enable_type //
+				> //
+			>& quat
 	) noexcept
 	{
 		// Quaternion to matrix conversion:
@@ -912,7 +922,12 @@ public:
 	 */
 	template <typename enable_type = component_type>
 	matrix& rotate(
-		const quaternion<std::enable_if_t<num_rows == num_columns&&(num_rows == 3 || num_rows == 4), enable_type>>& q
+		const quaternion< //
+			std::enable_if_t<
+				num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
+				enable_type //
+				> //
+			>& q
 	) noexcept
 	{
 		return this->operator*=(matrix<component_type, num_rows, num_columns>(q));
