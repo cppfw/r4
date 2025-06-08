@@ -1,6 +1,5 @@
 r4 provides CMake targets:
 
 find_package(r4 CONFIG REQUIRED)
-find_package(utki CONFIG REQUIRED)
 
 target_link_libraries(main PRIVATE r4::r4)
