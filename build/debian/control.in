@@ -1,0 +1,62 @@
+Source: libr4
+Section: libs
+Priority: extra
+Maintainer: Ivan Gagis <igagis@gmail.com>
+Build-Depends:
+		debhelper (>= 9),
+		prorab,
+		prorab-extra,
+		myci,
+		doxygen,
+		clang-tidy,
+		clang-format,
+		libutki-dev,
+		libtst-dev
+Build-Depends-Indep: doxygen
+Standards-Version: 3.9.2
+
+Package: libr4$(soname)
+Section: libs
+Architecture: any
+Depends:
+	${shlibs:Depends},
+	${misc:Depends}
+Description: cross-platform C++ 3d math library.
+	3d math library.
+
+# Package: libr4-dbg$(soname)
+# Section: libs
+# Architecture: any
+# Depends:
+# 	${shlibs:Depends},
+# 	${misc:Depends}
+# Description: cross-platform C++ 3d math library.
+# 	Debug version of libr4.
+
+# Package: libr4$(soname)-dbgsrc
+# Section: debug
+# Architecture: all
+# Depends:
+# 	libr4$(soname)-dbgsym (= ${binary:Version}),
+# 	libr4-dbg$(soname)-dbgsym (= ${binary:Version}),
+# 	${misc:Depends}
+# Description: debugging sources for libr4$(soname) package.
+
+Package: libr4-dev
+Section: libdevel
+Architecture: all
+Depends:
+#	libr4$(soname) (= ${binary:Version}),
+#	libr4-dbg$(soname) (= ${binary:Version}),
+	${misc:Depends},
+	libutki-dev
+Suggests: libutki-doc
+Description: cross-platform C++ 3d math library.
+	3d math library.
+
+Package: libr4-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: documentation for libr4 - cross-platform C++ 3d math library.
+	For more details see description to libr4-dev package.
