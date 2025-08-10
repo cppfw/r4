@@ -83,7 +83,7 @@ private:
 	template <size_t... indices>
 	constexpr matrix(
 		std::initializer_list<vector<component_type, num_columns>> rows,
-		std::index_sequence<indices...>
+		std::index_sequence<indices...> //
 	) noexcept :
 		base_type{*std::next(rows.begin(), indices)...}
 	{}
@@ -114,14 +114,12 @@ public:
 	 * @param quat - unit quaternion defining the rotation.
 	 */
 	template <typename enable_type = component_type>
-	constexpr matrix(
-		const quaternion< //
-			std::enable_if_t<
-				num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
-				enable_type //
-				> //
-			>& quat
-	) noexcept
+	constexpr matrix(const quaternion< //
+					 std::enable_if_t<
+						 num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
+						 enable_type //
+						 > //
+					 >& quat) noexcept
 	{
 		this->set(quat);
 	}
@@ -213,14 +211,12 @@ public:
 	 * @return Reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
-	matrix& set(
-		const quaternion< //
-			std::enable_if_t<
-				num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
-				enable_type //
-				> //
-			>& quat
-	) noexcept
+	matrix& set(const quaternion< //
+				std::enable_if_t<
+					num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
+					enable_type //
+					> //
+				>& quat) noexcept
 	{
 		// Quaternion to matrix conversion:
 		//     |  1-(2y^2+2z^2)   2xy-2zw         2xz+2yw         0   |
@@ -921,14 +917,12 @@ public:
 	 * @return reference to this matrix object.
 	 */
 	template <typename enable_type = component_type>
-	matrix& rotate(
-		const quaternion< //
-			std::enable_if_t<
-				num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
-				enable_type //
-				> //
-			>& q
-	) noexcept
+	matrix& rotate(const quaternion< //
+				   std::enable_if_t<
+					   num_rows == num_columns && (num_rows == 3 || num_rows == 4), //
+					   enable_type //
+					   > //
+				   >& q) noexcept
 	{
 		return this->operator*=(matrix<component_type, num_rows, num_columns>(q));
 	}

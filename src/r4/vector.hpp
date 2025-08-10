@@ -784,23 +784,6 @@ public:
 	}
 
 	/**
-	 * @brief Cross product.
-	 * First three components of the resulting 4d vector is a result of cross
-	 * product between two 3d vectors formed from first 3 components of initial 4d vectors.
-	 * The forth component is a simple multiplication of 4th components of initial vectors.
-	 * @param vec - vector to multiply by.
-	 * @return Cross product of this vector by given vector.
-	 */
-	template <typename enable_type = vector>
-	// TODO: remove deprecated stuff
-	[[deprecated("use cross()")]] std::enable_if_t<dimension >= 3, enable_type> operator%(
-		const vector& vec
-	) const noexcept
-	{
-		return this->cross(vec);
-	}
-
-	/**
 	 * @brief Component-wise multiplication.
 	 * Performs component-wise multiplication of two vectors.
 	 * The result of such operation is also a vector.

@@ -551,7 +551,11 @@ public:
 	 * @return Rotation matrix.
 	 */
 	template <size_t dimension>
-	matrix<std::enable_if_t<dimension == 3 || dimension == 4, component_type>, dimension, dimension>
+	matrix< //
+		std::enable_if_t<dimension == 3 || dimension == 4, component_type>,
+		dimension,
+		dimension //
+		>
 	to_matrix() const noexcept;
 
 	/**
