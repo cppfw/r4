@@ -1,6 +1,7 @@
 include prorab.mk
 include prorab-license.mk
 include prorab-clang-format.mk
+include prorab-install-dbgsrc.mk
 
 $(eval $(call prorab-config, ../config))
 
@@ -16,3 +17,5 @@ $(eval $(prorab-clang-format))
 
 this_license_file := ../LICENSE
 $(eval $(prorab-license))
+
+$(eval $(prorab-install-dbgsrc))
