@@ -1,9 +1,0 @@
-source 'https://github.com/cppfw/cocoapods-repo.git'
-
-project 'r4/r4.xcodeproj'
-
-platform :ios, '9.0'
-
-target "r4" do
-	pod 'utki', '>= 1.1.123'
-end
