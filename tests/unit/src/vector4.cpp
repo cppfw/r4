@@ -1,6 +1,7 @@
 #include <tst/set.hpp>
 #include <tst/check.hpp>
 
+#include <utki/config.hpp>
 #include <utki/string.hpp>
 
 #include "../../../src/r4/vector.hpp"
@@ -536,17 +537,21 @@ const tst::set set("vector4", [](tst::suite& suite){
     });
 
     suite.add("constexprness", [](){
+#if CFG_CPP >= 20
         // operator/(number)
         {
             constexpr auto v = r4::vector4<unsigned>(10, 20, 30, 40) / 2;
             tst::check_eq(v, r4::vector4<unsigned>(10, 20, 30, 40) / 2, SL);
         }
+#endif
 
+#if CFG_CPP >= 20
         // operator*(number)
         {
             constexpr auto v = r4::vector4<unsigned>(10, 20, 30, 40) * 2;
             tst::check_eq(v, r4::vector4<unsigned>(10, 20, 30, 40) * 2, SL);
         }
+#endif
 
         // TODO: add other operators and functions
     });
