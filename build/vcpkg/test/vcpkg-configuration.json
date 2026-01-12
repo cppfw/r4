@@ -13,7 +13,8 @@
       "packages": [
         "myci",
         "utki",
-        "r4"
+        "r4",
+        "tst"
       ]
     }
   ],
