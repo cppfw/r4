@@ -678,7 +678,8 @@ public:
 #if CFG_CPP >= 20
 	constexpr
 #endif
-	vector& operator*=(component_type num) noexcept
+		vector&
+		operator*=(component_type num) noexcept
 	{
 		return this->comp_operation([&num](auto& a) {
 			return a * num;
@@ -694,7 +695,8 @@ public:
 #if CFG_CPP >= 20
 	constexpr
 #endif
-	vector operator*(component_type num) const noexcept
+		vector
+		operator*(component_type num) const noexcept
 	{
 		return (vector(*this) *= num);
 	}
@@ -708,7 +710,8 @@ public:
 #if CFG_CPP >= 20
 	constexpr
 #endif
-	vector operator/(component_type num) const noexcept
+		vector
+		operator/(component_type num) const noexcept
 	{
 		return vector(*this) /= num;
 	}
@@ -733,7 +736,8 @@ public:
 #if CFG_CPP >= 20
 	constexpr
 #endif
-	vector& operator/=(component_type num) noexcept
+		vector&
+		operator/=(component_type num) noexcept
 	{
 		// TODO: uncomment when there is a solution to have the assertion in constexpr context
 		// utki::assert(num != 0, [&](auto& o) {
