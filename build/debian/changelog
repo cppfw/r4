@@ -1,3 +1,9 @@
+libr4 (1.0.108) unstable; urgency=medium
+
+  * constexpr operators / and *
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 12 Jan 2026 16:58:17 +0200
+
 libr4 (1.0.107) unstable; urgency=medium
 
   * vcpkg: non-host myci dep
