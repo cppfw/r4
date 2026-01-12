@@ -24,3 +24,8 @@ myci_declare_library(${name}
     DEPENDENCIES
         utki
 )
+
+# ==============
+# = unit tests =
+
+include(unit_tests.cmake)

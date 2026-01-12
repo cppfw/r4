@@ -429,7 +429,7 @@ public:
 	 * @return Reference to this vector.
 	 */
 	template <typename unary_operation_type>
-	vector& comp_operation(unary_operation_type op)
+	constexpr vector& comp_operation(unary_operation_type op)
 	{
 		std::transform(
 			this->begin(), //
@@ -449,9 +449,18 @@ public:
 	 * @return Reference to this vector.
 	 */
 	template <typename binary_operation_type>
-	vector& comp_operation(const vector& vec, binary_operation_type op)
+	constexpr vector& comp_operation(
+		const vector& vec, //
+		binary_operation_type op
+	)
 	{
-		std::transform(this->begin(), this->end(), vec.begin(), this->begin(), op);
+		std::transform(
+			this->begin(), //
+			this->end(),
+			vec.begin(),
+			this->begin(),
+			op
+		);
 		return *this;
 	}
 
@@ -689,7 +698,7 @@ public:
 	 * @param num - scalar to divide by.
 	 * @return Vector resulting from division of this vector by scalar.
 	 */
-	vector operator/(component_type num) const noexcept
+	constexpr vector operator/(component_type num) const noexcept
 	{
 		return vector(*this) /= num;
 	}
@@ -711,11 +720,12 @@ public:
 	 * @param num - scalar to divide by.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator/=(component_type num) noexcept
+	constexpr vector& operator/=(component_type num) noexcept
 	{
-		ASSERT(num != 0, [&](auto& o) {
-			o << "vector::operator/=(): division by 0";
-		})
+		// TODO: uncomment when there is a solution to have the assertion in constexpr context
+		// utki::assert(num != 0, [&](auto& o) {
+		// 	o << "vector::operator/=(): division by 0";
+		// });
 		return this->comp_operation([&num](auto& a) {
 			return a / num;
 		});
