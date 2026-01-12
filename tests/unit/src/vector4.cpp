@@ -534,5 +534,21 @@ const tst::set set("vector4", [](tst::suite& suite){
 		tst::check_eq(r[2], -4, SL);
 		tst::check_eq(r[3], -6, SL);
     });
+
+    suite.add("constexprness", [](){
+        // operator/(number)
+        {
+            constexpr auto v = r4::vector4<unsigned>(10, 20, 30, 40) / 2;
+            tst::check_eq(v, r4::vector4<unsigned>(10, 20, 30, 40) / 2, SL);
+        }
+
+        // operator*(number)
+        {
+            constexpr auto v = r4::vector4<unsigned>(10, 20, 30, 40) * 2;
+            tst::check_eq(v, r4::vector4<unsigned>(10, 20, 30, 40) * 2, SL);
+        }
+
+        // TODO: add other operators and functions
+    });
 });
 }

@@ -674,7 +674,7 @@ public:
 	 * @param num - scalar to multiply by.
 	 * @return Reference to this vector object.
 	 */
-	vector& operator*=(component_type num) noexcept
+	constexpr vector& operator*=(component_type num) noexcept
 	{
 		return this->comp_operation([&num](auto& a) {
 			return a * num;
@@ -687,7 +687,7 @@ public:
 	 * @param num - scalar to multiply by.
 	 * @return Vector resulting from multiplication of this vector by scalar.
 	 */
-	vector operator*(component_type num) const noexcept
+	constexpr vector operator*(component_type num) const noexcept
 	{
 		return (vector(*this) *= num);
 	}
