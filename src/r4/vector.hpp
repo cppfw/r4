@@ -218,49 +218,13 @@ public:
 		std::enable_if_t<
 			sizeof...(arguments_type) == dimension, //
 			bool> = true>
-	constexpr explicit vector(arguments_type... v) noexcept :
+	constexpr vector(arguments_type... v) noexcept :
 		base_type{component_type(v)...}
 	{
 		static_assert(sizeof...(v) == dimension, "number of constructor arguments is not equal to vector size");
 	}
 
-private:
-	template <size_t... indices>
-	constexpr vector(
-		std::initializer_list<component_type> vals, //
-		std::index_sequence<indices...>
-	)
-		// NOTE: cannot make it noexcept because std::next() is not noexcept
-		:
-		base_type{*std::next(std::cbegin(vals), indices)...}
-	{}
-
 public:
-	/**
-	 * @brief Construct initialized vector.
-	 * Creates a vector and initializes its components by the given values.
-	 * @param vals - initializer list of numbers to set as components of the vector.
-	 */
-	constexpr vector(std::initializer_list<component_type> vals) :
-		vector(
-			[&vals]() {
-				if (vals.size() == dimension) {
-					return vals;
-				}
-				utki::assert(
-					false,
-					[&](auto& o) {
-						o << "wrong number of elements in initializer list of vector(std::initializer_list), expected "
-						  << dimension << ", got " << vals.size() << std::endl;
-					},
-					SL
-				);
-				return std::initializer_list<component_type>();
-			}(),
-			std::make_index_sequence<dimension>()
-		)
-	{}
-
 	/**
 	 * @brief Constructor.
 	 * Initializes all vector components to a given value.
