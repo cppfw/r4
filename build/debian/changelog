@@ -1,3 +1,9 @@
+libr4 (1.0.109) unstable; urgency=medium
+
+  * remove std::initializer_list ctor from vector
+
+ -- Ivan Gagis <igagis@gmail.com>  Mon, 16 Feb 2026 15:56:21 +0200
+
 libr4 (1.0.108) unstable; urgency=medium
 
   * constexpr operators / and *
