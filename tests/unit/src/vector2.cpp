@@ -505,8 +505,8 @@ const tst::set set("vector2", [](tst::suite& suite){
 		struct derived : base{};
 
 		struct ts{
-			void func(const r4::vector2<float>& v){}
-			void func(std::shared_ptr<const base> p){}
+			void func(const r4::vector2<float>& /* v */){}
+			void func(std::shared_ptr<const base> /* p */){}
 		} s;
 
 		auto p = std::make_shared<const derived>();

@@ -444,7 +444,7 @@ public:
 				this->end(),
 				vec.begin(),
 				this->begin(),
-				[](const auto& a, const auto& b) {
+				[](const auto& /* a */, const auto& b) {
 					return b;
 				}
 			);
@@ -458,7 +458,7 @@ public:
 				vec.end(),
 				this->begin(),
 				this->begin(),
-				[](const auto& a, const auto& b) {
+				[](const auto& a, const auto& /* b */) {
 					return a;
 				}
 			);
