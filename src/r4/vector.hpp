@@ -502,7 +502,7 @@ public:
 	 */
 	vector& set(component_type val) noexcept
 	{
-		return this->comp_operation([&val](const auto&) {
+		this->comp_operation([&val](const auto&) {
 			return val;
 		});
 		return *this;
