@@ -28,10 +28,10 @@ SOFTWARE.
 
 #include <array>
 
+#include <utki/config.hpp>
+
 #include "quaternion.hpp"
 #include "vector.hpp"
-
-#include <utki/config.hpp>
 
 // undefine possibly defined macros
 #ifdef minor
@@ -1188,12 +1188,14 @@ public:
 				for (size_t r = 0; r != num_rows; ++r) {
 					component_type sign = r % 2 == 0 ? component_type(1) : component_type(-1);
 					for (size_t c = 0; c != num_columns; ++c) {
-// GCC 13 false-positively complains:
+// GCC 13 false-positively complains, when using -O3 optimization level:
 //     error: ‘void* __builtin_memcpy(void*, const void*, long unsigned int)’ offset [24, 36] is out of the bounds [0, 16] of object ‘ret’ with type ‘r4::matrix<float, 2, 2>’ [-Werror=array-bounds=]
-// so we disable the warning
+//     error: ‘void* __builtin_memcpy(void*, const void*, long unsigned int)’ writing between 4 and 8 bytes into a region of size 0 overflows the destination [-Werror=stringop-overflow=]
+// so we disable the warnings
 #if CFG_COMPILER == CFG_COMPILER_GCC && CFG_COMPILER_VERSION_MAJOR == 13
 #	pragma GCC diagnostic push
 #	pragma GCC diagnostic ignored "-Warray-bounds"
+#	pragma GCC diagnostic ignored "-Wstringop-overflow"
 #endif
 						// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 						mm[r][c] = sign * this->minor(r, c);
