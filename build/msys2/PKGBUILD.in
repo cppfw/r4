@@ -17,6 +17,8 @@ else
 	exit 1
 fi
 
+CXX=clang++
+
 packageName=r4
 
 pkgname="${pkgPrefix}${packageName}"
