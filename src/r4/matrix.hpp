@@ -31,6 +31,8 @@ SOFTWARE.
 #include "quaternion.hpp"
 #include "vector.hpp"
 
+#include <utki/config.hpp>
+
 // undefine possibly defined macros
 #ifdef minor
 #	undef minor
@@ -1186,8 +1188,18 @@ public:
 				for (size_t r = 0; r != num_rows; ++r) {
 					component_type sign = r % 2 == 0 ? component_type(1) : component_type(-1);
 					for (size_t c = 0; c != num_columns; ++c) {
+// GCC 13 false-positively complains:
+//     error: ‘void* __builtin_memcpy(void*, const void*, long unsigned int)’ offset [24, 36] is out of the bounds [0, 16] of object ‘ret’ with type ‘r4::matrix<float, 2, 2>’ [-Werror=array-bounds=]
+// so we disable the warning
+#if CFG_COMPILER == CFG_COMPILER_GCC && CFG_COMPILER_VERSION_MAJOR == 13
+#	pragma GCC diagnostic push
+#	pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
 						// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 						mm[r][c] = sign * this->minor(r, c);
+#if CFG_COMPILER == CFG_COMPILER_GCC && CFG_COMPILER_VERSION_MAJOR == 13
+#	pragma GCC diagnostic pop
+#endif
 						sign = -sign;
 					}
 				}
