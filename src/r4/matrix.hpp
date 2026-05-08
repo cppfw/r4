@@ -1083,10 +1083,12 @@ public:
 			for (size_t dc = col; dc != ret[dr].size(); ++dc) {
 // GCC 12 false-positively complains, when using -O3 optimization level:
 //     error: 'void* __builtin_memcpy(void*, const void*, long unsigned int)' offset [16, 19] is out of the bounds [0, 16] of object 'ret' with type 'r4::matrix<int, 2, 2>' [-Werror=array-bounds]
+//     error: 'void* __builtin_memcpy(void*, const void*, unsigned int)' writing between 4 and 8 bytes into a region of size 0 overflows the destination [-Werror=stringop-overflow=]
 // so we disable the warnings
 #if CFG_COMPILER == CFG_COMPILER_GCC && CFG_COMPILER_VERSION_MAJOR == 12
 #	pragma GCC diagnostic push
 #	pragma GCC diagnostic ignored "-Warray-bounds"
+#	pragma GCC diagnostic ignored "-Wstringop-overflow"
 #endif
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				ret[dr][dc] = this->row(dr)[dc + 1];
