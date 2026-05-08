@@ -1081,8 +1081,18 @@ public:
 			}
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 			for (size_t dc = col; dc != ret[dr].size(); ++dc) {
+// GCC 12 false-positively complains, when using -O3 optimization level:
+//     error: 'void* __builtin_memcpy(void*, const void*, long unsigned int)' offset [16, 19] is out of the bounds [0, 16] of object 'ret' with type 'r4::matrix<int, 2, 2>' [-Werror=array-bounds]
+// so we disable the warnings
+#if CFG_COMPILER == CFG_COMPILER_GCC && CFG_COMPILER_VERSION_MAJOR == 12
+#	pragma GCC diagnostic push
+#	pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 				ret[dr][dc] = this->row(dr)[dc + 1];
+#if CFG_COMPILER == CFG_COMPILER_GCC && CFG_COMPILER_VERSION_MAJOR == 12
+#	pragma GCC diagnostic pop
+#endif
 			}
 		}
 
