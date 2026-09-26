@@ -1,15 +1,13 @@
-#include <tst/set.hpp>
-#include <tst/check.hpp>
-
 #include <r4/segment2.hpp>
+#include <tst/check.hpp>
+#include <tst/set.hpp>
 
 // declare templates to instantiate all template methods to include all methods to gcov coverage
 template class r4::segment2<int>;
 
-namespace{
-const tst::set set("segment2", [](tst::suite& suite){
-	
-	suite.add("set_empty_bounding_box", [](){
+namespace {
+const tst::set set("segment2", [](tst::suite& suite) {
+	suite.add("set_empty_bounding_box", []() {
 		r4::segment2<int> seg{};
 
 		seg.set_empty_bounding_box();
@@ -23,12 +21,9 @@ const tst::set set("segment2", [](tst::suite& suite){
 	suite.add<std::pair<r4::segment2<int>, r4::segment2<int>>>(
 		"unite",
 		{
-			{
-				{{10, 20}, {30, 40}},
-				{{50, 60}, {70, 80}}
-			},
-		},
-		[](const auto& p){
+			{{{10, 20}, {30, 40}}, {{50, 60}, {70, 80}}},
+    },
+		[](const auto& p) {
 			auto seg(p.first);
 
 			seg.unite(p.second);
@@ -43,4 +38,4 @@ const tst::set set("segment2", [](tst::suite& suite){
 		}
 	);
 });
-}
+} // namespace

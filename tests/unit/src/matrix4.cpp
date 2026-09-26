@@ -1,5 +1,5 @@
-#include <tst/set.hpp>
 #include <tst/check.hpp>
+#include <tst/set.hpp>
 
 #include "../../../src/r4/matrix.hpp"
 
@@ -8,13 +8,13 @@ using namespace std::string_literals;
 // declare templates to instantiate all template methods to include all methods to gcov coverage
 template class r4::matrix<int, 4, 4>;
 
-namespace{
-const tst::set set("matrix4", [](tst::suite& suite){
-	suite.add("constructor__4x_initializer_list4", []{
+namespace {
+const tst::set set("matrix4", [](tst::suite& suite) {
+	suite.add("constructor__4x_initializer_list4", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -22,18 +22,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 2 3 4" "\n"
-				"|5 6 7 8" "\n"
-				"|9 10 11 12" "\n"
-				"|13 14 15 16" "\n"s;
+			"|1 2 3 4"
+			"\n"
+			"|5 6 7 8"
+			"\n"
+			"|9 10 11 12"
+			"\n"
+			"|13 14 15 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("constructor__4x_vector4", []{
+	suite.add("constructor__4x_vector4", [] {
 		r4::matrix4<int> m{
-			r4::vector4<int>{1, 2, 3, 4},
-			r4::vector4<int>{5, 6, 7, 8},
-			r4::vector4<int>{9, 10, 11, 12},
+			r4::vector4<int>{ 1,  2,  3,  4},
+			r4::vector4<int>{ 5,  6,  7,  8},
+			r4::vector4<int>{ 9, 10, 11, 12},
 			r4::vector4<int>{13, 14, 15, 16}
 		};
 
@@ -41,14 +45,18 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 2 3 4" "\n"
-				"|5 6 7 8" "\n"
-				"|9 10 11 12" "\n"
-				"|13 14 15 16" "\n"s;
+			"|1 2 3 4"
+			"\n"
+			"|5 6 7 8"
+			"\n"
+			"|9 10 11 12"
+			"\n"
+			"|13 14 15 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("constructor__quaternion", []{
+	suite.add("constructor__quaternion", [] {
 		r4::quaternion<float> q{};
 		q.set_rotation(1, 2, 3, float(utki::pi) / 6);
 
@@ -60,18 +68,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m.to<int>();
 		auto str = ss.str();
 		auto cmp =
-				"|-741 -1232 1401 0" "\n"
-				"|1767 -339 303 0" "\n"
-				"|-598 1303 330 0" "\n"
-				"|0 0 0 1000" "\n"s;
+			"|-741 -1232 1401 0"
+			"\n"
+			"|1767 -339 303 0"
+			"\n"
+			"|-598 1303 330 0"
+			"\n"
+			"|0 0 0 1000"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("operator_multiply__vector2", []{
+	suite.add("operator_multiply__vector2", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -81,11 +93,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[1], 5 * 3 + 6 * 4 + 8, SL);
 	});
 
-	suite.add("operator_multiply__vector3", []{
+	suite.add("operator_multiply__vector3", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -96,11 +108,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[2], 9 * 3 + 10 * 4 + 11 * 5 + 12, SL);
 	});
 
-	suite.add("operator_multiply__vector4", []{
+	suite.add("operator_multiply__vector4", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -112,11 +124,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[3], 13 * 3 + 14 * 4 + 15 * 5 + 16 * 6, SL);
 	});
 
-	suite.add("operator_multiply__matrix4", []{
+	suite.add("operator_multiply__matrix4", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -147,11 +159,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[3][3], 13 * 20 + 14 * 24 + 15 * 28 + 16 * 32, SL);
 	});
 
-	suite.add("transpose", []{
+	suite.add("transpose", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -161,18 +173,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 5 9 13" "\n"
-				"|2 6 10 14" "\n"
-				"|3 7 11 15" "\n"
-				"|4 8 12 16" "\n"s;
+			"|1 5 9 13"
+			"\n"
+			"|2 6 10 14"
+			"\n"
+			"|3 7 11 15"
+			"\n"
+			"|4 8 12 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("tposed", []{
+	suite.add("tposed", [] {
 		r4::matrix4<int> matrix{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -182,18 +198,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 5 9 13" "\n"
-				"|2 6 10 14" "\n"
-				"|3 7 11 15" "\n"
-				"|4 8 12 16" "\n"s;
+			"|1 5 9 13"
+			"\n"
+			"|2 6 10 14"
+			"\n"
+			"|3 7 11 15"
+			"\n"
+			"|4 8 12 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("operator_multiply_equals__matrix4", []{
+	suite.add("operator_multiply_equals__matrix4", [] {
 		r4::matrix4<int> r{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -224,11 +244,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[3][3], 13 * 20 + 14 * 24 + 15 * 28 + 16 * 32, SL);
 	});
 
-	suite.add("operator_multiply_equals__number", []{
+	suite.add("operator_multiply_equals__number", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -238,18 +258,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|3 6 9 12" "\n"
-				"|15 18 21 24" "\n"
-				"|27 30 33 36" "\n"
-				"|39 42 45 48" "\n"s;
+			"|3 6 9 12"
+			"\n"
+			"|15 18 21 24"
+			"\n"
+			"|27 30 33 36"
+			"\n"
+			"|39 42 45 48"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("left_mul__matrix4", []{
+	suite.add("left_mul__matrix4", [] {
 		r4::matrix4<int> m2{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -280,11 +304,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(r[3][3], 13 * 20 + 14 * 24 + 15 * 28 + 16 * 32, SL);
 	});
 
-	suite.add("set_identity", []{
+	suite.add("set_identity", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -294,28 +318,36 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 0 0 0" "\n"
-				"|0 1 0 0" "\n"
-				"|0 0 1 0" "\n"
-				"|0 0 0 1" "\n"s;
+			"|1 0 0 0"
+			"\n"
+			"|0 1 0 0"
+			"\n"
+			"|0 0 1 0"
+			"\n"
+			"|0 0 0 1"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("set_frustum__l_r_b_t_n_f", []{
+	suite.add("set_frustum__l_r_b_t_n_f", [] {
 		r4::matrix4<float> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
 		m.set_frustum(-2, 2, -1.5, 1.5, 2, 100);
 
 		auto expected =
-			"|1000 0 0 0" "\n"
-			"|0 1333 0 0" "\n"
-			"|0 0 -1040 -4081" "\n"
-			"|0 0 -1000 0" "\n"s;
+			"|1000 0 0 0"
+			"\n"
+			"|0 1333 0 0"
+			"\n"
+			"|0 0 -1040 -4081"
+			"\n"
+			"|0 0 -1000 0"
+			"\n"s;
 
 		m *= 1000.0f;
 		std::stringstream ss;
@@ -324,16 +356,20 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, expected, SL);
 	});
 
-	suite.add("frustum__l_r_b_t_n_f", []{
+	suite.add("frustum__l_r_b_t_n_f", [] {
 		r4::matrix4<float> m;
 		m.set_identity();
 		m.frustum(-2, 2, -1.5, 1.5, 2, 100);
 
 		auto expected =
-			"|1000 0 0 0" "\n"
-			"|0 1333 0 0" "\n"
-			"|0 0 -1040 -4081" "\n"
-			"|0 0 -1000 0" "\n"s;
+			"|1000 0 0 0"
+			"\n"
+			"|0 1333 0 0"
+			"\n"
+			"|0 0 -1040 -4081"
+			"\n"
+			"|0 0 -1000 0"
+			"\n"s;
 
 		m *= 1000.0f;
 		std::stringstream ss;
@@ -342,20 +378,19 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, expected, SL);
 	});
 
-	suite.add("set_perspective__fovy_aspect_near_far", [](){
+	suite.add("set_perspective__fovy_aspect_near_far", []() {
 		r4::matrix4<float> m;
-		m.set_perspective(
-			float(utki::pi / 2),
-			16.0f / 9,
-			1,
-			10
-		);
+		m.set_perspective(float(utki::pi / 2), 16.0f / 9, 1, 10);
 
 		auto expected =
-			"|562 0 0 0" "\n"
-			"|0 1000 0 0" "\n"
-			"|0 0 -1222 -2222" "\n"
-			"|0 0 -1000 0" "\n"s;
+			"|562 0 0 0"
+			"\n"
+			"|0 1000 0 0"
+			"\n"
+			"|0 0 -1222 -2222"
+			"\n"
+			"|0 0 -1000 0"
+			"\n"s;
 
 		m *= 1000.0f;
 		std::stringstream ss;
@@ -364,22 +399,21 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, expected, SL);
 	});
 
-	suite.add("perspective__fovy_aspect_near_far", [](){
+	suite.add("perspective__fovy_aspect_near_far", []() {
 		r4::matrix4<float> m;
 		m.set_identity();
 
-		m.perspective(
-			float(utki::pi / 2),
-			16.0f / 9,
-			1,
-			10
-		);
+		m.perspective(float(utki::pi / 2), 16.0f / 9, 1, 10);
 
 		auto expected =
-			"|562 0 0 0" "\n"
-			"|0 1000 0 0" "\n"
-			"|0 0 -1222 -2222" "\n"
-			"|0 0 -1000 0" "\n"s;
+			"|562 0 0 0"
+			"\n"
+			"|0 1000 0 0"
+			"\n"
+			"|0 0 -1222 -2222"
+			"\n"
+			"|0 0 -1000 0"
+			"\n"s;
 
 		m *= 1000.0f;
 		std::stringstream ss;
@@ -388,11 +422,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, expected, SL);
 	});
 
-	suite.add("perspective__p", [](){
+	suite.add("perspective__p", []() {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -402,28 +436,32 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m.to<int>();
 		auto str = ss.str();
 		auto cmp =
-				"|1 2 15 4" "\n"
-				"|5 6 31 8" "\n"
-				"|9 10 47 12" "\n"
-				"|13 14 63 16" "\n"s;
+			"|1 2 15 4"
+			"\n"
+			"|5 6 31 8"
+			"\n"
+			"|9 10 47 12"
+			"\n"
+			"|13 14 63 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
 // these tests fail in mingw32 build, due to floating point calculations difference
 #if CFG_OS != CFG_OS_WINDOWS || CFG_CPU_BITS != 32
-	suite.add("set_look_at", [](){
+	suite.add("set_look_at", []() {
 		r4::matrix4<float> m;
-		m.set_look_at(
-			{3, 1, 2},
-			{0, 1, 0},
-			{0, 2, 0}
-		);
+		m.set_look_at({3, 1, 2}, {0, 1, 0}, {0, 2, 0});
 
 		auto expected =
-			"|55 0 -83 0" "\n"
-			"|0 100 0 -100" "\n"
-			"|83 0 55 -360" "\n"
-			"|0 0 0 100" "\n"s;
+			"|55 0 -83 0"
+			"\n"
+			"|0 100 0 -100"
+			"\n"
+			"|83 0 55 -360"
+			"\n"
+			"|0 0 0 100"
+			"\n"s;
 
 		m *= 100.0f;
 		std::stringstream ss;
@@ -432,21 +470,21 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(str, expected, SL);
 	});
 
-	suite.add("look_at", [](){
+	suite.add("look_at", []() {
 		r4::matrix4<float> m;
 		m.set_identity();
 
-		m.look_at(
-			{3, 1, 2},
-			{0, 1, 0},
-			{0, 2, 0}
-		);
+		m.look_at({3, 1, 2}, {0, 1, 0}, {0, 2, 0});
 
 		auto expected =
-			"|55 0 -83 0" "\n"
-			"|0 100 0 -100" "\n"
-			"|83 0 55 -360" "\n"
-			"|0 0 0 100" "\n"s;
+			"|55 0 -83 0"
+			"\n"
+			"|0 100 0 -100"
+			"\n"
+			"|83 0 55 -360"
+			"\n"
+			"|0 0 0 100"
+			"\n"s;
 
 		m *= 100.0f;
 		std::stringstream ss;
@@ -456,11 +494,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 	});
 #endif
 
-	suite.add("set_quaternion", []{
+	suite.add("set_quaternion", [] {
 		r4::matrix4<float> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -470,18 +508,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m.to<int>();
 		auto str = ss.str();
 		auto cmp =
-				"|-49 -28 46 0" "\n"
-				"|52 -39 4 0" "\n"
-				"|-14 44 -25 0" "\n"
-				"|0 0 0 1" "\n"s;
+			"|-49 -28 46 0"
+			"\n"
+			"|52 -39 4 0"
+			"\n"
+			"|-14 44 -25 0"
+			"\n"
+			"|0 0 0 1"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("scale__x_y", []{
+	suite.add("scale__x_y", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -491,18 +533,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|3 8 3 4" "\n"
-				"|15 24 7 8" "\n"
-				"|27 40 11 12" "\n"
-				"|39 56 15 16" "\n"s;
+			"|3 8 3 4"
+			"\n"
+			"|15 24 7 8"
+			"\n"
+			"|27 40 11 12"
+			"\n"
+			"|39 56 15 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("scale__x_y_z", []{
+	suite.add("scale__x_y_z", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -512,18 +558,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|3 8 15 4" "\n"
-				"|15 24 35 8" "\n"
-				"|27 40 55 12" "\n"
-				"|39 56 75 16" "\n"s;
+			"|3 8 15 4"
+			"\n"
+			"|15 24 35 8"
+			"\n"
+			"|27 40 55 12"
+			"\n"
+			"|39 56 75 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("scale__number", []{
+	suite.add("scale__number", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -533,18 +583,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|3 6 9 4" "\n"
-				"|15 18 21 8" "\n"
-				"|27 30 33 12" "\n"
-				"|39 42 45 16" "\n"s;
+			"|3 6 9 4"
+			"\n"
+			"|15 18 21 8"
+			"\n"
+			"|27 30 33 12"
+			"\n"
+			"|39 42 45 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("scale__vector2", []{
+	suite.add("scale__vector2", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -554,18 +608,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|3 8 3 4" "\n"
-				"|15 24 7 8" "\n"
-				"|27 40 11 12" "\n"
-				"|39 56 15 16" "\n"s;
+			"|3 8 3 4"
+			"\n"
+			"|15 24 7 8"
+			"\n"
+			"|27 40 11 12"
+			"\n"
+			"|39 56 15 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("scale__vector3", []{
+	suite.add("scale__vector3", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -575,18 +633,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|3 8 15 4" "\n"
-				"|15 24 35 8" "\n"
-				"|27 40 55 12" "\n"
-				"|39 56 75 16" "\n"s;
+			"|3 8 15 4"
+			"\n"
+			"|15 24 35 8"
+			"\n"
+			"|27 40 55 12"
+			"\n"
+			"|39 56 75 16"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("scale__vector4", []{
+	suite.add("scale__vector4", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -596,18 +658,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|3 8 15 24" "\n"
-				"|15 24 35 48" "\n"
-				"|27 40 55 72" "\n"
-				"|39 56 75 96" "\n"s;
+			"|3 8 15 24"
+			"\n"
+			"|15 24 35 48"
+			"\n"
+			"|27 40 55 72"
+			"\n"
+			"|39 56 75 96"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("translate__x_y", []{
+	suite.add("translate__x_y", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -617,18 +683,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 2 3 15" "\n"
-				"|5 6 7 47" "\n"
-				"|9 10 11 79" "\n"
-				"|13 14 15 111" "\n"s;
+			"|1 2 3 15"
+			"\n"
+			"|5 6 7 47"
+			"\n"
+			"|9 10 11 79"
+			"\n"
+			"|13 14 15 111"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("translate__x_y_z", []{
+	suite.add("translate__x_y_z", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -638,18 +708,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 2 3 30" "\n"
-				"|5 6 7 82" "\n"
-				"|9 10 11 134" "\n"
-				"|13 14 15 186" "\n"s;
+			"|1 2 3 30"
+			"\n"
+			"|5 6 7 82"
+			"\n"
+			"|9 10 11 134"
+			"\n"
+			"|13 14 15 186"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("translate__vector2", []{
+	suite.add("translate__vector2", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -659,18 +733,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 2 3 15" "\n"
-				"|5 6 7 47" "\n"
-				"|9 10 11 79" "\n"
-				"|13 14 15 111" "\n"s;
+			"|1 2 3 15"
+			"\n"
+			"|5 6 7 47"
+			"\n"
+			"|9 10 11 79"
+			"\n"
+			"|13 14 15 111"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("translate__vector3", []{
+	suite.add("translate__vector3", [] {
 		r4::matrix4<int> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -680,18 +758,22 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 		auto str = ss.str();
 		auto cmp =
-				"|1 2 3 30" "\n"
-				"|5 6 7 82" "\n"
-				"|9 10 11 134" "\n"
-				"|13 14 15 186" "\n"s;
+			"|1 2 3 30"
+			"\n"
+			"|5 6 7 82"
+			"\n"
+			"|9 10 11 134"
+			"\n"
+			"|13 14 15 186"
+			"\n"s;
 		tst::check_eq(str, cmp, SL);
 	});
 
-	suite.add("rotate__quaternion", []{
+	suite.add("rotate__quaternion", [] {
 		r4::matrix4<float> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -707,11 +789,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(m.to<int>(), cmp.to<int>(), SL);
 	});
 
-	suite.add("rotate__vector3", []{
+	suite.add("rotate__vector3", [] {
 		r4::matrix4<float> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -730,11 +812,11 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(m.to<int>(), cmp.to<int>(), SL);
 	});
 
-	suite.add("rotate__number", []{
+	suite.add("rotate__number", [] {
 		r4::matrix4<float> m{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -755,112 +837,112 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(m.to<int>(), cmp.to<int>(), SL);
 	});
 
-	suite.add("remove__r_c___and___minor__r_c", []{
+	suite.add("remove__r_c___and___minor__r_c", [] {
 		r4::matrix4<int> m{
-			{1 , 2 , 3 , 4 },
-			{5 , 6 , 7 , 8 },
-			{9 , 10, 11, 12},
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
 		// row 0
 		r4::matrix3<int> m00{
-			{6, 7, 8},
+			{ 6,  7,  8},
 			{10, 11, 12},
 			{14, 15, 16}
 		};
 
 		r4::matrix3<int> m01{
-			{5, 7, 8},
-			{9, 11, 12},
+			{ 5,  7,  8},
+			{ 9, 11, 12},
 			{13, 15, 16}
 		};
 
 		r4::matrix3<int> m02{
-			{5, 6, 8},
-			{9, 10, 12},
+			{ 5,  6,  8},
+			{ 9, 10, 12},
 			{13, 14, 16}
 		};
 
 		r4::matrix3<int> m03{
-			{5, 6, 7},
-			{9, 10, 11},
+			{ 5,  6,  7},
+			{ 9, 10, 11},
 			{13, 14, 15}
 		};
 
 		// row 1
 		r4::matrix3<int> m10{
-			{2,  3,  4 },
+			{ 2,  3,  4},
 			{10, 11, 12},
 			{14, 15, 16}
 		};
 
 		r4::matrix3<int> m11{
-			{1,  3,  4 },
-			{9,  11, 12},
+			{ 1,  3,  4},
+			{ 9, 11, 12},
 			{13, 15, 16}
 		};
 
 		r4::matrix3<int> m12{
-			{1,  2,  4 },
-			{9,  10, 12},
+			{ 1,  2,  4},
+			{ 9, 10, 12},
 			{13, 14, 16}
 		};
 
 		r4::matrix3<int> m13{
-			{1,  2,  3 },
-			{9,  10, 11},
+			{ 1,  2,  3},
+			{ 9, 10, 11},
 			{13, 14, 15}
 		};
 
 		// row 2
 		r4::matrix3<int> m20{
-			{2 , 3 , 4 },
-			{6 , 7 , 8 },
+			{ 2,  3,  4},
+			{ 6,  7,  8},
 			{14, 15, 16}
 		};
 
 		r4::matrix3<int> m21{
-			{1 , 3 , 4 },
-			{5 , 7 , 8 },
+			{ 1,  3,  4},
+			{ 5,  7,  8},
 			{13, 15, 16}
 		};
 
 		r4::matrix3<int> m22{
-			{1 , 2 , 4 },
-			{5 , 6 , 8 },
+			{ 1,  2,  4},
+			{ 5,  6,  8},
 			{13, 14, 16}
 		};
 
 		r4::matrix3<int> m23{
-			{1 , 2 , 3 },
-			{5 , 6 , 7 },
+			{ 1,  2,  3},
+			{ 5,  6,  7},
 			{13, 14, 15}
 		};
 
 		// row 3
 		r4::matrix3<int> m30{
-			{2 , 3 , 4 },
-			{6 , 7 , 8 },
+			{ 2,  3,  4},
+			{ 6,  7,  8},
 			{10, 11, 12}
 		};
 
 		r4::matrix3<int> m31{
-			{1 , 3 , 4 },
-			{5 , 7 , 8 },
-			{9 , 11, 12}
+			{1,  3,  4},
+			{5,  7,  8},
+			{9, 11, 12}
 		};
 
 		r4::matrix3<int> m32{
-			{1 , 2 , 4 },
-			{5 , 6 , 8 },
-			{9 , 10, 12}
+			{1,  2,  4},
+			{5,  6,  8},
+			{9, 10, 12}
 		};
 
 		r4::matrix3<int> m33{
-			{1 , 2 , 3 },
-			{5 , 6 , 7 },
-			{9 , 10, 11}
+			{1,  2,  3},
+			{5,  6,  7},
+			{9, 10, 11}
 		};
 
 		tst::check_eq(m.remove(0, 0), m00, SL);
@@ -904,18 +986,18 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(m.minor(3, 3), m33.det(), SL);
 	});
 
-	suite.add("det", []{
+	suite.add("det", [] {
 		r4::matrix4<int> m{
 			{1, 3, 5, 9},
 			{1, 3, 1, 7},
 			{4, 3, 9, 7},
 			{5, 2, 0, 9}
 		};
-		
+
 		tst::check_eq(m.det(), -376, SL);
 	});
 
-	suite.add("inv", []{
+	suite.add("inv", [] {
 		r4::matrix4<float> m{
 			{1, 3, 5, 9},
 			{1, 3, 1, 7},
@@ -936,7 +1018,7 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		tst::check_eq(diff, decltype(m)().set(0), SL);
 	});
 
-	suite.add("operator_output", []{
+	suite.add("operator_output", [] {
 		r4::matrix4<int> m;
 		m.set_identity();
 
@@ -945,19 +1027,23 @@ const tst::set set("matrix4", [](tst::suite& suite){
 		ss << m;
 
 		auto cmp =
-				"|1 0 0 0" "\n"
-				"|0 1 0 0" "\n"
-				"|0 0 1 0" "\n"
-				"|0 0 0 1" "\n"s;
+			"|1 0 0 0"
+			"\n"
+			"|0 1 0 0"
+			"\n"
+			"|0 0 1 0"
+			"\n"
+			"|0 0 0 1"
+			"\n"s;
 
 		tst::check_eq(ss.str(), cmp, SL);
 	});
 
-	suite.add("submatrix", []{
-        r4::matrix4<int> m{
-		 	{1, 2, 3, 4},
-			{5, 6, 7, 8},
-			{9, 10, 11, 12},
+	suite.add("submatrix", [] {
+		r4::matrix4<int> m{
+			{ 1,  2,  3,  4},
+			{ 5,  6,  7,  8},
+			{ 9, 10, 11, 12},
 			{13, 14, 15, 16}
 		};
 
@@ -968,9 +1054,12 @@ const tst::set set("matrix4", [](tst::suite& suite){
 			ss << sm;
 			auto str = ss.str();
 			auto cmp =
-					"|1 2 3" "\n"
-					"|5 6 7" "\n"
-					"|9 10 11" "\n"s;
+				"|1 2 3"
+				"\n"
+				"|5 6 7"
+				"\n"
+				"|9 10 11"
+				"\n"s;
 			tst::check_eq(str, cmp, SL);
 		}
 
@@ -981,10 +1070,12 @@ const tst::set set("matrix4", [](tst::suite& suite){
 			ss << sm;
 			auto str = ss.str();
 			auto cmp =
-					"|10 11 12" "\n"
-					"|14 15 16" "\n"s;
+				"|10 11 12"
+				"\n"
+				"|14 15 16"
+				"\n"s;
 			tst::check_eq(str, cmp, SL);
 		}
-    });
+	});
 });
-}
+} // namespace

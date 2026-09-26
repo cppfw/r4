@@ -1,14 +1,14 @@
-#include <tst/set.hpp>
-#include <tst/check.hpp>
-
 #include "../../../src/r4/rectangle.hpp"
+
+#include <tst/check.hpp>
+#include <tst/set.hpp>
 
 // declare templates to instantiate all template methods to include all methods to gcov coverage
 template class r4::rectangle<int>;
 
-namespace{
-const tst::set set("rectangle", [](tst::suite& suite){
-	suite.add("constructor__x_y_w_h", []{
+namespace {
+const tst::set set("rectangle", [](tst::suite& suite) {
+	suite.add("constructor__x_y_w_h", [] {
 		r4::rectangle<int> r{3, 4, 5, 6};
 
 		tst::check_eq(r.p.x(), 3, SL);
@@ -17,8 +17,11 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check_eq(r.d.y(), 6, SL);
 	});
 
-	suite.add("constructor__vector2_vector2", []{
-		r4::rectangle<int> r{ {3, 4}, {5, 6} };
+	suite.add("constructor__vector2_vector2", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{5, 6}
+		};
 
 		tst::check_eq(r.p.x(), 3, SL);
 		tst::check_eq(r.p.y(), 4, SL);
@@ -26,8 +29,10 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check_eq(r.d.y(), 6, SL);
 	});
 
-	suite.add("constructor__segment_braced_list", []{
-		r4::rectangle<int> r{{{30, 50}, {10, 20}}}; // from segment
+	suite.add("constructor__segment_braced_list", [] {
+		r4::rectangle<int> r{
+			{{30, 50}, {10, 20}}
+		}; // from segment
 		r4::rectangle<int> e({10, 20}, {20, 30}); // from position and dimensions
 		tst::check_eq(r, e, SL);
 	});
@@ -36,23 +41,23 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		"constructor__segment2_int",
 		{
 			{
-				{{10, 20}, {30, 50}}, // segment
-				{{10, 20}, {20, 30}} // rectangle
+             {{10, 20}, {30, 50}}, // segment
+ {{10, 20}, {20, 30}} // rectangle
 			},
 			{
-				{{30, 50}, {10, 20}}, // segment
-				{{10, 20}, {20, 30}} // rectangle
+             {{30, 50}, {10, 20}}, // segment
+ {{10, 20}, {20, 30}} // rectangle
 			},
 			{
-				{{10, 50}, {20, 30}}, // segment
-				{{10, 30}, {10, 20}} // rectangle
+             {{10, 50}, {20, 30}}, // segment
+ {{10, 30}, {10, 20}} // rectangle
 			},
 			{
-				{{30, 20}, {10, 50}}, // segment
-				{{10, 20}, {20, 30}} // rectangle
+             {{30, 20}, {10, 50}}, // segment
+ {{10, 20}, {20, 30}} // rectangle
 			},
-		},
-		[](const auto& p){
+    },
+		[](const auto& p) {
 			r4::rectangle<int> r(p.first);
 			tst::check_eq(r, p.second, SL);
 		}
@@ -62,37 +67,43 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		"constructor__segment2_unsigned",
 		{
 			{
-				{{10, 20}, {30, 50}}, // segment
-				{{10, 20}, {20, 30}} // rectangle
+             {{10, 20}, {30, 50}}, // segment
+ {{10, 20}, {20, 30}} // rectangle
 			},
 			{
-				{{30, 50}, {10, 20}}, // segment
-				{{10, 20}, {20, 30}} // rectangle
+             {{30, 50}, {10, 20}}, // segment
+ {{10, 20}, {20, 30}} // rectangle
 			},
 			{
-				{{10, 50}, {20, 30}}, // segment
-				{{10, 30}, {10, 20}} // rectangle
+             {{10, 50}, {20, 30}}, // segment
+ {{10, 30}, {10, 20}} // rectangle
 			},
 			{
-				{{30, 20}, {10, 50}}, // segment
-				{{10, 20}, {20, 30}} // rectangle
+             {{30, 20}, {10, 50}}, // segment
+ {{10, 20}, {20, 30}} // rectangle
 			},
-		},
-		[](const auto& p){
+    },
+		[](const auto& p) {
 			r4::rectangle<unsigned> r(p.first);
 			tst::check_eq(r, p.second, SL);
 		}
 	);
 
-	suite.add("center", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("center", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
 		r4::vector2<int> cmp{6, 8};
 		tst::check_eq(r.center(), cmp, SL);
 	});
 
-	suite.add("move_center_to", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("move_center_to", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
 		r4::vector2<int> cmp{1, 2};
 
@@ -100,14 +111,23 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check_eq(r.center(), cmp, SL);
 	});
 
-	suite.add("overlaps_vector2", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("overlaps_vector2", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
-		std::array<r4::vector2<int>, 9> p = {{
-			r4::vector2<int>{1, 2}, r4::vector2<int>{5, 3}, r4::vector2<int>{10 ,3},
-			r4::vector2<int>{2, 5}, r4::vector2<int>{5, 7}, r4::vector2<int>{11, 7},
-			r4::vector2<int>{-1, 13}, r4::vector2<int>{7, 14}, r4::vector2<int>{13, 17}
-		}};
+		std::array<r4::vector2<int>, 9> p = {
+			{r4::vector2<int>{1, 2},
+			 r4::vector2<int>{5, 3},
+			 r4::vector2<int>{10, 3},
+			 r4::vector2<int>{2, 5},
+			 r4::vector2<int>{5, 7},
+			 r4::vector2<int>{11, 7},
+			 r4::vector2<int>{-1, 13},
+			 r4::vector2<int>{7, 14},
+			 r4::vector2<int>{13, 17}}
+		};
 
 		tst::check(!r.overlaps(p[0]), SL);
 		tst::check(!r.overlaps(p[1]), SL);
@@ -123,11 +143,11 @@ const tst::set set("rectangle", [](tst::suite& suite){
 	suite.add<std::pair<r4::rectangle<int>, r4::rectangle<int>>>(
 		"contains__rectangle__true",
 		{
-			{{{10, 20},{30, 40}}, {{10, 20},{30, 40}}},
-			{{{10, 20},{30, 40}}, {{11, 20},{29, 40}}},
-			{{{10, 20},{30, 40}}, {{11, 21},{29, 39}}},
-		},
-		[](const auto& p){
+			{{{10, 20}, {30, 40}}, {{10, 20}, {30, 40}}},
+			{{{10, 20}, {30, 40}}, {{11, 20}, {29, 40}}},
+			{{{10, 20}, {30, 40}}, {{11, 21}, {29, 39}}},
+    },
+		[](const auto& p) {
 			tst::check(p.first.contains(p.second), SL);
 		}
 	);
@@ -135,122 +155,179 @@ const tst::set set("rectangle", [](tst::suite& suite){
 	suite.add<std::pair<r4::rectangle<int>, r4::rectangle<int>>>(
 		"contains__rectangle__false",
 		{
-			{{{10, 20},{30, 40}}, {{11, 20},{30, 40}}},
-			{{{10, 20},{30, 40}}, {{9, 20},{30, 40}}},
-			{{{10, 20},{30, 40}}, {{10, 21},{30, 40}}},
-			{{{10, 20},{30, 40}}, {{10, 19},{30, 40}}},
-		},
-		[](const auto& p){
+			{{{10, 20}, {30, 40}}, {{11, 20}, {30, 40}}},
+			{{{10, 20}, {30, 40}},  {{9, 20}, {30, 40}}},
+			{{{10, 20}, {30, 40}}, {{10, 21}, {30, 40}}},
+			{{{10, 20}, {30, 40}}, {{10, 19}, {30, 40}}},
+    },
+		[](const auto& p) {
 			tst::check(!p.first.contains(p.second), SL);
 		}
 	);
 
-	suite.add("intersect__rectangle", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
-		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
+	suite.add("intersect__rectangle", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
+		r4::rectangle<int> r1{
+			{5, 6},
+			{6, 8}
+		};
 
 		r.intersect(r1);
 
-		r4::rectangle<int> cmp{ {5, 6}, {4, 6} };
+		r4::rectangle<int> cmp{
+			{5, 6},
+			{4, 6}
+		};
 
 		tst::check_eq(r, cmp, SL);
 	});
 
-	suite.add("intersect__zero_rectangle_with_non_zero_rectangle_should_result_in_zero_rectangle", []{
-		r4::rectangle<unsigned> r{ 0, 0 };
-		r4::rectangle<unsigned> r1{ 289, 3, 149, 248 };
+	suite.add("intersect__zero_rectangle_with_non_zero_rectangle_should_result_in_zero_rectangle", [] {
+		r4::rectangle<unsigned> r{0, 0};
+		r4::rectangle<unsigned> r1{289, 3, 149, 248};
 
 		r.intersect(r1);
 
 		tst::check(r.d.is_zero(), SL);
 	});
 
-	suite.add("intersection__rectangle", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
-		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
+	suite.add("intersection__rectangle", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
+		r4::rectangle<int> r1{
+			{5, 6},
+			{6, 8}
+		};
 
 		auto res = r.intersection(r1);
 
-		r4::rectangle<int> cmp{ {5, 6}, {4, 6} };
+		r4::rectangle<int> cmp{
+			{5, 6},
+			{4, 6}
+		};
 
 		tst::check_eq(res, cmp, SL);
 	});
 
-	suite.add("intersection__zero_rectangle_with_non_zero_rectangle_should_result_in_zero_rectangle", []{
-		r4::rectangle<unsigned> r{ 0, 0 };
-		r4::rectangle<unsigned> r1{ 289, 3, 149, 248 };
+	suite.add("intersection__zero_rectangle_with_non_zero_rectangle_should_result_in_zero_rectangle", [] {
+		r4::rectangle<unsigned> r{0, 0};
+		r4::rectangle<unsigned> r1{289, 3, 149, 248};
 
 		auto res = r.intersection(r1);
 
 		tst::check(res.d.is_zero(), SL);
 	});
 
-	suite.add("unite", []{
-		r4::rectangle<int> r0{ {3, 4}, {6, 8} };
-		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
+	suite.add("unite", [] {
+		r4::rectangle<int> r0{
+			{3, 4},
+			{6, 8}
+		};
+		r4::rectangle<int> r1{
+			{5, 6},
+			{6, 8}
+		};
 
 		r0.unite(r1);
 
-		r4::rectangle<int> cmp{ {3, 4}, {8, 10} };
+		r4::rectangle<int> cmp{
+			{3,  4},
+			{8, 10}
+		};
 
 		tst::check_eq(r0, cmp, SL);
 	});
 
-	suite.add("union_rect", []{
-		r4::rectangle<int> r0{ {3, 4}, {6, 8} };
-		r4::rectangle<int> r1{ {5, 6}, {6, 8} };
+	suite.add("union_rect", [] {
+		r4::rectangle<int> r0{
+			{3, 4},
+			{6, 8}
+		};
+		r4::rectangle<int> r1{
+			{5, 6},
+			{6, 8}
+		};
 
 		auto res = r0.union_rect(r1);
 
-		r4::rectangle<int> cmp{ {3, 4}, {8, 10} };
+		r4::rectangle<int> cmp{
+			{3,  4},
+			{8, 10}
+		};
 
 		tst::check_eq(res, cmp, SL);
 	});
 
-	suite.add("pdx_pdy", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("pdx_pdy", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
 		r4::vector2<int> cmp{9, 12};
 
 		tst::check_eq(r.x2_y2(), cmp, SL);
 	});
 
-	suite.add("x_pdy", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("x_pdy", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
 		r4::vector2<int> cmp{3, 12};
 
 		tst::check_eq(r.x1_y2(), cmp, SL);
 	});
 
-	suite.add("pdy", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("pdy", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
 		tst::check_eq(r.y2(), 12, SL);
 	});
 
-	suite.add("pdx", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("pdx", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
 		tst::check_eq(r.x2(), 9, SL);
 	});
 
-	suite.add("pdx_y", []{
-		r4::rectangle<int> r{ {3, 4}, {6, 8} };
+	suite.add("pdx_y", [] {
+		r4::rectangle<int> r{
+			{3, 4},
+			{6, 8}
+		};
 
 		r4::vector2<int> cmp{9, 4};
 
 		tst::check_eq(r.x2_y1(), cmp, SL);
 	});
 
-	suite.add("to", []{
-		r4::rectangle<float> r{ {3.3f, 4.4f}, {6.6f, 8.8f} };
-		r4::rectangle<int> cmp{ {3, 4}, {6, 8} };
+	suite.add("to", [] {
+		r4::rectangle<float> r{
+			{3.3f, 4.4f},
+			{6.6f, 8.8f}
+		};
+		r4::rectangle<int> cmp{
+			{3, 4},
+			{6, 8}
+		};
 
 		tst::check_eq(r.to<int>(), cmp, SL);
 	});
 
-	suite.add("operator_equals_rectangle", []{
+	suite.add("operator_equals_rectangle", [] {
 		r4::rectangle<int> r{3, 4, 5, 6};
 
 		r4::rectangle<int> r2{5, 6, 7, 8};
@@ -260,4 +337,4 @@ const tst::set set("rectangle", [](tst::suite& suite){
 		tst::check_eq(r, r2, SL);
 	});
 });
-}
+} // namespace
