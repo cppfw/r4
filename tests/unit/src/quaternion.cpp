@@ -1,5 +1,4 @@
-#include "../../../src/r4/quaternion.hpp"
-
+#include <r4/quaternion.hpp>
 #include <tst/check.hpp>
 #include <tst/set.hpp>
 

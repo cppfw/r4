@@ -1,5 +1,4 @@
-#include "../../../src/r4/rectangle.hpp"
-
+#include <r4/rectangle.hpp>
 #include <tst/check.hpp>
 #include <tst/set.hpp>
 

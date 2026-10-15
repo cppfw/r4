@@ -1,7 +1,6 @@
+#include <r4/matrix.hpp>
 #include <tst/check.hpp>
 #include <tst/set.hpp>
-
-#include "../../../src/r4/matrix.hpp"
 
 using namespace std::string_literals;
 

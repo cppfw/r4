@@ -1,9 +1,8 @@
+#include <r4/vector.hpp>
 #include <tst/check.hpp>
 #include <tst/set.hpp>
 #include <utki/config.hpp>
 #include <utki/string.hpp>
-
-#include "../../../src/r4/vector.hpp"
 
 using namespace std::string_literals;
 

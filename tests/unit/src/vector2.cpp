@@ -1,7 +1,6 @@
+#include <r4/vector.hpp>
 #include <tst/check.hpp>
 #include <tst/set.hpp>
-
-#include "../../../src/r4/vector.hpp"
 
 // declare templates to instantiate all template methods to include all methods to gcov coverage
 template class r4::vector<int, 2>;
