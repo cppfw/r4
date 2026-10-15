@@ -1,0 +1,5 @@
+# r4 must support C++17, so the C++20-only modernize-use-constraints
+# (enable_if -> requires) is suppressed for this library.
+Checks: |
+  -modernize-use-constraints
+InheritParentConfig: true
