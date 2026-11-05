@@ -1,3 +1,9 @@
+libr4 (1.0.113) unstable; urgency=medium
+
+  * update
+
+ -- Ivan Gagis <igagis@gmail.com>  Thu, 05 Nov 2026 14:14:28 +0200
+
 libr4 (1.0.112) unstable; urgency=medium
 
   * fix macos build
