@@ -268,7 +268,7 @@ public:
 	 */
 	vector<component_type, num_columns>& row(size_t r) noexcept
 	{
-		ASSERT(r < this->size())
+		utki::assert(r < this->size(), SL);
 		return this->operator[](r);
 	}
 
@@ -279,7 +279,7 @@ public:
 	 */
 	const vector<component_type, num_columns>& row(size_t r) const noexcept
 	{
-		ASSERT(r < this->size())
+		utki::assert(r < this->size(), SL);
 		return this->operator[](r);
 	}
 
@@ -516,13 +516,13 @@ public:
 	) noexcept
 	{
 		component_type w = right - left;
-		ASSERT(w != 0)
+		utki::assert(w != 0, SL);
 
 		component_type h = top - bottom;
-		ASSERT(h != 0)
+		utki::assert(h != 0, SL);
 
 		component_type d = far_val - near_val;
-		ASSERT(d != 0)
+		utki::assert(d != 0, SL);
 
 		matrix& f = *this;
 		f[0][0] = 2 * near_val / w;
@@ -598,9 +598,9 @@ public:
 		component_type far
 	) noexcept
 	{
-		ASSERT(aspect > 0)
-		ASSERT(near > 0)
-		ASSERT(far > near)
+		utki::assert(aspect > 0, SL);
+		utki::assert(near > 0, SL);
+		utki::assert(far > near, SL);
 
 		using std::tan;
 		component_type tan_half_fov_y = tan(fov_y / component_type(2));
@@ -1071,8 +1071,8 @@ public:
 	{
 		matrix<component_type, num_rows - 1, num_columns - 1> ret;
 
-		ASSERT(row < num_rows)
-		ASSERT(col < num_columns)
+		utki::assert(row < num_rows, SL);
+		utki::assert(col < num_columns, SL);
 
 		for (size_t dr = 0; dr != row; ++dr) {
 			for (size_t dc = 0; dc != col; ++dc) {

@@ -891,7 +891,7 @@ public:
 	vector& normalize() noexcept
 	{
 		component_type mag = this->norm();
-		ASSERT(mag >= component_type(0))
+		utki::assert(mag >= component_type(0), SL);
 		if (mag != component_type(0)) {
 			return (*this) /= mag;
 		}
@@ -1113,7 +1113,12 @@ public:
 	 */
 	vector& project(const vector& vec) noexcept
 	{
-		ASSERT(this->norm_pow2() != 0)
+		utki::assert(
+			[this]() -> bool {
+				return this->norm_pow2() != 0;
+			},
+			SL
+		);
 		(*this) = vec * (vec * (*this)) / vec.norm_pow2();
 		return *this;
 	}
